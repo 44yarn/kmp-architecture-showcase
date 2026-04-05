@@ -1,0 +1,19 @@
+CREATE TABLE IF NOT EXISTS Preference (
+    key TEXT NOT NULL PRIMARY KEY,
+    value TEXT NOT NULL
+);
+
+selectAll:
+SELECT * FROM Preference;
+
+selectByKey:
+SELECT * FROM Preference WHERE key = ?;
+
+insert:
+INSERT OR REPLACE INTO Preference (key, value) VALUES (?, ?);
+
+deleteByKey:
+DELETE FROM Preference WHERE key = ?;
+
+deleteAll:
+DELETE FROM Preference;
