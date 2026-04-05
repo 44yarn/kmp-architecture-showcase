@@ -1,0 +1,29 @@
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+secrets.properties
+*.jks
+*.keystore
+
+# Kotlin
+.kotlin/
+
+# Module build outputs
+**/build/
+
+# iOS
+iosApp/iosApp.xcworkspace/xcuserdata/
+iosApp/iosApp.xcodeproj/xcuserdata/
+iosApp/iosApp.xcodeproj/project.xcworkspace/xcuserdata/
+iosApp/DerivedData/
+iosApp/Pods/
+
+# Tasks (Claude Code)
+.tasks/

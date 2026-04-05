@@ -1,0 +1,145 @@
+[versions]
+# Kotlin & Android
+kotlin = "2.3.10"
+agp = "8.13.2"
+composeBom = "2024.12.01"
+composeMultiplatform = "1.10.3"
+
+# KMP
+kmpNativeCoroutines = "1.0.1"
+kmpObservableViewModel = "1.0.2"
+koinCore = "3.5.6"
+
+# AndroidX
+androidxCoreKtx = "1.16.0"
+androidxActivity = "1.10.1"
+androidxLifecycle = "2.9.1"
+androidxNavigation = "2.9.7"
+androidxDatastore = "1.1.7"
+androidxHiltNavCompose = "1.2.0"
+
+# Kotlinx
+kotlinxCoroutines = "1.10.2"
+kotlinxSerialization = "1.10.0"
+
+# DI
+hilt = "2.57.2"
+ksp = "2.3.6"
+
+# Database
+sqldelight = "2.1.0"
+
+# Logging
+timber = "5.0.1"
+
+# Code Quality
+detekt = "1.23.8"
+spotless = "7.0.4"
+ktlint = "1.7.1"
+
+# Testing
+junit = "4.13.2"
+junit5 = "5.13.4"
+kotest = "5.9.1"
+mockk = "1.14.9"
+truth = "1.4.4"
+turbine = "1.3.0"
+kotlinxCoroutinesTest = "1.10.2"
+
+# Material3
+material3 = "1.4.0"
+
+[libraries]
+# Kotlin
+kotlinGradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+# Android Gradle Plugin
+androidGradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+
+# KSP
+kspGradlePlugin = { module = "com.google.devtools.ksp:symbol-processing-gradle-plugin", version.ref = "ksp" }
+
+# Compose
+composeBom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+composeAnimation = { module = "androidx.compose.animation:animation" }
+composeFoundation = { module = "androidx.compose.foundation:foundation" }
+composeMaterial3 = { module = "androidx.compose.material3:material3" }
+composeUi = { module = "androidx.compose.ui:ui" }
+composeUiGraphics = { module = "androidx.compose.ui:ui-graphics" }
+composeUiTooling = { module = "androidx.compose.ui:ui-tooling" }
+composeUiToolingPreview = { module = "androidx.compose.ui:ui-tooling-preview" }
+composeUiTestManifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+# Compose Multiplatform
+composeMultiplatformPlugin = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "composeMultiplatform" }
+
+# AndroidX
+androidxCoreKtx = { module = "androidx.core:core-ktx", version.ref = "androidxCoreKtx" }
+androidxActivity = { module = "androidx.activity:activity-ktx", version.ref = "androidxActivity" }
+activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidxActivity" }
+lifecycleRuntimeKtx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+lifecycleRuntimeCompose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidxLifecycle" }
+lifecycleViewmodelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
+navigationCompose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigation" }
+androidxHiltNavCompose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltNavCompose" }
+datastorePreferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidxDatastore" }
+
+# Kotlinx
+kotlinxCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinxCoroutinesAndroid = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+kotlinxCoroutinesTest = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+kotlinxSerializationJson = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
+# Hilt
+daggerHiltCore = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+daggerHiltCompiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+androidxHiltCompiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidxHiltNavCompose" }
+kotlinMetadataJvm = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
+
+# KMP
+nativecoroutinesCore = { module = "com.rickclephas.kmp:kmp-nativecoroutines-core", version.ref = "kmpNativeCoroutines" }
+nativecoroutinesCompiler = { module = "com.rickclephas.kmp:kmp-nativecoroutines-compiler", version.ref = "kmpNativeCoroutines" }
+kmpNativeCoroutinesGradlePlugin = { module = "com.rickclephas.kmp:kmp-nativecoroutines-gradle-plugin", version.ref = "kmpNativeCoroutines" }
+kmpObservableViewModelCore = { module = "com.rickclephas.kmp:kmp-observableviewmodel-core", version.ref = "kmpObservableViewModel" }
+
+# Koin
+koinCore = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
+
+# SQLDelight
+sqldelightGradlePlugin = { module = "app.cash.sqldelight:gradle-plugin", version.ref = "sqldelight" }
+sqldelightRuntime = { module = "app.cash.sqldelight:runtime", version.ref = "sqldelight" }
+sqldelightCoroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "sqldelight" }
+sqldelightAndroidDriver = { module = "app.cash.sqldelight:android-driver", version.ref = "sqldelight" }
+sqldelightNativeDriver = { module = "app.cash.sqldelight:native-driver", version.ref = "sqldelight" }
+sqldelightSqliteDriver = { module = "app.cash.sqldelight:sqlite-driver", version.ref = "sqldelight" }
+
+# Logging
+timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
+
+# Code Quality
+detektGradlePlugin = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
+spotlessGradlePlugin = { module = "com.diffplug.spotless:spotless-plugin-gradle", version.ref = "spotless" }
+
+# Testing
+junit = { module = "junit:junit", version.ref = "junit" }
+junit5 = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit5" }
+kotestAssertionsCore = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
+turbine = { module = "app.cash.turbine:turbine", version.ref = "turbine" }
+kotlinTest = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinCompose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
+kmpNativeCoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "kmpNativeCoroutines" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }

@@ -1,0 +1,34 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{kt,kts}]
+max_line_length = 130
+ktlint_code_style = android_studio
+ktlint_function_naming_ignore_when_annotated_with = Composable
+
+# import 順序のレイアウト
+ij_kotlin_imports_layout = java,javax,kotlin,android,^,*
+
+# 末尾カンマを無効化
+ktlint_standard_trailing-comma-on-call-site = disabled
+ktlint_standard_trailing-comma-on-declaration-site = disabled
+
+# 関数の書き方を強制しない
+ktlint_standard_function-expression-body = disabled
+ktlint_standard_function-literal = disabled
+ktlint_standard_function-signature = disabled
+
+# property-naming を無効化（Kotlin/KMP の定数パターン対応）
+ktlint_standard_property-naming = disabled
+
+# filename ルールを無効化（KMP の expect/actual パターンでファイル名が一致しない場合がある）
+ktlint_standard_filename = disabled
+
+[*.{kt,kts,gradle.kts}]
+insert_final_newline = true
+trim_trailing_whitespace = true
