@@ -1,0 +1,49 @@
+package io.github.mitsuharu.showcase.feature.login
+
+import androidx.lifecycle.ViewModel
+import com.rickclephas.kmp.observableviewmodel.coroutineScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.mitsuharu.showcase.core.data.auth.AuthRepository
+import io.github.mitsuharu.showcase.core.data.preference.PreferenceStorage
+import io.github.mitsuharu.showcase.core.uikit.dialog.DialogPresenter
+import io.github.mitsuharu.showcase.core.uikit.indicator.IndicatorState
+import javax.inject.Inject
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.StateFlow
+
+@HiltViewModel
+class AndroidLoginViewModel @Inject constructor(
+    authRepository: AuthRepository,
+    preferenceStorage: PreferenceStorage,
+    val dialogPresenter: DialogPresenter,
+) : ViewModel() {
+
+    val indicatorState = IndicatorState()
+
+    private val commonViewModel = LoginViewModel(
+        authRepository = authRepository,
+        preferenceStorage = preferenceStorage,
+        indicatorState = indicatorState,
+    )
+
+    val uiState: StateFlow<LoginUiState> = commonViewModel.uiState
+    val effect = commonViewModel.effect
+
+    val actions = LoginActions(
+        onEmailChanged = commonViewModel::onEmailChanged,
+        onPasswordChanged = commonViewModel::onPasswordChanged,
+        onTogglePasswordVisibility = commonViewModel::onTogglePasswordVisibility,
+        onLogin = commonViewModel::onLogin,
+        onRandomEmail = commonViewModel::onRandomEmail,
+        onLoginFailureDemo = commonViewModel::onLoginFailureDemo,
+        onCancel = commonViewModel::onCancel,
+        onInfo = commonViewModel::onInfo,
+    )
+
+    fun onGuestLogin() = commonViewModel.onGuestLogin()
+
+    override fun onCleared() {
+        commonViewModel.viewModelScope.coroutineScope.cancel()
+        super.onCleared()
+    }
+}

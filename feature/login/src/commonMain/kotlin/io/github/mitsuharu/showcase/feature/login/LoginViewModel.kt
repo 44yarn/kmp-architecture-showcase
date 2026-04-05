@@ -1,0 +1,95 @@
+package io.github.mitsuharu.showcase.feature.login
+
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
+import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
+import com.rickclephas.kmp.observableviewmodel.coroutineScope
+import io.github.mitsuharu.showcase.core.data.auth.AuthRepository
+import io.github.mitsuharu.showcase.core.data.preference.PreferenceKey
+import io.github.mitsuharu.showcase.core.data.preference.PreferenceStorage
+import io.github.mitsuharu.showcase.core.foundation.KmpViewModel
+import io.github.mitsuharu.showcase.core.uikit.indicator.IndicatorState
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
+class LoginViewModel(
+    private val authRepository: AuthRepository,
+    private val preferenceStorage: PreferenceStorage,
+    val indicatorState: IndicatorState,
+) : KmpViewModel() {
+
+    private val _uiState = MutableStateFlow(LoginUiState())
+
+    @NativeCoroutinesState
+    val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
+
+    private val _effect = Channel<LoginEffect>()
+
+    @NativeCoroutines
+    val effect: kotlinx.coroutines.flow.Flow<LoginEffect> = _effect.receiveAsFlow()
+
+    init {
+        viewModelScope.coroutineScope.launch {
+            val savedEmail = preferenceStorage.getString(PreferenceKey.StringKey.SavedEmail)
+            if (savedEmail != null) {
+                _uiState.update { it.copy(email = savedEmail) }
+            }
+        }
+    }
+
+    fun onEmailChanged(email: String) {
+        _uiState.update { it.copy(email = email) }
+    }
+
+    fun onPasswordChanged(password: String) {
+        _uiState.update { it.copy(password = password) }
+    }
+
+    fun onTogglePasswordVisibility() {
+        _uiState.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
+    }
+
+    fun onLogin() {
+        viewModelScope.coroutineScope.launch {
+            indicatorState.runWithLoading {
+                authRepository.login(_uiState.value.email, _uiState.value.password)
+            }.onSuccess { displayName ->
+                preferenceStorage.putString(
+                    PreferenceKey.StringKey.SavedEmail,
+                    _uiState.value.email,
+                )
+                _effect.send(LoginEffect.NavigateToHome(displayName, isGuest = false))
+            }
+        }
+    }
+
+    fun onRandomEmail() {
+        val random = "user${(1000..9999).random()}@example.com"
+        _uiState.update { it.copy(email = random) }
+    }
+
+    fun onLoginFailureDemo() {
+        _uiState.update { it.copy(password = "error") }
+        onLogin()
+    }
+
+    fun onCancel() {
+        _uiState.update { LoginUiState() }
+    }
+
+    fun onInfo() {
+        viewModelScope.coroutineScope.launch {
+            _effect.send(LoginEffect.LaunchActivity)
+        }
+    }
+
+    fun onGuestLogin() {
+        viewModelScope.coroutineScope.launch {
+            _effect.send(LoginEffect.NavigateToHome("Guest", isGuest = true))
+        }
+    }
+}
