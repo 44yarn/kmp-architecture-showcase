@@ -6,22 +6,20 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-
-private val LightColorScheme = lightColorScheme()
-private val DarkColorScheme = darkColorScheme()
 
 @Composable
 fun AppTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    val colorScheme = if (isDarkTheme) DarkColorScheme else LightColorScheme
+    val colorToken = if (isDarkTheme) AppColorToken.dark() else AppColorToken.light()
+    val colorScheme = if (isDarkTheme) appDarkColorScheme() else appLightColorScheme()
+
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {
@@ -30,10 +28,15 @@ fun AppTheme(
         }
     }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        content = content,
-    )
+    CompositionLocalProvider(LocalColorToken provides colorToken) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = MaterialTheme.typography.copy(
+                titleLarge = AppTheme.typography.subheadline.bold,
+            ),
+            content = content,
+        )
+    }
 }
 
 fun ComponentActivity.setContentWithTheme(
