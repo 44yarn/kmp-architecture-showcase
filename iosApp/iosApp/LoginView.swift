@@ -118,17 +118,17 @@ struct LoginView: View {
         }
         .navigationBarHidden(true)
         .task {
-            for await state in FlowBridge.asyncStream(for: viewModel.uiStateFlow) {
+            for await state in viewModel.uiState {
                 uiState = state
             }
         }
         .task {
-            for await loading in FlowBridge.asyncStream(for: viewModel.indicatorState.isLoadingFlow) {
+            for await loading in viewModel.indicatorState.isLoading {
                 isLoading = loading.boolValue
             }
         }
         .task {
-            for await effect in FlowBridge.asyncStream(for: viewModel.effect) {
+            for await effect in viewModel.effect {
                 switch effect {
                 case let navigateToHome as LoginEffectNavigateToHome:
                     onNavigate(.home(

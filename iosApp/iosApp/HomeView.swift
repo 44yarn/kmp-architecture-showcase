@@ -133,12 +133,12 @@ struct HomeView: View {
             }
         }
         .task {
-            for await state in FlowBridge.asyncStream(for: viewModel.uiStateFlow) {
+            for await state in viewModel.uiState {
                 uiState = state
             }
         }
         .task {
-            for await effect in FlowBridge.asyncStream(for: viewModel.effect) {
+            for await effect in viewModel.effect {
                 if effect is HomeEffectNavigateToLogin {
                     onLogout()
                 }
