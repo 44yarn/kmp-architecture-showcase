@@ -89,8 +89,16 @@ class LoginViewModel(
     }
 
     fun onLoginFailureDemo() {
+        val savedPassword = _uiState.value.password
         _uiState.update { it.copy(password = "error") }
-        onLogin()
+        currentJob = scope.launch {
+            indicatorState.runWithLoading {
+                authRepository.login(_uiState.value.email, "error")
+            }.onFailure {
+                _uiState.update { it.copy(password = savedPassword) }
+                showLoginErrorDialog()
+            }
+        }
     }
 
     fun onCancel() {
