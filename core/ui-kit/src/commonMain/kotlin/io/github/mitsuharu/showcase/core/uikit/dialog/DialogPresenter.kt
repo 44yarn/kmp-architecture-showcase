@@ -3,11 +3,10 @@ package io.github.mitsuharu.showcase.core.uikit.dialog
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
 
-class DialogPresenter @Inject constructor() {
+class DialogPresenter {
     var dialogUiState: DialogUiState? by mutableStateOf(null)
         private set
 
