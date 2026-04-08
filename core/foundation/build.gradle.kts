@@ -14,7 +14,6 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(compose.runtime)
-            api(libs.kmpObservableViewModelCore)
         }
         androidMain.dependencies {
             implementation(libs.androidxCoreKtx)

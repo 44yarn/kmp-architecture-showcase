@@ -1,5 +1,16 @@
 package io.github.mitsuharu.showcase.core.foundation
 
-import com.rickclephas.kmp.observableviewmodel.ViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 
-open class KmpViewModel : ViewModel()
+open class KmpViewModel(externalScope: CoroutineScope? = null,) {
+    private val ownJob: Job? = if (externalScope == null) SupervisorJob() else null
+    protected val scope: CoroutineScope =
+        externalScope ?: CoroutineScope(ownJob!! + Dispatchers.Main.immediate)
+
+    open fun clear() {
+        ownJob?.cancel()
+    }
+}
