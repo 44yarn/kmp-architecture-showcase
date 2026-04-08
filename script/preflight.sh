@@ -42,8 +42,8 @@ iOSビルドのログ出力:
   IOS_SCHEME        (既定: iosApp)
   IOS_CONFIGURATION (既定: Debug)
   IOS_SDK           (既定: iphonesimulator)
-  IOS_DESTINATION   (既定: platform=iOS Simulator,name=\"iPhone 16\")
-  IOS_SIM_NAME      (簡易にシミュレータ名だけ変える場合)
+  IOS_DESTINATION   (既定: 利用可能な iPhone を自動検出)
+  IOS_SIM_NAME      (シミュレータ名を明示指定する場合)
   IOS_CLEAN_BUILD   true で clean build を実行（遅い）
 
 補足:
@@ -57,7 +57,20 @@ IOS_XCODEPROJECT="${IOS_XCODEPROJECT:-iosApp/iosApp.xcodeproj}"
 IOS_SCHEME="${IOS_SCHEME:-iosApp}"
 IOS_CONFIGURATION="${IOS_CONFIGURATION:-Debug}"
 IOS_SDK="${IOS_SDK:-iphonesimulator}"
-IOS_DESTINATION="${IOS_DESTINATION:-platform=iOS Simulator,name=${IOS_SIM_NAME:-iPhone 16}}"
+# Resolve simulator: use IOS_DESTINATION > IOS_SIM_NAME > auto-detect first available iPhone
+if [[ -z "${IOS_DESTINATION:-}" ]]; then
+  if [[ -n "${IOS_SIM_NAME:-}" ]]; then
+    IOS_DESTINATION="platform=iOS Simulator,name=${IOS_SIM_NAME}"
+  else
+    _SIM_ID=$(xcrun simctl list devices available -j 2>/dev/null \
+      | python3 -c "import sys,json; devs=[d for ds in json.loads(sys.stdin.read())['devices'].values() for d in ds if 'iPhone' in d['name']]; print(devs[0]['udid'] if devs else '')" 2>/dev/null || true)
+    if [[ -n "$_SIM_ID" ]]; then
+      IOS_DESTINATION="platform=iOS Simulator,id=${_SIM_ID}"
+    else
+      IOS_DESTINATION="platform=iOS Simulator,name=iPhone 16 Pro"
+    fi
+  fi
+fi
 IOS_CLEAN_BUILD="${IOS_CLEAN_BUILD:-false}"
 
 # Find repo root by locating gradlew upward from this script's directory
@@ -99,7 +112,7 @@ main() {
 
   local format_swift_hint=""
   if [[ ! -f "./script/format-swift.sh" ]]; then
-    format_swift_hint="format-swift.sh が見つかりません。swiftformat がインストール済みか確認してください（例: brew install swiftformat）。その後、format-swift.sh をリポジトリルートに配置してください。"
+    format_swift_hint="script/format-swift.sh が見つかりません。swiftformat がインストール済みか確認してください（例: brew install swiftformat）。"
   fi
   DESCS+=("🧼 Swift を整形: format-swift.sh"); CMDS+=("./script/format-swift.sh"); HINTS+=("$format_swift_hint")
 
