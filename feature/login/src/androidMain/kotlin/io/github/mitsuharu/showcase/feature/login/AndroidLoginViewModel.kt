@@ -10,18 +10,17 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
-class AndroidLoginViewModel @Inject constructor(
-    authRepository: AuthRepository,
-    preferenceStorage: PreferenceStorage,
-    val dialogPresenter: DialogPresenter,
-) : ViewModel() {
+class AndroidLoginViewModel @Inject constructor(authRepository: AuthRepository, preferenceStorage: PreferenceStorage,) :
+    ViewModel() {
 
+    val dialogPresenter = DialogPresenter()
     val indicatorState = IndicatorState()
 
     private val commonViewModel = LoginViewModel(
         authRepository = authRepository,
         preferenceStorage = preferenceStorage,
         indicatorState = indicatorState,
+        dialogPresenter = dialogPresenter,
     )
 
     val uiState: StateFlow<LoginUiState> = commonViewModel.uiState
