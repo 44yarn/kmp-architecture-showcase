@@ -11,10 +11,10 @@ cd iosApp && mint run swiftformat . && cd ..
 
 # SwiftLintで自動修正
 echo "Running SwiftLint autocorrect on iosApp..."
-cd iosApp && mint run swiftlint --fix . && cd ..
+cd iosApp && mint run swiftlint --fix --config ../.swiftlint.yml . && cd ..
 
 # SwiftLintでチェック
 echo "Running SwiftLint check..."
-cd iosApp && mint run swiftlint lint . && cd ..
+cd iosApp && mint run swiftlint lint --config ../.swiftlint.yml . && cd ..
 
 echo "✅ Swift code formatting complete!"

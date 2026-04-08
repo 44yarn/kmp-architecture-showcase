@@ -1,6 +1,8 @@
 disabled_rules:
   - trailing_whitespace
   - unused_optional_binding
+  - multiple_closures_with_trailing_closure
+  - for_where
 
 opt_in_rules:
   - empty_count
@@ -26,7 +28,14 @@ type_body_length:
 identifier_name:
   min_length: 2
   max_length: 40
+  allowed_symbols:
+    - _
   excluded:
     - id
     - x
     - y
+    - a
+    - r
+    - g
+    - b
+    - v
