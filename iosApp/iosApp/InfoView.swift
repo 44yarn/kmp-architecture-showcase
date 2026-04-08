@@ -37,6 +37,7 @@ struct InfoView: View {
 
             Spacer()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(colors.background.ignoresSafeArea())
         .navigationTitle("Info")
     }

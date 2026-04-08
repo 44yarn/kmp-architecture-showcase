@@ -45,6 +45,8 @@ struct LoginView: View {
             }
         } message: {
             Text(dialogState?.message ?? "")
+                .appFont(AppFonts.body.regular)
+                .foregroundColor(colors.onSurface)
         }
         .task {
             for await state in viewModel.uiState {
