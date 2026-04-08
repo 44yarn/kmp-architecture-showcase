@@ -44,7 +44,6 @@ targets:
             - "$(inherited)"
             - "$(SRCROOT)/../shared/build/bin/iosSimulatorArm64/releaseFramework"
             - "$(SRCROOT)/../shared/build/bin/iosArm64/releaseFramework"
-            - "$(SRCROOT)/../shared/build/bin/iosX64/releaseFramework"
     dependencies:
       - framework: ../shared/build/bin/iosSimulatorArm64/debugFramework/ShowcaseKit.framework
         embed: false
