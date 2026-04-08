@@ -10,34 +10,34 @@
 		14E4AAFB2DF7164712FFEF2E /* ShowcaseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC86C890784898EA768EC3 /* ShowcaseApp.swift */; };
 		2D6A49000C050731B5007847 /* ShowcaseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F8E712BF3EBE66FA92EDC3 /* ShowcaseKit.framework */; };
 		3945B679EEB74DE188BE0250 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC7CEF6C924FA74EA7BECA7 /* InfoView.swift */; };
+		3B6122AA530CC014CF71BFD0 /* AppSpacings.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF752395862D9691B58A03DD /* AppSpacings.swift */; };
+		3F89F49C2E2D3B22E2F3CDE2 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B2F1B7EB63407872D7A6EE /* AppColors.swift */; };
 		56B0305B5D3847FC6B326502 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */; };
+		5A1300E98F3885C3647EDBFA /* Color+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6963AB6A8CFF54CB5F83E877 /* Color+App.swift */; };
 		68040CE08AEDC7C1E192C50C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB12B8F33A658239E951429 /* HomeView.swift */; };
-		9B5635B42F866501009C2814 /* AppCornerRadii.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5635AF2F866501009C2814 /* AppCornerRadii.swift */; };
-		9B5635B52F866501009C2814 /* Color+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5635B22F866501009C2814 /* Color+App.swift */; };
-		9B5635B62F866501009C2814 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5635AE2F866501009C2814 /* AppColors.swift */; };
-		9B5635B72F866501009C2814 /* AppSpacings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5635B12F866501009C2814 /* AppSpacings.swift */; };
-		9B5635B82F866501009C2814 /* AppFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5635B02F866501009C2814 /* AppFonts.swift */; };
+		A5AAB819113E672808E647A2 /* AppCornerRadii.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6D45084AABBE4BC05B77CC /* AppCornerRadii.swift */; };
 		D488747AD197BC7C1635E66B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF4A054A43ED6B6C286E46F /* LoginView.swift */; };
+		D9DB336E16A6398B577A0AC1 /* AppFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2FE32A2393E3DCDAED2591 /* AppFonts.swift */; };
 		EC1992CF3208D67247D98488 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B39E5FC1264F8AC08FEA3D4 /* Koin.swift */; };
 		F7C33B50A94DA01F2E82C280 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 245434685F34A9A15B1AC406 /* libsqlite3.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		02AC86C890784898EA768EC3 /* ShowcaseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowcaseApp.swift; sourceTree = "<group>"; };
+		13B2F1B7EB63407872D7A6EE /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		1B39E5FC1264F8AC08FEA3D4 /* Koin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koin.swift; sourceTree = "<group>"; };
 		245434685F34A9A15B1AC406 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		43F8E712BF3EBE66FA92EDC3 /* ShowcaseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShowcaseKit.framework; path = ../shared/build/bin/iosSimulatorArm64/debugFramework/ShowcaseKit.framework; sourceTree = "<group>"; };
+		5E2FE32A2393E3DCDAED2591 /* AppFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFonts.swift; sourceTree = "<group>"; };
 		5EF4A054A43ED6B6C286E46F /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		6963AB6A8CFF54CB5F83E877 /* Color+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+App.swift"; sourceTree = "<group>"; };
 		6DC7CEF6C924FA74EA7BECA7 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		86038AE1032E284E79B32AD6 /* iosApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DB12B8F33A658239E951429 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		9B5635AE2F866501009C2814 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
-		9B5635AF2F866501009C2814 /* AppCornerRadii.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCornerRadii.swift; sourceTree = "<group>"; };
-		9B5635B02F866501009C2814 /* AppFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFonts.swift; sourceTree = "<group>"; };
-		9B5635B12F866501009C2814 /* AppSpacings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSpacings.swift; sourceTree = "<group>"; };
-		9B5635B22F866501009C2814 /* Color+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+App.swift"; sourceTree = "<group>"; };
 		C117AD187833E2513BD2F553 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		ED6D45084AABBE4BC05B77CC /* AppCornerRadii.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCornerRadii.swift; sourceTree = "<group>"; };
+		EF752395862D9691B58A03DD /* AppSpacings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSpacings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +56,6 @@
 		1DB4B685CAEE8BEFEBBAEF94 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
-				9B5635B32F866501009C2814 /* Theme */,
 				CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */,
 				8DB12B8F33A658239E951429 /* HomeView.swift */,
 				C117AD187833E2513BD2F553 /* Info.plist */,
@@ -64,6 +63,7 @@
 				1B39E5FC1264F8AC08FEA3D4 /* Koin.swift */,
 				5EF4A054A43ED6B6C286E46F /* LoginView.swift */,
 				02AC86C890784898EA768EC3 /* ShowcaseApp.swift */,
+				4795698A257B423F254DDC14 /* Theme */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -86,24 +86,24 @@
 			);
 			sourceTree = "<group>";
 		};
+		4795698A257B423F254DDC14 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				13B2F1B7EB63407872D7A6EE /* AppColors.swift */,
+				ED6D45084AABBE4BC05B77CC /* AppCornerRadii.swift */,
+				5E2FE32A2393E3DCDAED2591 /* AppFonts.swift */,
+				EF752395862D9691B58A03DD /* AppSpacings.swift */,
+				6963AB6A8CFF54CB5F83E877 /* Color+App.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
 		94C98B8B3A2BFC1966447269 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				86038AE1032E284E79B32AD6 /* iosApp.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		9B5635B32F866501009C2814 /* Theme */ = {
-			isa = PBXGroup;
-			children = (
-				9B5635AE2F866501009C2814 /* AppColors.swift */,
-				9B5635AF2F866501009C2814 /* AppCornerRadii.swift */,
-				9B5635B02F866501009C2814 /* AppFonts.swift */,
-				9B5635B12F866501009C2814 /* AppSpacings.swift */,
-				9B5635B22F866501009C2814 /* Color+App.swift */,
-			);
-			path = Theme;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,6 +135,8 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
 			};
 			buildConfigurationList = FF7CA1CA754D017066F1822F /* Build configuration list for PBXProject "iosApp" */;
 			developmentRegion = en;
@@ -160,16 +162,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F89F49C2E2D3B22E2F3CDE2 /* AppColors.swift in Sources */,
+				A5AAB819113E672808E647A2 /* AppCornerRadii.swift in Sources */,
+				D9DB336E16A6398B577A0AC1 /* AppFonts.swift in Sources */,
+				3B6122AA530CC014CF71BFD0 /* AppSpacings.swift in Sources */,
+				5A1300E98F3885C3647EDBFA /* Color+App.swift in Sources */,
 				56B0305B5D3847FC6B326502 /* ContentView.swift in Sources */,
 				68040CE08AEDC7C1E192C50C /* HomeView.swift in Sources */,
 				3945B679EEB74DE188BE0250 /* InfoView.swift in Sources */,
 				EC1992CF3208D67247D98488 /* Koin.swift in Sources */,
 				D488747AD197BC7C1635E66B /* LoginView.swift in Sources */,
-				9B5635B42F866501009C2814 /* AppCornerRadii.swift in Sources */,
-				9B5635B52F866501009C2814 /* Color+App.swift in Sources */,
-				9B5635B62F866501009C2814 /* AppColors.swift in Sources */,
-				9B5635B72F866501009C2814 /* AppSpacings.swift in Sources */,
-				9B5635B82F866501009C2814 /* AppFonts.swift in Sources */,
 				14E4AAFB2DF7164712FFEF2E /* ShowcaseApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

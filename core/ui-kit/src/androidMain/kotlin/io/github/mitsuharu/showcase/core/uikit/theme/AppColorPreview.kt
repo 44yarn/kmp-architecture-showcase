@@ -30,11 +30,7 @@ private fun Color.toHex(): String {
     return "#%02X%02X%02X%02X".format(a, r, g, b)
 }
 
-data class ColorRole(
-    val name: String,
-    val background: Color,
-    val content: Color
-)
+data class ColorRole(val name: String, val background: Color, val content: Color)
 
 @Suppress("detekt.MagicNumber")
 @Composable

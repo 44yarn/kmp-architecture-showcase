@@ -58,7 +58,6 @@ fun HomeScreen(
     }
 }
 
-
 @Composable
 private fun HomeContent(
     uiState: HomeUiState,
