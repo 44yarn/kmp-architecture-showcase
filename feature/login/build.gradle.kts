@@ -5,3 +5,11 @@ plugins {
 android {
     namespace = "io.github.mitsuharu.showcase.feature.login"
 }
+
+kotlin {
+    sourceSets {
+        androidMain.dependencies {
+            implementation(libs.composeMaterialIconsExtended)
+        }
+    }
+}

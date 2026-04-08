@@ -98,6 +98,9 @@ kotlinMetadataJvm = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", versi
 # Lifecycle (KMP)
 lifecycleViewModel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidxLifecycle" }
 
+# Compose UI
+composeMaterialIconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
+
 # Koin
 koinCore = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
 
