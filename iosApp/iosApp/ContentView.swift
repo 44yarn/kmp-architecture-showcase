@@ -19,7 +19,6 @@ struct ContentView: View {
                     HomeView(
                         displayName: displayName,
                         isGuest: isGuest,
-                        onNavigate: { route in path.append(route) },
                         onLogout: { path = NavigationPath() }
                     )
                 case .info:

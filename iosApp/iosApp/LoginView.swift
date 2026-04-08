@@ -8,113 +8,11 @@ struct LoginView: View {
     var onNavigate: (AppRoute) -> Void
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 24) {
-                // Header
-                VStack(spacing: 8) {
-                    Text("KMP Showcase")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    Text("Login")
-                        .font(.title2)
-                        .foregroundColor(.secondary)
-                }
-                .padding(.top, 40)
-
-                // Email field
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Email")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    TextField("user@example.com", text: Binding(
-                        get: { uiState.email },
-                        set: { viewModel.onEmailChanged(email: $0) }
-                    ))
-                    .textFieldStyle(.roundedBorder)
-                    .keyboardType(.emailAddress)
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                }
-
-                // Password field
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Password")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    HStack {
-                        if uiState.isPasswordVisible {
-                            TextField("Password", text: Binding(
-                                get: { uiState.password },
-                                set: { viewModel.onPasswordChanged(password: $0) }
-                            ))
-                        } else {
-                            SecureField("Password", text: Binding(
-                                get: { uiState.password },
-                                set: { viewModel.onPasswordChanged(password: $0) }
-                            ))
-                        }
-                        Button(action: { viewModel.onTogglePasswordVisibility() }) {
-                            Image(systemName: uiState.isPasswordVisible
-                                  ? "eye.slash" : "eye")
-                                .foregroundColor(.secondary)
-                        }
-                    }
-                    .textFieldStyle(.roundedBorder)
-                }
-
-                // Loading indicator
-                if isLoading {
-                    ProgressView()
-                        .padding()
-                }
-
-                // Buttons
-                VStack(spacing: 12) {
-                    Button(action: { viewModel.onLogin() }) {
-                        Text("Login")
-                            .font(.headline)
-                            .foregroundColor(.white)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .fill(isLoading ? Color.gray : Color.blue)
-                            )
-                    }
-                    .disabled(isLoading)
-
-                    Button(action: { viewModel.onGuestLogin() }) {
-                        Text("Guest Login")
-                            .font(.headline)
-                            .foregroundColor(.blue)
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(
-                                RoundedRectangle(cornerRadius: 12)
-                                    .stroke(Color.blue, lineWidth: 2)
-                            )
-                    }
-
-                    HStack(spacing: 16) {
-                        Button("Random Email") { viewModel.onRandomEmail() }
-                            .font(.subheadline)
-                        Button("Error Demo") { viewModel.onLoginFailureDemo() }
-                            .font(.subheadline)
-                            .foregroundColor(.red)
-                        Button("Clear") { viewModel.onCancel() }
-                            .font(.subheadline)
-                    }
-                    .padding(.top, 8)
-
-                    Button(action: { onNavigate(.info) }) {
-                        Text("Info")
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                    }
-                    .padding(.top, 4)
-                }
+        ZStack {
+            Box_content
+            if isLoading {
+                ProgressView()
             }
-            .padding(.horizontal, 24)
         }
         .navigationBarHidden(true)
         .task {
@@ -142,5 +40,98 @@ struct LoginView: View {
                 }
             }
         }
+    }
+
+    private var Box_content: some View {
+        VStack(spacing: 16) {
+            Text("KMP Showcase")
+                .font(.title2)
+                .fontWeight(.semibold)
+                .padding(.top, 40)
+
+            Spacer().frame(height: 8)
+
+            // Email field
+            HStack {
+                TextField("Email", text: Binding(
+                    get: { uiState.email },
+                    set: { viewModel.onEmailChanged(email: $0) }
+                ))
+                .keyboardType(.emailAddress)
+                .textInputAutocapitalization(.never)
+                .autocorrectionDisabled()
+
+                Button(action: { viewModel.onRandomEmail() }) {
+                    Image(systemName: "arrow.clockwise")
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding(12)
+            .overlay(
+                RoundedRectangle(cornerRadius: 4)
+                    .stroke(Color(.systemGray3), lineWidth: 1)
+            )
+
+            // Password field
+            HStack {
+                Group {
+                    if uiState.isPasswordVisible {
+                        TextField("Password", text: Binding(
+                            get: { uiState.password },
+                            set: { viewModel.onPasswordChanged(password: $0) }
+                        ))
+                    } else {
+                        SecureField("Password", text: Binding(
+                            get: { uiState.password },
+                            set: { viewModel.onPasswordChanged(password: $0) }
+                        ))
+                    }
+                }
+                Button(action: { viewModel.onTogglePasswordVisibility() }) {
+                    Image(systemName: uiState.isPasswordVisible ? "eye.slash" : "eye")
+                        .foregroundColor(.secondary)
+                }
+            }
+            .padding(12)
+            .overlay(
+                RoundedRectangle(cornerRadius: 4)
+                    .stroke(Color(.systemGray3), lineWidth: 1)
+            )
+
+            // Login button
+            Button(action: { viewModel.onLogin() }) {
+                Text("Login")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.borderedProminent)
+            .disabled(isLoading || uiState.email.isEmpty || uiState.password.isEmpty)
+
+            // Login (Fail) / Cancel row
+            HStack(spacing: 8) {
+                Button(action: { viewModel.onLoginFailureDemo() }) {
+                    Text("Login (Fail)")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .disabled(isLoading)
+
+                Button(action: { viewModel.onCancel() }) {
+                    Text("Cancel")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .disabled(!isLoading)
+            }
+
+            // Information button
+            Button(action: { onNavigate(.info) }) {
+                Text("Information")
+            }
+            .disabled(isLoading)
+
+            Spacer()
+        }
+        .padding(.horizontal, 24)
     }
 }
