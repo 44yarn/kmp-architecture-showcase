@@ -19,10 +19,8 @@ secrets.properties
 **/build/
 
 # iOS
-iosApp/iosApp.xcworkspace/xcuserdata/
 iosApp/iosApp.xcodeproj/xcuserdata/
 iosApp/iosApp.xcodeproj/project.xcworkspace/xcuserdata/
-iosApp/DerivedData/
 iosApp/Pods/
 
 # Claude Code
