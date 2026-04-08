@@ -19,7 +19,7 @@ struct LoginView: View {
 
     var body: some View {
         ZStack {
-            Box_content
+            boxContent
             if isLoading {
                 ProgressView()
             }
@@ -76,7 +76,7 @@ struct LoginView: View {
         }
     }
 
-    private var Box_content: some View {
+    private var boxContent: some View {
         VStack(spacing: AppSpacings.Padding.medium) {
             Spacer()
 

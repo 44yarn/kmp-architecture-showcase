@@ -22,11 +22,10 @@ struct HomeView: View {
         isGuest: Bool,
         onLogout: @escaping () -> Void
     ) {
-        let vm = KoinBootstrapKt.getHomeViewModel(
+        viewModel = KoinBootstrapKt.getHomeViewModel(
             displayName: displayName,
             isGuest: isGuest
         )
-        viewModel = vm
         _uiState = State(initialValue: HomeUiState(
             displayName: displayName,
             isGuest: isGuest,
@@ -37,7 +36,7 @@ struct HomeView: View {
     }
 
     var body: some View {
-        Box_content
+        boxContent
             .background(colors.background.ignoresSafeArea())
             .navigationTitle(uiState.screenTitle)
             .navigationBarBackButtonHidden(true)
@@ -80,7 +79,7 @@ struct HomeView: View {
             }
     }
 
-    private var Box_content: some View {
+    private var boxContent: some View {
         VStack(spacing: AppSpacings.Padding.medium) {
             Spacer()
 
