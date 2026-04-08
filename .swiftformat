@@ -1,0 +1,21 @@
+# SwiftFormat configuration
+
+# インデント
+--indent 4
+--tabwidth 4
+
+# 行の長さ
+--maxwidth 150
+
+# Swiftバージョン
+--swiftversion 5.9
+
+# ルール
+--disable unusedArguments
+--enable isEmpty
+
+# ヘッダーコメント
+--header "//\n// {file}\n// Showcase\n//\n"
+
+# インポートのグルーピング
+--importgrouping testable-bottom
