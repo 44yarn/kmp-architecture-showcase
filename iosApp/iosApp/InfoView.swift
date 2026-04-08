@@ -2,31 +2,36 @@ import ShowcaseKit
 import SwiftUI
 
 struct InfoView: View {
+    @Environment(\.colorScheme) private var colorScheme
+
+    private var colors: AppColors { .resolve(colorScheme) }
+
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: AppSpacings.Padding.xLarge) {
             Spacer()
 
             Image(systemName: "info.circle.fill")
                 .font(.system(size: 60))
-                .foregroundColor(.blue)
+                .foregroundColor(colors.primary)
 
             Text(InfoContent.shared.TITLE)
-                .font(.title)
-                .fontWeight(.bold)
+                .appFont(AppFonts.title3.bold)
+                .foregroundColor(colors.onBackground)
                 .multilineTextAlignment(.center)
 
             Text(InfoContent.shared.DESCRIPTION)
-                .font(.body)
-                .foregroundColor(.secondary)
+                .appFont(AppFonts.body.regular)
+                .foregroundColor(colors.onSurfaceVariant)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 32)
 
             Text("Version \(InfoContent.shared.VERSION)")
-                .font(.caption)
-                .foregroundColor(.secondary)
+                .appFont(AppFonts.caption1.regular)
+                .foregroundColor(colors.onSurfaceVariant)
 
             Spacer()
         }
+        .background(colors.background)
         .navigationTitle("Info")
     }
 }

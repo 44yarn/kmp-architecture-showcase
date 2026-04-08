@@ -2,10 +2,13 @@ import ShowcaseKit
 import SwiftUI
 
 struct LoginView: View {
+    @Environment(\.colorScheme) private var colorScheme
     private let viewModel = KoinBootstrapKt.getLoginViewModel()
     @State private var uiState = LoginUiState(email: "", password: "", isPasswordVisible: false)
     @State private var isLoading = false
     var onNavigate: (AppRoute) -> Void
+
+    private var colors: AppColors { .resolve(colorScheme) }
 
     var body: some View {
         ZStack {
@@ -14,6 +17,7 @@ struct LoginView: View {
                 ProgressView()
             }
         }
+        .background(colors.background)
         .navigationBarHidden(true)
         .task {
             for await state in viewModel.uiState {
@@ -43,13 +47,13 @@ struct LoginView: View {
     }
 
     private var Box_content: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: AppSpacings.Padding.medium) {
             Text("KMP Showcase")
-                .font(.title2)
-                .fontWeight(.semibold)
+                .appFont(AppFonts.title2.bold)
+                .foregroundColor(colors.onBackground)
                 .padding(.top, 40)
 
-            Spacer().frame(height: 8)
+            Spacer().frame(height: AppSpacings.Padding.xSmall)
 
             // Email field
             HStack {
@@ -63,13 +67,13 @@ struct LoginView: View {
 
                 Button(action: { viewModel.onRandomEmail() }) {
                     Image(systemName: "arrow.clockwise")
-                        .foregroundColor(.secondary)
+                        .foregroundColor(colors.onSurfaceVariant)
                 }
             }
-            .padding(12)
+            .padding(AppSpacings.Padding.small)
             .overlay(
                 RoundedRectangle(cornerRadius: 4)
-                    .stroke(Color(.systemGray3), lineWidth: 1)
+                    .stroke(colors.outline, lineWidth: 1)
             )
 
             // Password field
@@ -89,49 +93,69 @@ struct LoginView: View {
                 }
                 Button(action: { viewModel.onTogglePasswordVisibility() }) {
                     Image(systemName: uiState.isPasswordVisible ? "eye.slash" : "eye")
-                        .foregroundColor(.secondary)
+                        .foregroundColor(colors.onSurfaceVariant)
                 }
             }
-            .padding(12)
+            .padding(AppSpacings.Padding.small)
             .overlay(
                 RoundedRectangle(cornerRadius: 4)
-                    .stroke(Color(.systemGray3), lineWidth: 1)
+                    .stroke(colors.outline, lineWidth: 1)
             )
 
             // Login button
             Button(action: { viewModel.onLogin() }) {
                 Text("Login")
-                    .font(.headline)
+                    .appFont(AppFonts.headline.bold)
+                    .foregroundColor(colors.onPrimary)
                     .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: AppCornerRadii.small)
+                            .fill(isLoading || uiState.email.isEmpty || uiState.password.isEmpty
+                                  ? colors.secondary : colors.primary)
+                    )
             }
-            .buttonStyle(.borderedProminent)
             .disabled(isLoading || uiState.email.isEmpty || uiState.password.isEmpty)
 
             // Login (Fail) / Cancel row
-            HStack(spacing: 8) {
+            HStack(spacing: AppSpacings.Padding.xSmall) {
                 Button(action: { viewModel.onLoginFailureDemo() }) {
                     Text("Login (Fail)")
+                        .appFont(AppFonts.body.regular)
+                        .foregroundColor(isLoading ? colors.secondary : colors.primary)
                         .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: AppCornerRadii.small)
+                                .stroke(isLoading ? colors.secondary : colors.primary, lineWidth: 1)
+                        )
                 }
-                .buttonStyle(.bordered)
                 .disabled(isLoading)
 
                 Button(action: { viewModel.onCancel() }) {
                     Text("Cancel")
+                        .appFont(AppFonts.body.regular)
+                        .foregroundColor(!isLoading ? colors.secondary : colors.primary)
                         .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: AppCornerRadii.small)
+                                .stroke(!isLoading ? colors.secondary : colors.primary, lineWidth: 1)
+                        )
                 }
-                .buttonStyle(.bordered)
                 .disabled(!isLoading)
             }
 
             // Information button
             Button(action: { onNavigate(.info) }) {
                 Text("Information")
+                    .appFont(AppFonts.body.regular)
+                    .foregroundColor(colors.primary)
             }
             .disabled(isLoading)
 
             Spacer()
         }
-        .padding(.horizontal, 24)
+        .padding(.horizontal, AppSpacings.Padding.xLarge)
     }
 }

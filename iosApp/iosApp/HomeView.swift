@@ -2,11 +2,14 @@ import ShowcaseKit
 import SwiftUI
 
 struct HomeView: View {
+    @Environment(\.colorScheme) private var colorScheme
     private let viewModel: HomeViewModel
     @State private var uiState: HomeUiState
     var onLogout: () -> Void
 
     @State private var snackbarMessage: String?
+
+    private var colors: AppColors { .resolve(colorScheme) }
 
     init(
         displayName: String,
@@ -29,18 +32,19 @@ struct HomeView: View {
 
     var body: some View {
         Box_content
+            .background(colors.background)
             .navigationTitle(uiState.screenTitle)
             .navigationBarBackButtonHidden(true)
             .overlay(alignment: .bottom) {
                 if let message = snackbarMessage {
                     Text(message)
-                        .font(.subheadline)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 10)
+                        .appFont(AppFonts.subheadline.regular)
+                        .foregroundColor(colors.inverseOnSurface)
+                        .padding(.horizontal, AppSpacings.Padding.medium)
+                        .padding(.vertical, AppSpacings.Padding.small)
                         .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.black.opacity(0.8))
+                            RoundedRectangle(cornerRadius: AppCornerRadii.small)
+                                .fill(colors.inverseSurface)
                         )
                         .padding(.bottom, 100)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
@@ -71,20 +75,23 @@ struct HomeView: View {
     }
 
     private var Box_content: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: AppSpacings.Padding.medium) {
             Spacer()
 
             Text("Hello, \(uiState.displayName)!")
-                .font(.body)
+                .appFont(AppFonts.body.regular)
+                .foregroundColor(colors.onBackground)
 
             if !uiState.savedEmail.isEmpty {
                 Text("Saved email: \(uiState.savedEmail)")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .appFont(AppFonts.subheadline.regular)
+                    .foregroundColor(colors.onSurfaceVariant)
             }
 
             HStack {
                 Text("Remember Email")
+                    .appFont(AppFonts.body.regular)
+                    .foregroundColor(colors.onBackground)
                 Spacer()
                 Toggle("", isOn: Binding(
                     get: { uiState.isRememberEmail },
@@ -92,17 +99,23 @@ struct HomeView: View {
                 ))
                 .labelsHidden()
             }
-            .padding(.horizontal, 24)
+            .padding(.horizontal, AppSpacings.Padding.xLarge)
 
             Spacer()
 
             Button(action: { viewModel.onLogout() }) {
                 Text("Logout")
+                    .appFont(AppFonts.headline.bold)
+                    .foregroundColor(colors.primary)
                     .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(
+                        RoundedRectangle(cornerRadius: AppCornerRadii.small)
+                            .stroke(colors.primary, lineWidth: 1)
+                    )
             }
-            .buttonStyle(.bordered)
-            .padding(.horizontal, 24)
-            .padding(.bottom, 24)
+            .padding(.horizontal, AppSpacings.Padding.xLarge)
+            .padding(.bottom, AppSpacings.Padding.xLarge)
         }
     }
 }
