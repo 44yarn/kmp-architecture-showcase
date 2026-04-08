@@ -6,6 +6,7 @@ struct LoginView: View {
     private let viewModel = KoinBootstrapKt.getLoginViewModel()
     @State private var uiState = LoginUiState(email: "", password: "", isPasswordVisible: false)
     @State private var isLoading = false
+    @State private var dialogState: DialogUiState?
     var onNavigate: (AppRoute) -> Void
 
     private var colors: AppColors { .resolve(colorScheme) }
@@ -17,8 +18,28 @@ struct LoginView: View {
                 ProgressView()
             }
         }
-        .background(colors.background)
+        .background(colors.background.ignoresSafeArea())
         .navigationBarHidden(true)
+        .alert(
+            dialogState?.title ?? "",
+            isPresented: Binding(
+                get: { dialogState != nil },
+                set: { if !$0 { viewModel.dialogPresenter.onDismiss(); dialogState = nil } }
+            )
+        ) {
+            Button(dialogState?.positiveButton ?? "OK") {
+                viewModel.dialogPresenter.onPositive()
+                dialogState = nil
+            }
+            if let negativeButton = dialogState?.negativeButton {
+                Button(negativeButton, role: .cancel) {
+                    viewModel.dialogPresenter.onNegative()
+                    dialogState = nil
+                }
+            }
+        } message: {
+            Text(dialogState?.message ?? "")
+        }
         .task {
             for await state in viewModel.uiState {
                 uiState = state
@@ -44,14 +65,18 @@ struct LoginView: View {
                 }
             }
         }
+        .onChange(of: viewModel.dialogPresenter.dialogUiState) {
+            dialogState = viewModel.dialogPresenter.dialogUiState
+        }
     }
 
     private var Box_content: some View {
         VStack(spacing: AppSpacings.Padding.medium) {
+            Spacer()
+
             Text("KMP Showcase")
                 .appFont(AppFonts.title2.bold)
                 .foregroundColor(colors.onBackground)
-                .padding(.top, 40)
 
             Spacer().frame(height: AppSpacings.Padding.xSmall)
 

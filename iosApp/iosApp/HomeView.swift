@@ -32,7 +32,7 @@ struct HomeView: View {
 
     var body: some View {
         Box_content
-            .background(colors.background)
+            .background(colors.background.ignoresSafeArea())
             .navigationTitle(uiState.screenTitle)
             .navigationBarBackButtonHidden(true)
             .overlay(alignment: .bottom) {

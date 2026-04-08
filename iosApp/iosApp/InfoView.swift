@@ -31,7 +31,7 @@ struct InfoView: View {
 
             Spacer()
         }
-        .background(colors.background)
+        .background(colors.background.ignoresSafeArea())
         .navigationTitle("Info")
     }
 }
