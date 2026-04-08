@@ -6,8 +6,7 @@ composeBom = "2024.12.01"
 composeMultiplatform = "1.10.3"
 
 # KMP
-kmpNativeCoroutines = "1.0.1"
-kmpObservableViewModel = "1.0.2"
+skie = "0.10.11"
 koinCore = "3.5.6"
 
 # AndroidX
@@ -96,11 +95,8 @@ daggerHiltCompiler = { module = "com.google.dagger:hilt-android-compiler", versi
 androidxHiltCompiler = { module = "androidx.hilt:hilt-compiler", version.ref = "androidxHiltNavCompose" }
 kotlinMetadataJvm = { module = "org.jetbrains.kotlin:kotlin-metadata-jvm", version.ref = "kotlin" }
 
-# KMP
-nativecoroutinesCore = { module = "com.rickclephas.kmp:kmp-nativecoroutines-core", version.ref = "kmpNativeCoroutines" }
-nativecoroutinesCompiler = { module = "com.rickclephas.kmp:kmp-nativecoroutines-compiler", version.ref = "kmpNativeCoroutines" }
-kmpNativeCoroutinesGradlePlugin = { module = "com.rickclephas.kmp:kmp-nativecoroutines-gradle-plugin", version.ref = "kmpNativeCoroutines" }
-kmpObservableViewModelCore = { module = "com.rickclephas.kmp:kmp-observableviewmodel-core", version.ref = "kmpObservableViewModel" }
+# Lifecycle (KMP)
+lifecycleViewModel = { module = "androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidxLifecycle" }
 
 # Koin
 koinCore = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
@@ -140,6 +136,6 @@ composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMul
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 sqldelight = { id = "app.cash.sqldelight", version.ref = "sqldelight" }
-kmpNativeCoroutines = { id = "com.rickclephas.kmp.nativecoroutines", version.ref = "kmpNativeCoroutines" }
+skie = { id = "co.touchlab.skie", version.ref = "skie" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
