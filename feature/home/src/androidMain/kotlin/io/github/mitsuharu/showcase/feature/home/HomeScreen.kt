@@ -78,11 +78,13 @@ private fun HomeContent(
             Text(
                 text = uiState.screenTitle,
                 style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground,
             )
 
             Text(
                 text = "Hello, ${uiState.displayName}!",
                 style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground,
             )
 
             if (uiState.savedEmail.isNotEmpty()) {
@@ -98,7 +100,11 @@ private fun HomeContent(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
-                Text("Remember Email")
+                Text(
+                    text = "Remember Email",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
                 Switch(
                     checked = uiState.isRememberEmail,
                     onCheckedChange = { actions.onToggleRememberEmail() },
@@ -109,7 +115,11 @@ private fun HomeContent(
                 onClick = actions.onLogout,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("Logout")
+                Text(
+                    text = "Logout",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
             }
         }
     }

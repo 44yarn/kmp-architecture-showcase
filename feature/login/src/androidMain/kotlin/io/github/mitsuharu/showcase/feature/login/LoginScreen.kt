@@ -94,6 +94,7 @@ private fun LoginContent(
             Text(
                 text = "KMP Showcase",
                 style = MaterialTheme.typography.headlineMedium,
+                color = MaterialTheme.colorScheme.onBackground,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -101,7 +102,13 @@ private fun LoginContent(
             OutlinedTextField(
                 value = uiState.email,
                 onValueChange = actions.onEmailChanged,
-                label = { Text("Email") },
+                label = {
+                    Text(
+                        text = "Email",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                },
                 singleLine = true,
                 trailingIcon = {
                     IconButton(onClick = actions.onRandomEmail) {
@@ -117,7 +124,13 @@ private fun LoginContent(
             OutlinedTextField(
                 value = uiState.password,
                 onValueChange = actions.onPasswordChanged,
-                label = { Text("Password") },
+                label = {
+                    Text(
+                        text = "Password",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                },
                 singleLine = true,
                 visualTransformation = if (uiState.isPasswordVisible) {
                     VisualTransformation.None
@@ -148,7 +161,11 @@ private fun LoginContent(
                 enabled = isButtonsEnabled && uiState.email.isNotBlank() && uiState.password.isNotBlank(),
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Text("Login")
+                Text(
+                    text = "Login",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                )
             }
 
             Row(
@@ -160,7 +177,11 @@ private fun LoginContent(
                     enabled = isButtonsEnabled,
                     modifier = Modifier.weight(1f),
                 ) {
-                    Text("Login (Fail)")
+                    Text(
+                        text = "Login (Fail)",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
                 }
 
                 OutlinedButton(
@@ -168,7 +189,11 @@ private fun LoginContent(
                     enabled = !isButtonsEnabled,
                     modifier = Modifier.weight(1f),
                 ) {
-                    Text("Cancel")
+                    Text(
+                        text = "Cancel",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
                 }
             }
 
@@ -176,7 +201,11 @@ private fun LoginContent(
                 onClick = actions.onInfo,
                 enabled = isButtonsEnabled,
             ) {
-                Text("Information")
+                Text(
+                    text = "Information",
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
             }
         }
     }

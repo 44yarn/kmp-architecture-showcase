@@ -69,6 +69,7 @@ fun SnackbarView(
                         text = snackbar.message,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                         style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.inverseOnSurface,
                     )
                 }
             }
