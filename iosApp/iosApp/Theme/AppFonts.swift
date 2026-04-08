@@ -49,30 +49,11 @@ enum AppFonts {
     static let caption1 = from(AppTypographyValues.Caption1.shared)
     static let caption2 = from(AppTypographyValues.Caption2.shared)
 
-    private static func from(_ v: some AppTypographyEntry) -> AppFontStyle {
+    private static func from(_ entry: TypographyEntry) -> AppFontStyle {
         AppFontStyle(
-            fontSize: CGFloat(v.FONT_SIZE),
-            lineHeight: CGFloat(v.LINE_HEIGHT),
-            letterSpacing: v.LETTER_SPACING.map { CGFloat($0.floatValue) }
+            fontSize: CGFloat(entry.fontSize),
+            lineHeight: CGFloat(entry.lineHeight),
+            letterSpacing: entry.letterSpacing.map { CGFloat($0.floatValue) }
         )
     }
 }
-
-// KMP の AppTypographyValues 各 object が持つ共通プロパティ
-private protocol AppTypographyEntry {
-    var FONT_SIZE: Float { get }
-    var LINE_HEIGHT: Float { get }
-    var LETTER_SPACING: KotlinFloat? { get }
-}
-
-extension AppTypographyValues.Title1: AppTypographyEntry {}
-extension AppTypographyValues.Title2: AppTypographyEntry {}
-extension AppTypographyValues.Title3: AppTypographyEntry {}
-extension AppTypographyValues.Title4: AppTypographyEntry {}
-extension AppTypographyValues.Headline: AppTypographyEntry {}
-extension AppTypographyValues.Body: AppTypographyEntry {}
-extension AppTypographyValues.Callout: AppTypographyEntry {}
-extension AppTypographyValues.Subheadline: AppTypographyEntry {}
-extension AppTypographyValues.Footnote: AppTypographyEntry {}
-extension AppTypographyValues.Caption1: AppTypographyEntry {}
-extension AppTypographyValues.Caption2: AppTypographyEntry {}

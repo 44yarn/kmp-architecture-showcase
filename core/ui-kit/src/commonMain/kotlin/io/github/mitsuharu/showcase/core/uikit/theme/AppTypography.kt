@@ -9,17 +9,17 @@ import androidx.compose.ui.unit.sp
 @ConsistentCopyVisibility
 @Immutable
 data class AppTypography internal constructor(
-    val title1: Style = with(AppTypographyValues.Title1) { Style.from(FONT_SIZE, LINE_HEIGHT, LETTER_SPACING) },
-    val title2: Style = with(AppTypographyValues.Title2) { Style.from(FONT_SIZE, LINE_HEIGHT, LETTER_SPACING) },
-    val title3: Style = with(AppTypographyValues.Title3) { Style.from(FONT_SIZE, LINE_HEIGHT, LETTER_SPACING) },
-    val title4: Style = with(AppTypographyValues.Title4) { Style.from(FONT_SIZE, LINE_HEIGHT, LETTER_SPACING) },
-    val headline: Style = with(AppTypographyValues.Headline) { Style.from(FONT_SIZE, LINE_HEIGHT, LETTER_SPACING) },
-    val body: Style = with(AppTypographyValues.Body) { Style.from(FONT_SIZE, LINE_HEIGHT, LETTER_SPACING) },
-    val callout: Style = with(AppTypographyValues.Callout) { Style.from(FONT_SIZE, LINE_HEIGHT, LETTER_SPACING) },
-    val subheadline: Style = with(AppTypographyValues.Subheadline) { Style.from(FONT_SIZE, LINE_HEIGHT, LETTER_SPACING) },
-    val footnote: Style = with(AppTypographyValues.Footnote) { Style.from(FONT_SIZE, LINE_HEIGHT, LETTER_SPACING) },
-    val caption1: Style = with(AppTypographyValues.Caption1) { Style.from(FONT_SIZE, LINE_HEIGHT, LETTER_SPACING) },
-    val caption2: Style = with(AppTypographyValues.Caption2) { Style.from(FONT_SIZE, LINE_HEIGHT, LETTER_SPACING) },
+    val title1: Style = styleOf(AppTypographyValues.Title1),
+    val title2: Style = styleOf(AppTypographyValues.Title2),
+    val title3: Style = styleOf(AppTypographyValues.Title3),
+    val title4: Style = styleOf(AppTypographyValues.Title4),
+    val headline: Style = styleOf(AppTypographyValues.Headline),
+    val body: Style = styleOf(AppTypographyValues.Body),
+    val callout: Style = styleOf(AppTypographyValues.Callout),
+    val subheadline: Style = styleOf(AppTypographyValues.Subheadline),
+    val footnote: Style = styleOf(AppTypographyValues.Footnote),
+    val caption1: Style = styleOf(AppTypographyValues.Caption1),
+    val caption2: Style = styleOf(AppTypographyValues.Caption2),
 ) {
     data class Style(val fontSize: TextUnit, val lineHeight: TextUnit, val letterSpacing: TextUnit = TextUnit.Unspecified,) {
         val regular: TextStyle = TextStyle(
@@ -34,17 +34,11 @@ data class AppTypography internal constructor(
             letterSpacing = letterSpacing,
             fontWeight = FontWeight.Bold,
         )
-
-        companion object {
-            fun from(
-                fontSize: Float,
-                lineHeight: Float,
-                letterSpacing: Float?,
-            ) = Style(
-                fontSize = fontSize.sp,
-                lineHeight = lineHeight.sp,
-                letterSpacing = letterSpacing?.sp ?: TextUnit.Unspecified,
-            )
-        }
     }
 }
+
+private fun styleOf(entry: TypographyEntry) = AppTypography.Style(
+    fontSize = entry.fontSize.sp,
+    lineHeight = entry.lineHeight.sp,
+    letterSpacing = entry.letterSpacing?.sp ?: TextUnit.Unspecified,
+)
