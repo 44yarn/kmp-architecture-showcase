@@ -1,14 +1,12 @@
 package io.github.mitsuharu.showcase.feature.login
 
 import androidx.lifecycle.ViewModel
-import com.rickclephas.kmp.observableviewmodel.coroutineScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.mitsuharu.showcase.core.data.auth.AuthRepository
 import io.github.mitsuharu.showcase.core.data.preference.PreferenceStorage
 import io.github.mitsuharu.showcase.core.uikit.dialog.DialogPresenter
 import io.github.mitsuharu.showcase.core.uikit.indicator.IndicatorState
 import javax.inject.Inject
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
@@ -43,7 +41,7 @@ class AndroidLoginViewModel @Inject constructor(
     fun onGuestLogin() = commonViewModel.onGuestLogin()
 
     override fun onCleared() {
-        commonViewModel.viewModelScope.coroutineScope.cancel()
+        commonViewModel.clear()
         super.onCleared()
     }
 }

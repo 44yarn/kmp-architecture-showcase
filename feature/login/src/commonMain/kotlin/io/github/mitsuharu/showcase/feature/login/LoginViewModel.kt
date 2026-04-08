@@ -1,8 +1,5 @@
 package io.github.mitsuharu.showcase.feature.login
 
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
-import com.rickclephas.kmp.observableviewmodel.coroutineScope
 import io.github.mitsuharu.showcase.core.data.auth.AuthRepository
 import io.github.mitsuharu.showcase.core.data.preference.PreferenceKey
 import io.github.mitsuharu.showcase.core.data.preference.PreferenceStorage
@@ -23,17 +20,13 @@ class LoginViewModel(
 ) : KmpViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
-
-    @NativeCoroutinesState
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
     private val _effect = Channel<LoginEffect>()
-
-    @NativeCoroutines
-    val effect: kotlinx.coroutines.flow.Flow<LoginEffect> = _effect.receiveAsFlow()
+    val effect = _effect.receiveAsFlow()
 
     init {
-        viewModelScope.coroutineScope.launch {
+        scope.launch {
             val savedEmail = preferenceStorage.getString(PreferenceKey.StringKey.SavedEmail)
             if (savedEmail != null) {
                 _uiState.update { it.copy(email = savedEmail) }
@@ -54,7 +47,7 @@ class LoginViewModel(
     }
 
     fun onLogin() {
-        viewModelScope.coroutineScope.launch {
+        scope.launch {
             indicatorState.runWithLoading {
                 authRepository.login(_uiState.value.email, _uiState.value.password)
             }.onSuccess { displayName ->
@@ -82,13 +75,13 @@ class LoginViewModel(
     }
 
     fun onInfo() {
-        viewModelScope.coroutineScope.launch {
+        scope.launch {
             _effect.send(LoginEffect.LaunchActivity)
         }
     }
 
     fun onGuestLogin() {
-        viewModelScope.coroutineScope.launch {
+        scope.launch {
             _effect.send(LoginEffect.NavigateToHome("Guest", isGuest = true))
         }
     }

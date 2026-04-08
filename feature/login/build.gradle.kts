@@ -1,6 +1,5 @@
 plugins {
     id("showcase.convention.kmp-feature")
-    alias(libs.plugins.kmpNativeCoroutines)
 }
 
 android {

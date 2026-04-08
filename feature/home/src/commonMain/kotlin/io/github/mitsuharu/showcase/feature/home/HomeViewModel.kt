@@ -1,8 +1,5 @@
 package io.github.mitsuharu.showcase.feature.home
 
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutines
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
-import com.rickclephas.kmp.observableviewmodel.coroutineScope
 import io.github.mitsuharu.showcase.core.data.preference.PreferenceKey
 import io.github.mitsuharu.showcase.core.data.preference.PreferenceStorage
 import io.github.mitsuharu.showcase.core.foundation.KmpViewModel
@@ -24,30 +21,27 @@ class HomeViewModel(private val preferenceStorage: PreferenceStorage, displayNam
         ),
     )
 
-    @NativeCoroutinesState
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     private val _effect = Channel<HomeEffect>()
-
-    @NativeCoroutines
-    val effect: kotlinx.coroutines.flow.Flow<HomeEffect> = _effect.receiveAsFlow()
+    val effect = _effect.receiveAsFlow()
 
     private var snackbarMessage: String? = null
 
     init {
-        viewModelScope.coroutineScope.launch {
+        scope.launch {
             val savedEmail = preferenceStorage.getString(PreferenceKey.StringKey.SavedEmail)
             val rememberEmail = preferenceStorage.getBoolean(PreferenceKey.BooleanKey.RememberEmail)
             _uiState.update { it.copy(savedEmail = savedEmail, isRememberEmail = rememberEmail) }
         }
-        viewModelScope.coroutineScope.launch {
+        scope.launch {
             delay(500L)
             snackbarMessage = "Welcome, $displayName!"
         }
     }
 
     fun onToggleRememberEmail() {
-        viewModelScope.coroutineScope.launch {
+        scope.launch {
             val newValue = !_uiState.value.isRememberEmail
             _uiState.update { it.copy(isRememberEmail = newValue) }
             preferenceStorage.putBoolean(PreferenceKey.BooleanKey.RememberEmail, newValue)
@@ -59,7 +53,7 @@ class HomeViewModel(private val preferenceStorage: PreferenceStorage, displayNam
     }
 
     fun onLogout() {
-        viewModelScope.coroutineScope.launch {
+        scope.launch {
             _effect.send(HomeEffect.NavigateToLogin)
         }
     }
