@@ -5,6 +5,24 @@ package io.github.mitsuharu.showcase.core.uikit.theme
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 
+/*
+Material3 の ColorScheme（Compose公式）を参考に。
+https://m3.material.io/styles/color/the-color-system/color-roles
+
+-----------------------------
+App背景:	background	onBackground
+カード・ボトムシート等:	surface	onSurface
+surface の変種:	surfaceVariant	onSurfaceVariant
+ブランドカラー:	primary	onPrimary
+ブランド背景:	primaryContainer	onPrimaryContainer
+
+-----------------------------
+<ブランドカラー>
+primary: 主軸カラー
+secondary: サポートカラー
+tertiary: 装飾的カラー
+*/
+
 @Immutable
 data class AppColorToken(
     // Primary
@@ -78,125 +96,111 @@ data class AppColorToken(
 }
 
 fun AppColorToken.Companion.light(): AppColorToken {
+    val v = AppColorValues.Light
     return AppColorToken(
-        primary = Color(0xFF6750A4),
-        onPrimary = Color(0xFFFFFFFF),
-        primaryContainer = Color(0xFFEADDFF),
-        onPrimaryContainer = Color(0xFF21005D),
-        inversePrimary = Color(0xFF6750A4),
-        primaryFixed = Color(0xFFEADDFF),
-        onPrimaryFixed = Color(0xFF21005D),
-        primaryFixedDim = Color(0xFF6750A4),
-        onPrimaryFixedVariant = Color(0xFF21005D),
-
-        secondary = Color(0xFF625B71),
-        onSecondary = Color(0xFFFFFFFF),
-        secondaryContainer = Color(0xFFE8DEF8),
-        onSecondaryContainer = Color(0xFF1D192B),
-        secondaryFixed = Color(0xFFE8DEF8),
-        onSecondaryFixed = Color(0xFF1D192B),
-        secondaryFixedDim = Color(0xFF625B71),
-        onSecondaryFixedVariant = Color(0xFF1D192B),
-
-        tertiary = Color(0xFF7D5260),
-        onTertiary = Color(0xFFFFFFFF),
-        tertiaryContainer = Color(0xFFFFD8E4),
-        onTertiaryContainer = Color(0xFF31111D),
-        tertiaryFixed = Color(0xFFFFD8E4),
-        onTertiaryFixed = Color(0xFF31111D),
-        tertiaryFixedDim = Color(0xFF7D5260),
-        onTertiaryFixedVariant = Color(0xFF31111D),
-
-        error = Color(0xFFB3261E),
-        onError = Color(0xFFFFFFFF),
-        errorContainer = Color(0xFFF9DEDC),
-        onErrorContainer = Color(0xFF410E0B),
-
-        background = Color(0xFFFFFBFE),
-        onBackground = Color(0xFF1C1B1F),
-        surface = Color(0xFFFFFBFE),
-        onSurface = Color(0xFF1C1B1F),
-        surfaceVariant = Color(0xFFE7E0EC),
-        onSurfaceVariant = Color(0xFF49454F),
-
-        surfaceDim = Color(0xFFEDE7F2),
-        surfaceBright = Color(0xFFFFFFFF),
-        surfaceContainerLowest = Color(0xFFFFFFFF),
-        surfaceContainerLow = Color(0xFFFDF8FF),
-        surfaceContainer = Color(0xFFFAF4FF),
-        surfaceContainerHigh = Color(0xFFF6F0FA),
-        surfaceContainerHighest = Color(0xFFF2ECF6),
-
-        inverseSurface = Color(0xFF313033),
-        inverseOnSurface = Color(0xFFE6E1E5),
-        outline = Color(0xFF79747E),
-        outlineVariant = Color(0xFFCAC4D0),
-
-        scrim = Color(0xFF000000),
-        surfaceTint = Color(0xFF6750A4),
-
-        overlay = Color(0x99000000),
+        primary = Color(v.PRIMARY),
+        onPrimary = Color(v.ON_PRIMARY),
+        primaryContainer = Color(v.PRIMARY_CONTAINER),
+        onPrimaryContainer = Color(v.ON_PRIMARY_CONTAINER),
+        inversePrimary = Color(v.INVERSE_PRIMARY),
+        primaryFixed = Color(v.PRIMARY_FIXED),
+        onPrimaryFixed = Color(v.ON_PRIMARY_FIXED),
+        primaryFixedDim = Color(v.PRIMARY_FIXED_DIM),
+        onPrimaryFixedVariant = Color(v.ON_PRIMARY_FIXED_VARIANT),
+        secondary = Color(v.SECONDARY),
+        onSecondary = Color(v.ON_SECONDARY),
+        secondaryContainer = Color(v.SECONDARY_CONTAINER),
+        onSecondaryContainer = Color(v.ON_SECONDARY_CONTAINER),
+        secondaryFixed = Color(v.SECONDARY_FIXED),
+        onSecondaryFixed = Color(v.ON_SECONDARY_FIXED),
+        secondaryFixedDim = Color(v.SECONDARY_FIXED_DIM),
+        onSecondaryFixedVariant = Color(v.ON_SECONDARY_FIXED_VARIANT),
+        tertiary = Color(v.TERTIARY),
+        onTertiary = Color(v.ON_TERTIARY),
+        tertiaryContainer = Color(v.TERTIARY_CONTAINER),
+        onTertiaryContainer = Color(v.ON_TERTIARY_CONTAINER),
+        tertiaryFixed = Color(v.TERTIARY_FIXED),
+        onTertiaryFixed = Color(v.ON_TERTIARY_FIXED),
+        tertiaryFixedDim = Color(v.TERTIARY_FIXED_DIM),
+        onTertiaryFixedVariant = Color(v.ON_TERTIARY_FIXED_VARIANT),
+        error = Color(v.ERROR),
+        onError = Color(v.ON_ERROR),
+        errorContainer = Color(v.ERROR_CONTAINER),
+        onErrorContainer = Color(v.ON_ERROR_CONTAINER),
+        background = Color(v.BACKGROUND),
+        onBackground = Color(v.ON_BACKGROUND),
+        surface = Color(v.SURFACE),
+        onSurface = Color(v.ON_SURFACE),
+        surfaceVariant = Color(v.SURFACE_VARIANT),
+        onSurfaceVariant = Color(v.ON_SURFACE_VARIANT),
+        surfaceDim = Color(v.SURFACE_DIM),
+        surfaceBright = Color(v.SURFACE_BRIGHT),
+        surfaceContainerLowest = Color(v.SURFACE_CONTAINER_LOWEST),
+        surfaceContainerLow = Color(v.SURFACE_CONTAINER_LOW),
+        surfaceContainer = Color(v.SURFACE_CONTAINER),
+        surfaceContainerHigh = Color(v.SURFACE_CONTAINER_HIGH),
+        surfaceContainerHighest = Color(v.SURFACE_CONTAINER_HIGHEST),
+        inverseSurface = Color(v.INVERSE_SURFACE),
+        inverseOnSurface = Color(v.INVERSE_ON_SURFACE),
+        outline = Color(v.OUTLINE),
+        outlineVariant = Color(v.OUTLINE_VARIANT),
+        scrim = Color(v.SCRIM),
+        surfaceTint = Color(v.SURFACE_TINT),
+        overlay = Color(v.OVERLAY),
     )
 }
 
 fun AppColorToken.Companion.dark(): AppColorToken {
+    val v = AppColorValues.Dark
     return AppColorToken(
-        primary = Color(0xFFD0BCFF),
-        onPrimary = Color(0xFF381E72),
-        primaryContainer = Color(0xFF4F378B),
-        onPrimaryContainer = Color(0xFFEADDFF),
-        inversePrimary = Color(0xFFD0BCFF),
-        primaryFixed = Color(0xFF4F378B),
-        onPrimaryFixed = Color(0xFFEADDFF),
-        primaryFixedDim = Color(0xFFD0BCFF),
-        onPrimaryFixedVariant = Color(0xFFEADDFF),
-
-        secondary = Color(0xFFCCC2DC),
-        onSecondary = Color(0xFF332D41),
-        secondaryContainer = Color(0xFF4A4458),
-        onSecondaryContainer = Color(0xFFE8DEF8),
-        secondaryFixed = Color(0xFF4A4458),
-        onSecondaryFixed = Color(0xFFE8DEF8),
-        secondaryFixedDim = Color(0xFFCCC2DC),
-        onSecondaryFixedVariant = Color(0xFFE8DEF8),
-
-        tertiary = Color(0xFFEFB8C8),
-        onTertiary = Color(0xFF492532),
-        tertiaryContainer = Color(0xFF633B48),
-        onTertiaryContainer = Color(0xFFFFD8E4),
-        tertiaryFixed = Color(0xFF633B48),
-        onTertiaryFixed = Color(0xFFFFD8E4),
-        tertiaryFixedDim = Color(0xFFEFB8C8),
-        onTertiaryFixedVariant = Color(0xFFFFD8E4),
-
-        error = Color(0xFFF2B8B5),
-        onError = Color(0xFF601410),
-        errorContainer = Color(0xFF8C1D18),
-        onErrorContainer = Color(0xFFF9DEDC),
-
-        background = Color(0xFF1C1B1F),
-        onBackground = Color(0xFFE6E1E5),
-        surface = Color(0xFF1C1B1F),
-        onSurface = Color(0xFFE6E1E5),
-        surfaceVariant = Color(0xFF49454F),
-        onSurfaceVariant = Color(0xFFCAC4D0),
-
-        surfaceDim = Color(0xFF141318),
-        surfaceBright = Color(0xFF26242A),
-        surfaceContainerLowest = Color(0xFF0F0E13),
-        surfaceContainerLow = Color(0xFF17161B),
-        surfaceContainer = Color(0xFF1D1B21),
-        surfaceContainerHigh = Color(0xFF232129),
-        surfaceContainerHighest = Color(0xFF2B2930),
-
-        inverseSurface = Color(0xFFE6E1E5),
-        inverseOnSurface = Color(0xFF313033),
-        outline = Color(0xFF938F99),
-        outlineVariant = Color(0xFF49454F),
-
-        scrim = Color(0xFF000000),
-        surfaceTint = Color(0xFFD0BCFF),
-
-        overlay = Color(0x99000000),
+        primary = Color(v.PRIMARY),
+        onPrimary = Color(v.ON_PRIMARY),
+        primaryContainer = Color(v.PRIMARY_CONTAINER),
+        onPrimaryContainer = Color(v.ON_PRIMARY_CONTAINER),
+        inversePrimary = Color(v.INVERSE_PRIMARY),
+        primaryFixed = Color(v.PRIMARY_FIXED),
+        onPrimaryFixed = Color(v.ON_PRIMARY_FIXED),
+        primaryFixedDim = Color(v.PRIMARY_FIXED_DIM),
+        onPrimaryFixedVariant = Color(v.ON_PRIMARY_FIXED_VARIANT),
+        secondary = Color(v.SECONDARY),
+        onSecondary = Color(v.ON_SECONDARY),
+        secondaryContainer = Color(v.SECONDARY_CONTAINER),
+        onSecondaryContainer = Color(v.ON_SECONDARY_CONTAINER),
+        secondaryFixed = Color(v.SECONDARY_FIXED),
+        onSecondaryFixed = Color(v.ON_SECONDARY_FIXED),
+        secondaryFixedDim = Color(v.SECONDARY_FIXED_DIM),
+        onSecondaryFixedVariant = Color(v.ON_SECONDARY_FIXED_VARIANT),
+        tertiary = Color(v.TERTIARY),
+        onTertiary = Color(v.ON_TERTIARY),
+        tertiaryContainer = Color(v.TERTIARY_CONTAINER),
+        onTertiaryContainer = Color(v.ON_TERTIARY_CONTAINER),
+        tertiaryFixed = Color(v.TERTIARY_FIXED),
+        onTertiaryFixed = Color(v.ON_TERTIARY_FIXED),
+        tertiaryFixedDim = Color(v.TERTIARY_FIXED_DIM),
+        onTertiaryFixedVariant = Color(v.ON_TERTIARY_FIXED_VARIANT),
+        error = Color(v.ERROR),
+        onError = Color(v.ON_ERROR),
+        errorContainer = Color(v.ERROR_CONTAINER),
+        onErrorContainer = Color(v.ON_ERROR_CONTAINER),
+        background = Color(v.BACKGROUND),
+        onBackground = Color(v.ON_BACKGROUND),
+        surface = Color(v.SURFACE),
+        onSurface = Color(v.ON_SURFACE),
+        surfaceVariant = Color(v.SURFACE_VARIANT),
+        onSurfaceVariant = Color(v.ON_SURFACE_VARIANT),
+        surfaceDim = Color(v.SURFACE_DIM),
+        surfaceBright = Color(v.SURFACE_BRIGHT),
+        surfaceContainerLowest = Color(v.SURFACE_CONTAINER_LOWEST),
+        surfaceContainerLow = Color(v.SURFACE_CONTAINER_LOW),
+        surfaceContainer = Color(v.SURFACE_CONTAINER),
+        surfaceContainerHigh = Color(v.SURFACE_CONTAINER_HIGH),
+        surfaceContainerHighest = Color(v.SURFACE_CONTAINER_HIGHEST),
+        inverseSurface = Color(v.INVERSE_SURFACE),
+        inverseOnSurface = Color(v.INVERSE_ON_SURFACE),
+        outline = Color(v.OUTLINE),
+        outlineVariant = Color(v.OUTLINE_VARIANT),
+        scrim = Color(v.SCRIM),
+        surfaceTint = Color(v.SURFACE_TINT),
+        overlay = Color(v.OVERLAY),
     )
 }

@@ -5,11 +5,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 enum class CornerRadius(val size: Dp) {
-    Small(10.dp),
-    Medium(18.dp),
-    Large(24.dp),
-    ExtraLarge(28.dp),
-    Full(50.dp);
+    Small(AppCornerRadiusValues.SMALL.dp),
+    Medium(AppCornerRadiusValues.MEDIUM.dp),
+    Large(AppCornerRadiusValues.LARGE.dp),
+    ExtraLarge(AppCornerRadiusValues.EXTRA_LARGE.dp),
+    Full(AppCornerRadiusValues.FULL.dp);
 
     val shape: RoundedCornerShape by lazy {
         RoundedCornerShape(size)
