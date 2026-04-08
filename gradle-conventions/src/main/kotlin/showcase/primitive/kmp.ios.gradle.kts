@@ -1,6 +1,5 @@
 package showcase.primitive
 
-import showcase.config.IosConfig
 import showcase.util.libs
 import showcase.util.library
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
@@ -9,34 +8,12 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
 }
 
-fun iosFrameworkBaseName(): String = project.path.removePrefix(":").replace(":", "_").replace("-", "_")
-
 // KMP iOS target 設定
+// framework 生成は shared に一本化。個別モジュールは iOS ターゲットとソースセットのみ定義する。
 extensions.configure<KotlinMultiplatformExtension> {
-    val iosTargets = listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    )
-
-    // フレームワーク設定
-    iosTargets.forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = iosFrameworkBaseName()
-            isStatic = true
-
-            freeCompilerArgs += listOf(
-                "-Xbinary=bundleId=${IosConfig.BUNDLE_ID_PREFIX}.${project.name}",
-            )
-
-            linkerOpts.addAll(
-                listOf(
-                    "-framework", "Foundation",
-                    "-framework", "UIKit",
-                ),
-            )
-        }
-    }
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
 
     // iOS ソースセット設定
     sourceSets.apply {

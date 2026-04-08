@@ -13,7 +13,9 @@ dependencies {
     implementation(libs.detektGradlePlugin)
     implementation(libs.spotlessGradlePlugin)
     implementation(libs.sqldelightGradlePlugin)
-    // kmp-nativecoroutines is applied per-module via alias(libs.plugins.kmpNativeCoroutines)
+
+    val skieVersion = libs.versions.skie.get()
+    implementation("co.touchlab.skie:co.touchlab.skie.gradle.plugin:$skieVersion")
 
     // Gradle Plugin Marker Artifacts for precompiled script plugins
     val kotlinVersion = libs.versions.kotlin.get()

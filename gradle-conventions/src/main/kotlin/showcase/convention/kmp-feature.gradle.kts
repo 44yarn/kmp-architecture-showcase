@@ -36,11 +36,8 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.ui)
 
-                // KMP-NativeCoroutines
-                implementation(libs.library("nativecoroutinesCore"))
-
-                // KMP-ObservableViewModel
-                implementation(libs.library("kmpObservableViewModelCore"))
+                // Jetpack ViewModel KMP
+                implementation(libs.library("lifecycleViewModel"))
 
                 // Serialization
                 implementation(libs.library("kotlinxSerializationJson"))
