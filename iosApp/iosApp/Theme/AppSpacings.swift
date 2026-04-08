@@ -2,13 +2,13 @@
 // AppSpacings.swift
 // Showcase
 //
+//
 
 import ShowcaseKit
 import SwiftUI
 
 /// commonMain の AppSpacingValues から生成される SwiftUI スペーシングトークン
 enum AppSpacings {
-
     enum Padding {
         static let xxSmall = CGFloat(AppSpacingValues.Padding.shared.XX_SMALL)
         static let xSmall = CGFloat(AppSpacingValues.Padding.shared.X_SMALL)

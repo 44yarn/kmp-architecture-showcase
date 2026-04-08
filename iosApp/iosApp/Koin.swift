@@ -1,12 +1,18 @@
+//
+// Koin.swift
+// Showcase
+//
+//
+
 import Foundation
 import ShowcaseKit
 
 // MARK: - KotlinArray
 
-extension Array where Element: AnyObject {
+public extension Array where Element: AnyObject {
     /// `KotlinArray<T>` を Swift の `[T]` に変換する
-    public init(_ kotlin: KotlinArray<Element>) {
-        self = (0..<kotlin.size).map { kotlin.get(index: $0)! }
+    init(_ kotlin: KotlinArray<Element>) {
+        self = (0 ..< kotlin.size).map { kotlin.get(index: $0)! }
     }
 }
 
@@ -23,6 +29,6 @@ public protocol KotlinEnum: KotlinCaseIterable, Identifiable {
     var name: String { get }
 }
 
-extension KotlinCaseIterable {
-    public static var allCases: [Value] { Array(values()) }
+public extension KotlinCaseIterable {
+    static var allCases: [Value] { Array(values()) }
 }

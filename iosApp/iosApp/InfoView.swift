@@ -1,3 +1,9 @@
+//
+// InfoView.swift
+// Showcase
+//
+//
+
 import ShowcaseKit
 import SwiftUI
 

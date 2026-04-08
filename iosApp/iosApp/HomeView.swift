@@ -1,3 +1,9 @@
+//
+// HomeView.swift
+// Showcase
+//
+//
+
 import ShowcaseKit
 import SwiftUI
 
@@ -20,8 +26,8 @@ struct HomeView: View {
             displayName: displayName,
             isGuest: isGuest
         )
-        self.viewModel = vm
-        self._uiState = State(initialValue: HomeUiState(
+        viewModel = vm
+        _uiState = State(initialValue: HomeUiState(
             displayName: displayName,
             isGuest: isGuest,
             savedEmail: "",

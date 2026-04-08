@@ -1,3 +1,9 @@
+//
+// ShowcaseApp.swift
+// Showcase
+//
+//
+
 import ShowcaseKit
 import SwiftUI
 

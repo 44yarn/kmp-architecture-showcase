@@ -2,6 +2,7 @@
 // AppFonts.swift
 // Showcase
 //
+//
 
 import ShowcaseKit
 import SwiftUI
@@ -28,8 +29,7 @@ extension View {
     /// AppFontVariant を適用する（font + lineSpacing + tracking を一括設定）
     func appFont(_ variant: AppFontVariant) -> some View {
         let extraLineSpacing = variant.style.lineHeight - variant.style.fontSize
-        return self
-            .font(variant.font)
+        return font(variant.font)
             .lineSpacing(extraLineSpacing > 0 ? extraLineSpacing : 0)
             .tracking(variant.style.letterSpacing ?? 0)
     }

@@ -1,3 +1,9 @@
+//
+// LoginView.swift
+// Showcase
+//
+//
+
 import ShowcaseKit
 import SwiftUI
 
@@ -137,7 +143,7 @@ struct LoginView: View {
                     .background(
                         RoundedRectangle(cornerRadius: AppCornerRadii.small)
                             .fill(isLoading || uiState.email.isEmpty || uiState.password.isEmpty
-                                  ? colors.secondary : colors.primary)
+                                ? colors.secondary : colors.primary)
                     )
             }
             .disabled(isLoading || uiState.email.isEmpty || uiState.password.isEmpty)
