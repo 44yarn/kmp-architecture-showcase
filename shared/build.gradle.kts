@@ -2,6 +2,7 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.library")
     id("showcase.primitive.kmp.android")
+    id("showcase.primitive.kmp.skie")
     id("showcase.primitive.spotless")
     id("showcase.primitive.detekt")
 }
