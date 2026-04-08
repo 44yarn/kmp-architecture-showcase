@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -24,14 +27,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.mitsuharu.showcase.core.uikit.dialog.DialogResult
-import io.github.mitsuharu.showcase.core.uikit.dialog.DialogUiState
 import io.github.mitsuharu.showcase.core.uikit.dialog.ShowcaseAlertDialog
 
 @Composable
@@ -53,17 +53,22 @@ fun LoginScreen(
         }
     }
 
-    ShowcaseAlertDialog(presenter = viewModel.dialogPresenter)
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
+        LoginContent(
+            uiState = uiState,
+            isLoading = isLoading,
+            actions = viewModel.actions,
+        )
 
-    LoginContent(
-        uiState = uiState,
-        isLoading = isLoading,
-        actions = viewModel.actions,
-        onLoginFailureWithDialog = {
-            viewModel.actions.onLoginFailureDemo()
-        },
-        modifier = modifier,
-    )
+        if (isLoading) {
+            CircularProgressIndicator()
+        }
+    }
+
+    ShowcaseAlertDialog(presenter = viewModel.dialogPresenter)
 }
 
 @Composable
@@ -71,38 +76,48 @@ private fun LoginContent(
     uiState: LoginUiState,
     isLoading: Boolean,
     actions: LoginActions,
-    onLoginFailureWithDialog: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(modifier = modifier.fillMaxSize()) {
+    val isButtonsEnabled = !isLoading
+
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center,
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(24.dp)
-                .align(Alignment.Center),
+                .padding(horizontal = 24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             Text(
                 text = "KMP Showcase",
-                style = MaterialTheme.typography.headlineLarge,
+                style = MaterialTheme.typography.headlineMedium,
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
                 value = uiState.email,
                 onValueChange = actions.onEmailChanged,
                 label = { Text("Email") },
-                modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
+                trailingIcon = {
+                    IconButton(onClick = actions.onRandomEmail) {
+                        Icon(
+                            imageVector = Icons.Default.Refresh,
+                            contentDescription = "Random email",
+                        )
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
             )
 
             OutlinedTextField(
                 value = uiState.password,
                 onValueChange = actions.onPasswordChanged,
                 label = { Text("Password") },
-                modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
                 visualTransformation = if (uiState.isPasswordVisible) {
                     VisualTransformation.None
@@ -111,48 +126,57 @@ private fun LoginContent(
                 },
                 trailingIcon = {
                     IconButton(onClick = actions.onTogglePasswordVisibility) {
-                        Text(if (uiState.isPasswordVisible) "Hide" else "Show")
+                        Icon(
+                            imageVector = if (uiState.isPasswordVisible) {
+                                Icons.Default.VisibilityOff
+                            } else {
+                                Icons.Default.Visibility
+                            },
+                            contentDescription = if (uiState.isPasswordVisible) {
+                                "Hide password"
+                            } else {
+                                "Show password"
+                            },
+                        )
                     }
                 },
+                modifier = Modifier.fillMaxWidth(),
             )
 
             Button(
                 onClick = actions.onLogin,
+                enabled = isButtonsEnabled && uiState.email.isNotBlank() && uiState.password.isNotBlank(),
                 modifier = Modifier.fillMaxWidth(),
-                enabled = !isLoading && uiState.email.isNotBlank() && uiState.password.isNotBlank(),
             ) {
-                if (isLoading) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.height(20.dp).width(20.dp),
-                        strokeWidth = 2.dp,
-                    )
-                } else {
-                    Text("Login")
-                }
+                Text("Login")
             }
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                TextButton(onClick = actions.onRandomEmail) {
-                    Text("Random Email")
+                OutlinedButton(
+                    onClick = actions.onLoginFailureDemo,
+                    enabled = isButtonsEnabled,
+                    modifier = Modifier.weight(1f),
+                ) {
+                    Text("Login (Fail)")
                 }
-                TextButton(onClick = onLoginFailureWithDialog) {
-                    Text("Login Failure")
-                }
-            }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
-            ) {
-                OutlinedButton(onClick = actions.onCancel) {
+                OutlinedButton(
+                    onClick = actions.onCancel,
+                    enabled = !isButtonsEnabled,
+                    modifier = Modifier.weight(1f),
+                ) {
                     Text("Cancel")
                 }
-                OutlinedButton(onClick = actions.onInfo) {
-                    Text("Information")
-                }
+            }
+
+            TextButton(
+                onClick = actions.onInfo,
+                enabled = isButtonsEnabled,
+            ) {
+                Text("Information")
             }
         }
     }
