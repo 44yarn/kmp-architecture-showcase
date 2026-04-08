@@ -12,6 +12,11 @@
 		3945B679EEB74DE188BE0250 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC7CEF6C924FA74EA7BECA7 /* InfoView.swift */; };
 		56B0305B5D3847FC6B326502 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */; };
 		68040CE08AEDC7C1E192C50C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB12B8F33A658239E951429 /* HomeView.swift */; };
+		9B5635B42F866501009C2814 /* AppCornerRadii.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5635AF2F866501009C2814 /* AppCornerRadii.swift */; };
+		9B5635B52F866501009C2814 /* Color+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5635B22F866501009C2814 /* Color+App.swift */; };
+		9B5635B62F866501009C2814 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5635AE2F866501009C2814 /* AppColors.swift */; };
+		9B5635B72F866501009C2814 /* AppSpacings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5635B12F866501009C2814 /* AppSpacings.swift */; };
+		9B5635B82F866501009C2814 /* AppFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5635B02F866501009C2814 /* AppFonts.swift */; };
 		D488747AD197BC7C1635E66B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF4A054A43ED6B6C286E46F /* LoginView.swift */; };
 		EC1992CF3208D67247D98488 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B39E5FC1264F8AC08FEA3D4 /* Koin.swift */; };
 		F7C33B50A94DA01F2E82C280 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 245434685F34A9A15B1AC406 /* libsqlite3.tbd */; };
@@ -26,6 +31,11 @@
 		6DC7CEF6C924FA74EA7BECA7 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		86038AE1032E284E79B32AD6 /* iosApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DB12B8F33A658239E951429 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		9B5635AE2F866501009C2814 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		9B5635AF2F866501009C2814 /* AppCornerRadii.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCornerRadii.swift; sourceTree = "<group>"; };
+		9B5635B02F866501009C2814 /* AppFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFonts.swift; sourceTree = "<group>"; };
+		9B5635B12F866501009C2814 /* AppSpacings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSpacings.swift; sourceTree = "<group>"; };
+		9B5635B22F866501009C2814 /* Color+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+App.swift"; sourceTree = "<group>"; };
 		C117AD187833E2513BD2F553 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -46,6 +56,7 @@
 		1DB4B685CAEE8BEFEBBAEF94 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				9B5635B32F866501009C2814 /* Theme */,
 				CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */,
 				8DB12B8F33A658239E951429 /* HomeView.swift */,
 				C117AD187833E2513BD2F553 /* Info.plist */,
@@ -83,6 +94,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		9B5635B32F866501009C2814 /* Theme */ = {
+			isa = PBXGroup;
+			children = (
+				9B5635AE2F866501009C2814 /* AppColors.swift */,
+				9B5635AF2F866501009C2814 /* AppCornerRadii.swift */,
+				9B5635B02F866501009C2814 /* AppFonts.swift */,
+				9B5635B12F866501009C2814 /* AppSpacings.swift */,
+				9B5635B22F866501009C2814 /* Color+App.swift */,
+			);
+			path = Theme;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -112,8 +135,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = FF7CA1CA754D017066F1822F /* Build configuration list for PBXProject "iosApp" */;
 			developmentRegion = en;
@@ -144,6 +165,11 @@
 				3945B679EEB74DE188BE0250 /* InfoView.swift in Sources */,
 				EC1992CF3208D67247D98488 /* Koin.swift in Sources */,
 				D488747AD197BC7C1635E66B /* LoginView.swift in Sources */,
+				9B5635B42F866501009C2814 /* AppCornerRadii.swift in Sources */,
+				9B5635B52F866501009C2814 /* Color+App.swift in Sources */,
+				9B5635B62F866501009C2814 /* AppColors.swift in Sources */,
+				9B5635B72F866501009C2814 /* AppSpacings.swift in Sources */,
+				9B5635B82F866501009C2814 /* AppFonts.swift in Sources */,
 				14E4AAFB2DF7164712FFEF2E /* ShowcaseApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
