@@ -3,7 +3,6 @@ plugins {
     id("showcase.primitive.kmp.compose")
     id("showcase.primitive.hilt")
     id("showcase.primitive.unit-test")
-    alias(libs.plugins.kmpNativeCoroutines)
 }
 
 android {
@@ -18,7 +17,6 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
-            implementation(libs.nativecoroutinesCore)
         }
         androidMain.dependencies {
             implementation(libs.composeUiTooling)

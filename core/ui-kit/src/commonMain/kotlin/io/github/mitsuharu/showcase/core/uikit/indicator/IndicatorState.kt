@@ -1,7 +1,6 @@
 package io.github.mitsuharu.showcase.core.uikit.indicator
 
 import androidx.compose.runtime.Stable
-import com.rickclephas.kmp.nativecoroutines.NativeCoroutinesState
 import io.github.mitsuharu.showcase.core.foundation.resultHandling.runCatchingCancellable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,7 +10,6 @@ import kotlinx.coroutines.flow.asStateFlow
 class IndicatorState {
     private val _isLoading = MutableStateFlow(false)
 
-    @NativeCoroutinesState
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     fun startLoading() {
