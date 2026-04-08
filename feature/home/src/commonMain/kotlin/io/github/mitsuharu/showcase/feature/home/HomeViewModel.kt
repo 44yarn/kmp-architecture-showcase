@@ -32,7 +32,7 @@ class HomeViewModel(private val preferenceStorage: PreferenceStorage, displayNam
         scope.launch {
             val savedEmail = preferenceStorage.getString(PreferenceKey.StringKey.SavedEmail)
             val rememberEmail = preferenceStorage.getBoolean(PreferenceKey.BooleanKey.RememberEmail)
-            _uiState.update { it.copy(savedEmail = savedEmail, isRememberEmail = rememberEmail) }
+            _uiState.update { it.copy(savedEmail = savedEmail ?: "", isRememberEmail = rememberEmail) }
         }
         scope.launch {
             delay(500L)
@@ -47,7 +47,7 @@ class HomeViewModel(private val preferenceStorage: PreferenceStorage, displayNam
             preferenceStorage.putBoolean(PreferenceKey.BooleanKey.RememberEmail, newValue)
             if (!newValue) {
                 preferenceStorage.remove(PreferenceKey.StringKey.SavedEmail)
-                _uiState.update { it.copy(savedEmail = null) }
+                _uiState.update { it.copy(savedEmail = "") }
             }
         }
     }

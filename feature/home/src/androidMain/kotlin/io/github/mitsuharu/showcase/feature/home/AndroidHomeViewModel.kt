@@ -6,6 +6,7 @@ import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.mitsuharu.showcase.core.data.preference.PreferenceStorage
 import io.github.mitsuharu.showcase.core.uikit.snackbar.SnackbarPresenter
+import io.github.mitsuharu.showcase.core.uikit.snackbar.SnackbarUiState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 
@@ -30,6 +31,9 @@ class AndroidHomeViewModel @Inject constructor(
     val actions = HomeActions(
         onToggleRememberEmail = commonViewModel::onToggleRememberEmail,
         onLogout = commonViewModel::onLogout,
+        onBack = {
+            snackbarPresenter.show(SnackbarUiState(message = "Use the Logout button to sign out"))
+        },
     )
 
     fun getSnackbarMessage(): String? = commonViewModel.getSnackbarMessage()
