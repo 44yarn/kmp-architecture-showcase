@@ -1,0 +1,30 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base"],
+  "labels": ["📦 Deps"],
+  "prConcurrentLimit": 4,
+  "dependencyDashboard": false,
+  "semanticCommits": true,
+  "semanticCommitType": "chore",
+  "semanticCommitScope": "deps",
+  "enabledManagers": ["gradle"],
+  "timezone": "Asia/Tokyo",
+  "schedule": ["on the first day of the month"],
+  "packageRules": [
+    {
+      "groupName": "Kotlin, KSP, Compose Compiler",
+      "groupSlug": "kotlin",
+      "matchPackagePrefixes": [
+        "org.jetbrains.kotlin",
+        "com.google.devtools.ksp",
+        "androidx.compose.compiler"
+      ],
+      "matchPackagePatterns": ["^org\\.jetbrains\\.kotlin\\."]
+    },
+    {
+      "groupName": "Firebase",
+      "groupSlug": "firebase",
+      "matchPackagePrefixes": ["com.google.firebase"]
+    }
+  ]
+}
