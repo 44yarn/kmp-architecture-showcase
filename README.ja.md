@@ -53,7 +53,44 @@ Login --- Login 成功 -----------> Home（"Welcome, {name}!" Snackbar）
 - **Actions クラス** — コールバックを data class に集約
 - **Convention Plugin** — gradle-conventions でビルド設定を共通化
 - **PreferenceKey / PreferenceStorage** — Preferences DataStore (KMP) の型安全ラッパー。値の型をキー側に閉じ込める設計
+- **AdaptiveString** — ローカライズリソースとリテラル文字列を単一の型で扱う抽象化 (下記参照)
 - **DI** — Hilt (Android) + Koin (iOS)
+
+### AdaptiveString: リソースとリテラル文字列の混在を扱う
+
+`AdaptiveString` は `StringResource` (Compose Multiplatform Resources)
+または プレーンな `String` のどちらも保持できる、カプセル化された単一クラス。
+`DialogUiState` などの consumer は、内部がどちらの種類かを気にする必要がない。
+
+**なぜ必要か。** 現実のプロジェクトでは、同じ UI フィールドに 2 種類の文字列源を
+混在させる必要が頻繁にある:
+
+- **既知のエラー型** → **ローカライズリソース** にマッピング (UI 層の責務)
+  例: `is AuthException -> AdaptiveString(Res.string.login_invalid_credentials)`
+- **未知のエラー or サーバー由来のテキスト** → **リテラル** としてそのまま扱う
+  例: `AdaptiveString("予期せぬエラーが発生しました")`、または API レスポンスの
+  `error_message` フィールドをそのまま表示するケース
+
+統一型がないと、ダイアログ / スナックバー / エラー表示を組み立てるすべての箇所で
+`String` と `StringResource` の分岐が必要になる。`AdaptiveString` は overloaded
+constructor と `@Composable val value` (SwiftUI 向けには `async` な `resolve()`
+拡張) で、この分岐を consumer から隠す。
+
+**Showcase の実装箇所。** `feature/login` の `LoginViewModel.showLoginErrorDialog`
+を参照。`AuthException` はローカライズリソースに、その他の throwable は
+リテラルフォールバックにマッピングして、両方を同じ `DialogUiState.message`
+フィールドに入れている。
+
+**設計原則: `Exception.message` はログ用、UI には使わない。** `core/data` の
+サンプル用 `AuthException` はロギング目的の診断メッセージを持つだけ。エラーから
+ユーザー向けテキストへのマッピングは UI 層 (ViewModel) の責務で、例外の「型」に
+応じて適切な `AdaptiveString` を選ぶ。`exception.message` を UI に表示するのは
+アンチパターン。
+
+**リソースの所属。** 文字列リソースは各 feature の
+`feature/*/src/commonMain/composeResources/values/strings.xml` に配置する
+(feature 固有の文字列をその feature 内に閉じる)。`core/ui-kit` には
+`AdaptiveString` 型の定義だけを置く。
 
 ## モジュール構成
 

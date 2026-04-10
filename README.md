@@ -53,7 +53,46 @@ Login --- Success ------------> Home ("Welcome, {name}!" Snackbar)
 - **Actions class** — Callbacks aggregated into a data class
 - **Convention Plugin** — Shared build configuration via gradle-conventions
 - **PreferenceKey / PreferenceStorage** — Type-safe wrapper over Preferences DataStore (KMP), with the value type carried by the key
+- **AdaptiveString** — Unifies localized resources and literal strings behind a single type (see below)
 - **DI** — Hilt (Android) + Koin (iOS)
+
+### AdaptiveString: mixing localized resources and literal strings
+
+`AdaptiveString` is an encapsulated single class that can hold either a
+`StringResource` (Compose Multiplatform Resources) or a plain literal `String`.
+Consumers such as `DialogUiState` treat it as a single type and never branch
+on which kind is stored inside.
+
+**Why it matters.** Real-world projects routinely need to mix two sources of
+text in the same UI field:
+
+- **Known error types** → mapped to a **localized resource** by the UI layer
+  (e.g. `is AuthException -> AdaptiveString(Res.string.login_invalid_credentials)`)
+- **Unknown errors or server-provided text** → carried as a **literal**
+  (e.g. `AdaptiveString("An unexpected error occurred.")`, or a raw
+  `error_message` field from a backend response body)
+
+Without a unified type, every caller that builds a dialog, snackbar, or
+error banner would have to branch between `String` and `StringResource`.
+`AdaptiveString` hides the distinction behind overloaded constructors and
+a single `@Composable val value` accessor (plus an `async` `resolve()`
+extension for SwiftUI).
+
+**Showcase location.** See `LoginViewModel.showLoginErrorDialog` in
+`feature/login`. It maps `AuthException` to a localized resource and any
+other throwable to a literal fallback, feeding both into the same
+`DialogUiState.message` field.
+
+**Design principle: `Exception.message` is for logging, not UI.** The
+sample-only `AuthException` in `core/data` carries a diagnostic message for
+logs only. Mapping errors to user-facing text is the responsibility of the
+UI layer (i.e. the ViewModel), which chooses an appropriate `AdaptiveString`
+based on the exception's type — not on its `message`.
+
+**Resource ownership.** String resources live in
+`feature/*/src/commonMain/composeResources/values/strings.xml`, next to the
+feature that uses them. Only the `AdaptiveString` type itself lives in
+`core/ui-kit`.
 
 ## Module Structure
 
