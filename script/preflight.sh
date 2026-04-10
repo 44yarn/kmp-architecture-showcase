@@ -4,9 +4,9 @@ set -Eeuo pipefail
 
 # Colors and styles
 if [[ -t 1 ]]; then
-  BOLD="\033[1m"; DIM="\033[2m"; RED="\033[31m"; GREEN="\033[32m"; YELLOW="\033[33m"; BLUE="\033[34m"; MAGENTA="\033[35m"; CYAN="\033[36m"; RESET="\033[0m"
+  BOLD="\033[1m"; DIM="\033[2m"; RED="\033[31m"; GREEN="\033[32m"; CYAN="\033[36m"; RESET="\033[0m"
 else
-  BOLD=""; DIM=""; RED=""; GREEN=""; YELLOW=""; BLUE=""; MAGENTA=""; CYAN=""; RESET=""
+  BOLD=""; DIM=""; RED=""; GREEN=""; CYAN=""; RESET=""
 fi
 
 hr() {
@@ -23,32 +23,38 @@ section() {
 success() { printf "${GREEN}✅ %s${RESET}\n" "$1"; }
 fail()    { printf "${RED}❌ %s${RESET}\n" "$1"; }
 note()    { printf "${CYAN}ℹ️  %s${RESET}\n" "$1"; }
+warn()    { printf "${RED}⚠️  %s${RESET}\n" "$1"; }
 
 usage() {
   cat <<USAGE
-使い方: $(basename "$0") [オプション]
+Usage: $(basename "$0") [options]
 
-オプション:
-  -f, --from               対話選択で「開始ステップ」を1つ選び、そこから最後まで実行
-  -s, --single             対話選択で1ステップのみ実行（fzf優先、なければ番号入力）
-  -m, --multi              対話選択で複数ステップ実行（定義順で実行）
-  -h, --help               このヘルプを表示
+Options:
+  -f, --from               Pick a starting step interactively and run from
+                           that step to the end.
+  -s, --single             Pick a single step interactively and run only it
+                           (requires fzf).
+  -m, --multi              Pick multiple steps interactively and run them in
+                           their defined order (requires fzf).
+  -h, --help               Show this help.
 
-iOSビルドのログ出力:
-  IOS_XCODE_VERBOSE=true   xcodebuild の詳細出力（デフォルトは SUCCEEDED/FAILED の簡潔表示）
+iOS build log verbosity:
+  IOS_XCODE_VERBOSE=true   Print xcodebuild's full output. By default only
+                           SUCCEEDED / FAILED lines are shown.
 
-主な環境変数（iOS）:
-  IOS_XCODEPROJECT  (既定: iosApp/iosApp.xcodeproj)
-  IOS_SCHEME        (既定: iosApp)
-  IOS_CONFIGURATION (既定: Debug)
-  IOS_SDK           (既定: iphonesimulator)
-  IOS_DESTINATION   (既定: 利用可能な iPhone を自動検出)
-  IOS_SIM_NAME      (シミュレータ名を明示指定する場合)
-  IOS_CLEAN_BUILD   true で clean build を実行（遅い）
+iOS environment variables:
+  IOS_XCODEPROJECT  (default: iosApp/iosApp.xcodeproj)
+  IOS_SCHEME        (default: iosApp)
+  IOS_CONFIGURATION (default: Debug)
+  IOS_SDK           (default: iphonesimulator)
+  IOS_DESTINATION   (default: auto-detect the first available iPhone)
+  IOS_SIM_NAME      (explicit simulator name to use)
+  IOS_CLEAN_BUILD   (true to perform a clean build — slower)
 
-補足:
-  - -f/-s/-m の対話オプションは fzf が必須です（非TTY/未導入の場合は実行を中止します）。
-  - 複数選択時も実行順は定義順を維持します。
+Notes:
+  - The -f / -s / -m interactive options require fzf. If fzf is missing or
+    the shell is not a TTY, the script aborts.
+  - With multi-select, steps still run in their defined order.
 USAGE
 }
 
@@ -57,23 +63,34 @@ IOS_XCODEPROJECT="${IOS_XCODEPROJECT:-iosApp/iosApp.xcodeproj}"
 IOS_SCHEME="${IOS_SCHEME:-iosApp}"
 IOS_CONFIGURATION="${IOS_CONFIGURATION:-Debug}"
 IOS_SDK="${IOS_SDK:-iphonesimulator}"
-# Resolve simulator: use IOS_DESTINATION > IOS_SIM_NAME > auto-detect first available iPhone
+
+# Resolve simulator: IOS_DESTINATION > IOS_SIM_NAME > auto-detect first available iPhone.
+# Auto-detection parses `xcrun simctl list devices available` in plain-text form
+# (no python3/jq dependency).
 if [[ -z "${IOS_DESTINATION:-}" ]]; then
   if [[ -n "${IOS_SIM_NAME:-}" ]]; then
     IOS_DESTINATION="platform=iOS Simulator,name=${IOS_SIM_NAME}"
   else
-    _SIM_ID=$(xcrun simctl list devices available -j 2>/dev/null \
-      | python3 -c "import sys,json; devs=[d for ds in json.loads(sys.stdin.read())['devices'].values() for d in ds if 'iPhone' in d['name']]; print(devs[0]['udid'] if devs else '')" 2>/dev/null || true)
-    if [[ -n "$_SIM_ID" ]]; then
-      IOS_DESTINATION="platform=iOS Simulator,id=${_SIM_ID}"
-    else
-      IOS_DESTINATION="platform=iOS Simulator,name=iPhone 16 Pro"
+    _SIM_LINE=""
+    if command -v xcrun >/dev/null 2>&1; then
+      # Example line: "    iPhone 17 Pro (ABCDEF12-...) (Shutdown)"
+      _SIM_LINE=$(xcrun simctl list devices available 2>/dev/null \
+        | grep -E '^\s*iPhone' \
+        | head -n 1 || true)
     fi
+    if [[ -n "$_SIM_LINE" ]]; then
+      _SIM_ID=$(printf '%s' "$_SIM_LINE" | sed -E 's/.*\(([0-9A-F-]+)\).*/\1/')
+      if [[ -n "$_SIM_ID" ]]; then
+        IOS_DESTINATION="platform=iOS Simulator,id=${_SIM_ID}"
+      fi
+    fi
+    # Fall back to a generic iPhone destination so xcodebuild can pick a default.
+    IOS_DESTINATION="${IOS_DESTINATION:-platform=iOS Simulator,name=iPhone}"
   fi
 fi
 IOS_CLEAN_BUILD="${IOS_CLEAN_BUILD:-false}"
 
-# Find repo root by locating gradlew upward from this script's directory
+# Find repo root by locating gradlew upward from this script's directory.
 find_repo_root() {
   local dir
   dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
@@ -93,54 +110,54 @@ main() {
 
   local repo_root
   if ! repo_root="$(find_repo_root)"; then
-    fail "リポジトリルート(gradlew)が見つかりませんでした。スクリプトの配置場所を確認してください。"
+    fail "Could not locate the repository root (gradlew not found). Check where this script is placed."
     exit 1
   fi
 
   cd "$repo_root"
-  section "Showcase Dev パイプラインを開始 🚀"
-  note "リポジトリルート: $(pwd)"
+  section "Starting Showcase Dev pipeline 🚀"
+  note "Repository root: $(pwd)"
 
   # Steps: description, command string, and optional failure hints
   local -a DESCS=()
   local -a CMDS=()
   local -a HINTS=()
 
-  DESCS+=("🧹 Kotlin を整形: spotlessApply"); CMDS+=("./gradlew spotlessApply"); HINTS+=("")
+  DESCS+=("🧹 Format Kotlin: spotlessApply"); CMDS+=("./gradlew spotlessApply"); HINTS+=("")
 
-  DESCS+=("🔍 静的解析: detekt"); CMDS+=("./gradlew detekt"); HINTS+=("")
+  DESCS+=("🔍 Static analysis: detekt"); CMDS+=("./gradlew detekt"); HINTS+=("")
 
   local format_swift_hint=""
   if [[ ! -f "./script/format-swift.sh" ]]; then
-    format_swift_hint="script/format-swift.sh が見つかりません。swiftformat がインストール済みか確認してください（例: brew install swiftformat）。"
+    format_swift_hint="script/format-swift.sh not found. Make sure mint is installed (e.g. 'brew install mint') and the script exists."
   fi
-  DESCS+=("🧼 Swift を整形: format-swift.sh"); CMDS+=("./script/format-swift.sh"); HINTS+=("$format_swift_hint")
+  DESCS+=("🧼 Format Swift: format-swift.sh"); CMDS+=("./script/format-swift.sh"); HINTS+=("$format_swift_hint")
 
-  DESCS+=("🧩 iOS KMP リンク: :shared:linkDebugFrameworkIosSimulatorArm64"); CMDS+=("./gradlew :shared:linkDebugFrameworkIosSimulatorArm64"); HINTS+=("")
+  DESCS+=("🧩 Link iOS KMP framework: :shared:linkDebugFrameworkIosSimulatorArm64"); CMDS+=("./gradlew :shared:linkDebugFrameworkIosSimulatorArm64"); HINTS+=("")
 
-  DESCS+=("📦 APK ビルド: assembleDebug"); CMDS+=("./gradlew assembleDebug"); HINTS+=("")
+  DESCS+=("📦 Build APK: assembleDebug"); CMDS+=("./gradlew assembleDebug"); HINTS+=("")
 
-  DESCS+=("🧪 ユニットテスト: testDebugUnitTest"); CMDS+=("./gradlew testDebugUnitTest"); HINTS+=("")
+  DESCS+=("🧪 Unit tests: testDebugUnitTest"); CMDS+=("./gradlew testDebugUnitTest"); HINTS+=("")
 
   # Optional: iOS build via xcodebuild on macOS
   if [[ "$(uname -s)" == "Darwin" ]] && command -v xcodebuild >/dev/null 2>&1; then
     local XCODE_BASE_CMD
     if [[ "$IOS_CLEAN_BUILD" == "true" ]]; then
-      DESCS+=("🍏 iOSクリーンビルド: $IOS_SCHEME ($IOS_CONFIGURATION)")
+      DESCS+=("🍏 iOS clean build: $IOS_SCHEME ($IOS_CONFIGURATION)")
       XCODE_BASE_CMD="xcodebuild -project $IOS_XCODEPROJECT -scheme $IOS_SCHEME -configuration $IOS_CONFIGURATION -sdk $IOS_SDK -destination '$IOS_DESTINATION' clean build"
     else
-      DESCS+=("🍏 iOSビルド: $IOS_SCHEME ($IOS_CONFIGURATION)")
+      DESCS+=("🍏 iOS build: $IOS_SCHEME ($IOS_CONFIGURATION)")
       XCODE_BASE_CMD="xcodebuild -project $IOS_XCODEPROJECT -scheme $IOS_SCHEME -configuration $IOS_CONFIGURATION -sdk $IOS_SDK -destination '$IOS_DESTINATION' build"
     fi
     if [[ "${IOS_XCODE_VERBOSE:-}" == "true" ]]; then
       CMDS+=("$XCODE_BASE_CMD")
-      HINTS+=("出力は詳細表示です。簡潔表示に戻すには IOS_XCODE_VERBOSE を未設定にしてください。")
+      HINTS+=("Verbose output is enabled. Unset IOS_XCODE_VERBOSE to go back to the concise form.")
     else
       CMDS+=("$XCODE_BASE_CMD 2>&1 | grep -E '(SUCCEEDED|FAILED)'")
-      HINTS+=("エラー詳細を確認するには以下を実行してください: $XCODE_BASE_CMD")
+      HINTS+=("To see error details, run: $XCODE_BASE_CMD")
     fi
   else
-    note "macOS ではないか xcodebuild が見つからないため iOS ビルドはスキップします。"
+    note "Skipping iOS build: not running on macOS or xcodebuild is not available."
   fi
 
   # ---- Selection options -------------------------------------------------
@@ -155,15 +172,16 @@ main() {
 
   pick_one_idx() {
     if ! has_fzf || { [[ ! -t 1 ]] && [[ ! -t 0 ]]; }; then
-      fail "対話選択には fzf が必要です。インストールしてください（例: brew install fzf）。"
+      fail "Interactive selection requires fzf. Install it (e.g. 'brew install fzf')."
       exit 2
     fi
     local chosen=""
-    chosen=$(print_steps | fzf --ansi --height 60% --prompt="開始ステップ > " --border | awk -F: '{print $1}' | xargs)
+    chosen=$(print_steps | fzf --ansi --height 60% --prompt="Start from step > " --border | awk -F: '{print $1}' | xargs)
     if [[ "$chosen" =~ ^[0-9]+$ ]]; then
       local id=$((chosen-1))
       if (( id>=0 && id<${#DESCS[@]} )); then echo "$id"; return 0; fi
     fi
+    warn "No valid step selected; defaulting to the first step."
     echo 0
   }
 
@@ -194,10 +212,10 @@ main() {
   if [[ "$opt_mode" == "single" || "$opt_mode" == "multi" ]]; then
     selection_used=true
     if ! has_fzf || { [[ ! -t 1 ]] && [[ ! -t 0 ]]; }; then
-      fail "対話選択には fzf が必要です。インストールしてください（例: brew install fzf）。"
+      fail "Interactive selection requires fzf. Install it (e.g. 'brew install fzf')."
       exit 2
     fi
-    local fzf_opts=(--ansi --height 60% --prompt="ステップ選択 > " --border)
+    local fzf_opts=(--ansi --height 60% --prompt="Select steps > " --border)
     [[ "$opt_mode" == "multi" ]] && fzf_opts+=(--multi)
     pick_ids=$(print_steps | fzf "${fzf_opts[@]}" | awk -F: '{print $1}' | xargs)
     for tok in ${pick_ids//,/ }; do
@@ -240,12 +258,12 @@ main() {
       local step_end
       step_end=$(date +%s)
       local elapsed=$((step_end - step_start))
-      success "完了 (step ${step}/${total}) ⏱ ${elapsed}s"
+      success "Done (step ${step}/${total}) ⏱ ${elapsed}s"
     else
       local rc=$?
       hr
-      fail "失敗 (step ${step}/${total}) — コマンド: $cmd"
-      note "途中で停止しました。上のログを確認してください。終了コード: $rc"
+      fail "Failed (step ${step}/${total}) — command: $cmd"
+      note "Pipeline aborted. Check the log above. Exit code: $rc"
       if [[ -n "${HINTS[$i]:-}" ]]; then
         note "${HINTS[$i]}"
       fi
@@ -256,11 +274,11 @@ main() {
   local end_ts
   end_ts=$(date +%s)
   local total_elapsed=$((end_ts - start_ts))
-  section "🎉 すべて完了！"
+  section "🎉 All done!"
   if [[ "$selection_used" == true || ${#EXEC[@]} -ne $total ]]; then
-    success "選択ステップ ${#EXEC[@]} 件成功。合計時間: ${total_elapsed}s"
+    success "${#EXEC[@]} selected step(s) succeeded. Total time: ${total_elapsed}s"
   else
-    success "全 ${total} ステップ成功。合計時間: ${total_elapsed}s"
+    success "All ${total} steps succeeded. Total time: ${total_elapsed}s"
   fi
 }
 
