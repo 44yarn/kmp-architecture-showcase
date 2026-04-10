@@ -1,7 +1,6 @@
 plugins {
     id("showcase.convention.kmp-module")
     id("showcase.convention.kmp-sqldelight")
-    id("showcase.primitive.preferences")
     id("showcase.primitive.hilt")
     id("showcase.primitive.unit-test")
 }
@@ -17,10 +16,10 @@ kotlin {
             implementation(libs.sqldelightRuntime)
             implementation(libs.sqldelightCoroutines)
             implementation(libs.kotlinxSerializationJson)
+            implementation(libs.datastorePreferencesCore)
         }
         androidMain.dependencies {
             implementation(libs.sqldelightAndroidDriver)
-            implementation(libs.datastorePreferences)
         }
         iosMain {
             dependencies {

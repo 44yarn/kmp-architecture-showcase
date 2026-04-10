@@ -9,17 +9,22 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import java.io.File
 import javax.inject.Singleton
+import okio.Path.Companion.toPath
 
 @Module
 @InstallIn(SingletonComponent::class)
-class PreferenceModule {
+object PreferenceModule {
     @Provides
     @Singleton
     fun provideDataStore(
         @ApplicationContext context: Context,
-    ): DataStore<Preferences> = PreferenceDataStoreFactory.create {
-        File(context.filesDir, "datastore/showcase_prefs.preferences_pb")
-    }
+    ): DataStore<Preferences> = PreferenceDataStoreFactory.createWithPath(
+        produceFile = {
+            context.filesDir
+                .resolve("datastore/showcase_prefs.preferences_pb")
+                .absolutePath
+                .toPath()
+        },
+    )
 }

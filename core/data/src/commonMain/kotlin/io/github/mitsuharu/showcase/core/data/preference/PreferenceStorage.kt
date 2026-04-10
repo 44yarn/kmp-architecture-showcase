@@ -1,14 +1,39 @@
 package io.github.mitsuharu.showcase.core.data.preference
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
-interface PreferenceStorage {
-    suspend fun getString(key: PreferenceKey.StringKey): String?
-    suspend fun putString(key: PreferenceKey.StringKey, value: String)
-    suspend fun getBoolean(key: PreferenceKey.BooleanKey): Boolean
-    suspend fun putBoolean(key: PreferenceKey.BooleanKey, value: Boolean)
-    fun observeString(key: PreferenceKey.StringKey): Flow<String?>
-    fun observeBoolean(key: PreferenceKey.BooleanKey): Flow<Boolean>
-    suspend fun remove(key: PreferenceKey<*>)
-    suspend fun removeAll()
+/**
+ * Type-safe wrapper around DataStore Preferences.
+ * The value type is carried by the [PreferenceKey] itself, so callers do not need
+ * to think about it at the call site.
+ */
+class PreferenceStorage(private val dataStore: DataStore<Preferences>,) {
+    suspend fun <T : Any> getOrNull(key: PreferenceKey<T>): T? =
+        dataStore.data.first()[key.dataStoreKey()]
+
+    suspend fun <T : Any> getOrDefault(key: PreferenceKey<T>, default: T): T =
+        getOrNull(key) ?: default
+
+    fun <T : Any> observe(key: PreferenceKey<T>): Flow<T?> =
+        dataStore.data
+            .map { it[key.dataStoreKey()] }
+            .distinctUntilChanged()
+
+    suspend fun <T : Any> put(key: PreferenceKey<T>, value: T) {
+        dataStore.edit { it[key.dataStoreKey()] = value }
+    }
+
+    suspend fun <T : Any> remove(key: PreferenceKey<T>) {
+        dataStore.edit { it.remove(key.dataStoreKey()) }
+    }
+
+    suspend fun removeAll() {
+        dataStore.edit { it.clear() }
+    }
 }

@@ -34,7 +34,7 @@ class LoginViewModel(
 
     init {
         scope.launch {
-            val savedEmail = preferenceStorage.getString(PreferenceKey.StringKey.SavedEmail)
+            val savedEmail = preferenceStorage.getOrNull(PreferenceKey.Auth.SavedEmail)
             if (savedEmail != null) {
                 _uiState.update { it.copy(email = savedEmail) }
             }
@@ -58,8 +58,8 @@ class LoginViewModel(
             indicatorState.runWithLoading {
                 authRepository.login(_uiState.value.email, _uiState.value.password)
             }.onSuccess { displayName ->
-                preferenceStorage.putString(
-                    PreferenceKey.StringKey.SavedEmail,
+                preferenceStorage.put(
+                    PreferenceKey.Auth.SavedEmail,
                     _uiState.value.email,
                 )
                 _effect.send(LoginEffect.NavigateToHome(displayName, isGuest = false))

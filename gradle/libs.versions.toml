@@ -81,7 +81,7 @@ lifecycleRuntimeCompose = { module = "androidx.lifecycle:lifecycle-runtime-compo
 lifecycleViewmodelCompose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "androidxLifecycle" }
 navigationCompose = { module = "androidx.navigation:navigation-compose", version.ref = "androidxNavigation" }
 androidxHiltNavCompose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHiltNavCompose" }
-datastorePreferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidxDatastore" }
+datastorePreferencesCore = { module = "androidx.datastore:datastore-preferences-core", version.ref = "androidxDatastore" }
 
 # Kotlinx
 kotlinxCoroutinesCore = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
