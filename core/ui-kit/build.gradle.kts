@@ -17,6 +17,9 @@ kotlin {
             implementation(compose.foundation)
             implementation(compose.material3)
             implementation(compose.ui)
+            // For StringResource type used by AdaptiveString.
+            // Actual resource files live in feature modules, not here.
+            implementation(compose.components.resources)
         }
         androidMain.dependencies {
             implementation(libs.composeUiTooling)

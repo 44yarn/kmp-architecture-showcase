@@ -1,0 +1,7 @@
+<resources>
+    <!-- Login failure dialog -->
+    <string name="login_failed_title">Login failed</string>
+    <string name="login_invalid_credentials">Invalid credentials. Would you like to continue as a guest?</string>
+    <string name="login_dialog_guest_login">Guest login</string>
+    <string name="login_dialog_cancel">Cancel</string>
+</resources>
