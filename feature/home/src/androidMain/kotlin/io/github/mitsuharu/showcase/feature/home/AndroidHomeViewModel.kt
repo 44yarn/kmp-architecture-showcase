@@ -11,6 +11,9 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
+// ktlint の class-signature rule がコンストラクタを 1 行に折り畳もうとするため抑制。
+// DI を持つ wrapper VM は縦に並べた方が読みやすい。
+@Suppress("ktlint:standard:class-signature")
 class AndroidHomeViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     preferenceStorage: PreferenceStorage,

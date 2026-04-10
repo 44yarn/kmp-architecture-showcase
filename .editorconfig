@@ -23,6 +23,10 @@ ktlint_standard_function-expression-body = disabled
 ktlint_standard_function-literal = disabled
 ktlint_standard_function-signature = disabled
 
+# 注: class-signature rule は editorconfig 経由の disable / threshold プロパティが
+#   ktlint 1.7.1 では効かなかったため、必要なファイルでは
+#   @Suppress("ktlint:standard:class-signature") を直接付与している
+
 # property-naming を無効化（Kotlin/KMP の定数パターン対応）
 ktlint_standard_property-naming = disabled
 

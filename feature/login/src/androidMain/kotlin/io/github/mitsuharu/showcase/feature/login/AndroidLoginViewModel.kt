@@ -10,8 +10,13 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
-class AndroidLoginViewModel @Inject constructor(authRepository: AuthRepository, preferenceStorage: PreferenceStorage,) :
-    ViewModel() {
+// ktlint の class-signature rule がコンストラクタを 1 行に折り畳もうとするため抑制。
+// DI を持つ wrapper VM は縦に並べた方が読みやすい。
+@Suppress("ktlint:standard:class-signature")
+class AndroidLoginViewModel @Inject constructor(
+    authRepository: AuthRepository,
+    preferenceStorage: PreferenceStorage,
+) : ViewModel() {
 
     val dialogPresenter = DialogPresenter()
     val indicatorState = IndicatorState()
