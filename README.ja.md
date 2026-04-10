@@ -53,44 +53,81 @@ Login --- Login 成功 -----------> Home（"Welcome, {name}!" Snackbar）
 - **Actions クラス** — コールバックを data class に集約
 - **Convention Plugin** — gradle-conventions でビルド設定を共通化
 - **PreferenceKey / PreferenceStorage** — Preferences DataStore (KMP) の型安全ラッパー。値の型をキー側に閉じ込める設計
-- **AdaptiveString** — ローカライズリソースとリテラル文字列を単一の型で扱う抽象化 (下記参照)
+- **AdaptiveString / AdaptiveImage** — ローカライズリソースとリテラル文字列 / リモート URL を単一の型で扱う抽象化 (下記参照)
 - **DI** — Hilt (Android) + Koin (iOS)
 
-### AdaptiveString: リソースとリテラル文字列の混在を扱う
+### Adaptive types: リソースとランタイム値の混在を扱う
 
-`AdaptiveString` は `StringResource` (Compose Multiplatform Resources)
-または プレーンな `String` のどちらも保持できる、カプセル化された単一クラス。
-`DialogUiState` などの consumer は、内部がどちらの種類かを気にする必要がない。
+`core/ui-kit` には `AdaptiveString` と `AdaptiveImage` という、同じ
+設計思想を持つ 2 つの型がある。それぞれ、**カプセル化された単一クラス**で
+Compose Multiplatform のローカライズリソースとランタイム値 (リテラル
+文字列 / リモート URL) を単一の consumer 向け型に統合する。
 
-**なぜ必要か。** 現実のプロジェクトでは、同じ UI フィールドに 2 種類の文字列源を
-混在させる必要が頻繁にある:
+**なぜ必要か。** 現実のプロジェクトでは、同じ UI フィールドに 2 種類の
+文字列 / 画像源を混在させる必要がある:
 
-- **既知のエラー型** → **ローカライズリソース** にマッピング (UI 層の責務)
+- **既知の状態・ローカルアセット** → **ローカライズリソース** にマッピング
+  (UI 層の責務)
   例: `is AuthException -> AdaptiveString(Res.string.login_invalid_credentials)`
-- **未知のエラー or サーバー由来のテキスト** → **リテラル** としてそのまま扱う
-  例: `AdaptiveString("予期せぬエラーが発生しました")`、または API レスポンスの
-  `error_message` フィールドをそのまま表示するケース
+- **サーバー由来のテキスト / リモート画像** → **リテラルまたは URL**
+  例: `AdaptiveString("予期せぬエラーが発生しました")`、
+  `AdaptiveImage("https://example.com/avatar.png")`
 
-統一型がないと、ダイアログ / スナックバー / エラー表示を組み立てるすべての箇所で
-`String` と `StringResource` の分岐が必要になる。`AdaptiveString` は overloaded
-constructor と `@Composable val value` (SwiftUI 向けには `async` な `resolve()`
-拡張) で、この分岐を consumer から隠す。
+統一型がないと、ダイアログ / スナックバー / 画像スロットを組み立てる
+すべての箇所で `String` と `StringResource`、または URL と
+`DrawableResource` の分岐が必要になる。これらの型は overloaded
+constructor と単一の resolve パスでこの分岐を consumer から隠すので、
+ViewModel はどちらの形でも同じ型として emit でき、UI 層はそのまま
+描画できる。
 
-**Showcase の実装箇所。** `feature/login` の `LoginViewModel.showLoginErrorDialog`
-を参照。`AuthException` はローカライズリソースに、その他の throwable は
-リテラルフォールバックにマッピングして、両方を同じ `DialogUiState.message`
-フィールドに入れている。
+両方とも同じカプセル化パターンを採用している: **private な primary
+constructor** が内部の `val` フィールドを保持し、**複数の secondary
+constructor** が有効な組み合わせだけを公開する。呼び出し側が不正な
+ハイブリッド形を構築できない仕組み。
 
-**設計原則: `Exception.message` はログ用、UI には使わない。** `core/data` の
-サンプル用 `AuthException` はロギング目的の診断メッセージを持つだけ。エラーから
-ユーザー向けテキストへのマッピングは UI 層 (ViewModel) の責務で、例外の「型」に
-応じて適切な `AdaptiveString` を選ぶ。`exception.message` を UI に表示するのは
-アンチパターン。
+#### `AdaptiveString`
 
-**リソースの所属。** 文字列リソースは各 feature の
-`feature/*/src/commonMain/composeResources/values/strings.xml` に配置する
-(feature 固有の文字列をその feature 内に閉じる)。`core/ui-kit` には
-`AdaptiveString` 型の定義だけを置く。
+プレーンなリテラル `String` か、ローカライズされた `StringResource`
+(+ オプションのフォーマット引数) を保持する。Android Compose 向けの
+`@Composable val value: String` アクセサと、SwiftUI 向けに `iosMain`
+で提供される `suspend fun resolve(): String` 拡張を持つ — SKIE が
+これを Swift の `async throws` にブリッジする。
+
+**Showcase の実装箇所。** `feature/login` の
+`LoginViewModel.showLoginErrorDialog` を参照。`AuthException` は
+ローカライズリソースに、その他の throwable はリテラルフォールバックに
+マッピングして、両方を同じ `DialogUiState.message` フィールドに入れている。
+
+**設計原則: `Exception.message` はログ用、UI には使わない。**
+`core/data` のサンプル用 `AuthException` はロギング目的の診断メッセージを
+持つだけ。エラーからユーザー向けテキストへのマッピングは UI 層 (ViewModel)
+の責務で、例外の「型」に応じて適切な `AdaptiveString` を選ぶ。
+`exception.message` を UI に表示するのはアンチパターン。
+
+#### `AdaptiveImage`
+
+リモート画像の URL か、ローカルの `DrawableResource` のどちらかを保持し、
+加えて描画方式を表す `ImageType` を持つ:
+
+- `ImageType.Icon` — 小さく正方形のアイコン風
+- `ImageType.FillMaxWidth(contentScale, aspectRatio)` — コンテナの
+  幅いっぱいに、固定アスペクト比で広げる
+
+描画 (rendering) は意図的に呼び出し側に委ねている。Composable 側で
+`type` に応じて `AsyncImage(url)` と `painterResource(resource)` を
+切り替えれば良い。
+
+`AdaptiveImage` は本 showcase のどの画面からもまだ使われていない。
+アバターやサムネイル、ヘッダー画像でリモートとローカルを混在させたい
+時にすぐ使える pattern として配置してある。
+
+#### リソースの所属
+
+文字列リソースも drawable リソースも、各 feature の
+`src/commonMain/composeResources/` 配下 (文字列は `values/strings.xml`、
+画像は `drawable/`) に配置する。feature 固有のリソースは feature 内に
+閉じる。`core/ui-kit` には `AdaptiveString` / `AdaptiveImage` の型定義
+だけを置き、リソースファイルは置かない。
 
 ## モジュール構成
 
@@ -100,7 +137,7 @@ app                      Android アプリ本体、NavGraph、Hilt セットア�
 shared                   iOS 向け umbrella framework (ShowcaseKit)
 +-- core
 |   +-- foundation       KmpViewModel、Result 拡張
-|   +-- ui-kit           DialogPresenter、SnackbarPresenter、IndicatorState、AppTheme
+|   +-- ui-kit           DialogPresenter、SnackbarPresenter、IndicatorState、AppTheme、AdaptiveString、AdaptiveImage
 |   +-- data             AuthRepository、PreferenceStorage（DataStore KMP）
 +-- feature
 |   +-- login            ログイン画面
@@ -169,6 +206,26 @@ iosApp                   iOS アプリ（SwiftUI + XcodeGen）
 # 全ステップ一括実行（上記に加えて iOS ビルドまで走る）
 ./script/preflight.sh
 ```
+
+### iOS + Compose Multiplatform Resources
+
+Compose Multiplatform Resources (`StringResource`, `DrawableResource` 等)
+は Compose Multiplatform UI を前提にした仕組み。iOS 側を SwiftUI で
+構築している場合 — このプロジェクトのように — `.cvr` ファイルは
+Kotlin フレームワークにはコンパイルされるが、**iOS アプリバンドルには
+自動コピーされない**。そのため Swift 側で最初に `StringResource` を
+resolve した時点で、ランタイムに `MissingResourceException` が発生する。
+
+本プロジェクトは、Xcode の Run Script Build Phase
+(`script/sync-compose-resources.sh`、`iosApp/project.yml` で設定) で
+このギャップを埋めている。スクリプトは `composeResources/` を持つ
+各 feature モジュールに対して `assemble<Target>MainResources` Gradle
+タスクを実行し、結果を `.app` バンドルに rsync して Compose Resources
+ランタイムが期待するレイアウトに配置する。
+
+独自の `composeResources/` ディレクトリを持つ feature モジュールを
+新規追加した場合は、`script/sync-compose-resources.sh` の `MODULES`
+配列に Gradle パスを追加すること。
 
 ## ライセンス
 

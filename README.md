@@ -53,30 +53,45 @@ Login --- Success ------------> Home ("Welcome, {name}!" Snackbar)
 - **Actions class** — Callbacks aggregated into a data class
 - **Convention Plugin** — Shared build configuration via gradle-conventions
 - **PreferenceKey / PreferenceStorage** — Type-safe wrapper over Preferences DataStore (KMP), with the value type carried by the key
-- **AdaptiveString** — Unifies localized resources and literal strings behind a single type (see below)
+- **AdaptiveString / AdaptiveImage** — Unify localized resources with literal strings / remote URLs behind a single consumer-facing type (see below)
 - **DI** — Hilt (Android) + Koin (iOS)
 
-### AdaptiveString: mixing localized resources and literal strings
+### Adaptive types: mixing resources and runtime values
 
-`AdaptiveString` is an encapsulated single class that can hold either a
-`StringResource` (Compose Multiplatform Resources) or a plain literal `String`.
-Consumers such as `DialogUiState` treat it as a single type and never branch
-on which kind is stored inside.
+This project ships two related types in `core/ui-kit` — `AdaptiveString`
+and `AdaptiveImage` — that share the same design philosophy. Each is an
+**encapsulated single class** that unifies a localized Compose
+Multiplatform resource with a runtime value (a literal string or a
+remote URL) behind a single consumer-facing type.
 
-**Why it matters.** Real-world projects routinely need to mix two sources of
-text in the same UI field:
+**Why this matters.** Real-world projects routinely need to mix two
+sources of text or image assets in the same UI field:
 
-- **Known error types** → mapped to a **localized resource** by the UI layer
+- **Known states or local assets** → mapped to a **localized resource**
+  by the UI layer
   (e.g. `is AuthException -> AdaptiveString(Res.string.login_invalid_credentials)`)
-- **Unknown errors or server-provided text** → carried as a **literal**
-  (e.g. `AdaptiveString("An unexpected error occurred.")`, or a raw
-  `error_message` field from a backend response body)
+- **Server-provided text or remote images** → carried as a **literal or
+  URL** (e.g. `AdaptiveString("An unexpected error occurred.")`, or
+  `AdaptiveImage("https://example.com/avatar.png")`)
 
-Without a unified type, every caller that builds a dialog, snackbar, or
-error banner would have to branch between `String` and `StringResource`.
-`AdaptiveString` hides the distinction behind overloaded constructors and
-a single `@Composable val value` accessor (plus an `async` `resolve()`
-extension for SwiftUI).
+Without a unified type, every caller that builds a dialog, a snackbar,
+or an image slot would have to branch between `String` and
+`StringResource`, or between URL and `DrawableResource`. These types
+hide the distinction behind overloaded constructors and a single
+resolve path, so ViewModels can emit either form and the UI layer just
+renders it.
+
+Both types use the same encapsulation pattern: a **private primary
+constructor** holds the internal `val` fields, and a handful of
+**secondary constructors** expose only valid combinations. Clients
+cannot construct an invalid hybrid shape.
+
+#### `AdaptiveString`
+
+Holds either a plain literal `String` or a localized `StringResource`
+(plus optional format arguments). Exposes `@Composable val value: String`
+for Android Compose, and a `suspend fun resolve(): String` extension in
+`iosMain` for SwiftUI — SKIE bridges it to a Swift `async throws` call.
 
 **Showcase location.** See `LoginViewModel.showLoginErrorDialog` in
 `feature/login`. It maps `AuthException` to a localized resource and any
@@ -84,15 +99,35 @@ other throwable to a literal fallback, feeding both into the same
 `DialogUiState.message` field.
 
 **Design principle: `Exception.message` is for logging, not UI.** The
-sample-only `AuthException` in `core/data` carries a diagnostic message for
-logs only. Mapping errors to user-facing text is the responsibility of the
-UI layer (i.e. the ViewModel), which chooses an appropriate `AdaptiveString`
-based on the exception's type — not on its `message`.
+sample-only `AuthException` in `core/data` carries a diagnostic message
+for logs only. Mapping errors to user-facing text is the responsibility
+of the UI layer (i.e. the ViewModel), which chooses an appropriate
+`AdaptiveString` based on the exception's type — not on its `message`.
 
-**Resource ownership.** String resources live in
-`feature/*/src/commonMain/composeResources/values/strings.xml`, next to the
-feature that uses them. Only the `AdaptiveString` type itself lives in
-`core/ui-kit`.
+#### `AdaptiveImage`
+
+Holds either a remote image URL or a local `DrawableResource`, along
+with an `ImageType` that describes how the image should be displayed:
+
+- `ImageType.Icon` — small, square, icon-style
+- `ImageType.FillMaxWidth(contentScale, aspectRatio)` — stretched to the
+  container's full width with a fixed aspect ratio
+
+Rendering is intentionally left to the caller. A Composable renderer
+can branch on `type` and pick between `AsyncImage(url)` and
+`painterResource(resource)` depending on which field is populated.
+
+`AdaptiveImage` is not yet consumed by any screen in this showcase; it
+lives here as a ready-to-use pattern for the next time an avatar,
+thumbnail, or header image needs to blend remote and local sources.
+
+#### Resource ownership
+
+String and drawable resources live in each feature's
+`src/commonMain/composeResources/` tree (under `values/strings.xml` for
+strings, `drawable/` for images), next to the feature that uses them.
+`core/ui-kit` hosts only the `AdaptiveString` / `AdaptiveImage` types
+themselves — no resource files.
 
 ## Module Structure
 
@@ -102,7 +137,7 @@ app                      Android app entry point, NavGraph, Hilt setup
 shared                   Umbrella framework (ShowcaseKit) for iOS
 +-- core
 |   +-- foundation       KmpViewModel, Result extensions
-|   +-- ui-kit           DialogPresenter, SnackbarPresenter, IndicatorState, AppTheme
+|   +-- ui-kit           DialogPresenter, SnackbarPresenter, IndicatorState, AppTheme, AdaptiveString, AdaptiveImage
 |   +-- data             AuthRepository, PreferenceStorage (DataStore KMP)
 +-- feature
 |   +-- login            Login screen
@@ -171,6 +206,27 @@ Dependency direction: `app/iosApp -> feature -> core` (unidirectional).
 # Full preflight pipeline (runs all of the above + iOS build)
 ./script/preflight.sh
 ```
+
+### iOS + Compose Multiplatform Resources
+
+Compose Multiplatform Resources (`StringResource`, `DrawableResource`,
+etc.) are designed with Compose Multiplatform UI in mind. When the iOS
+side uses SwiftUI instead of Compose UI — as this showcase does — the
+resource `.cvr` files are compiled into the Kotlin framework but are
+**not automatically copied** into the iOS app bundle, producing a runtime
+`MissingResourceException` the first time any `StringResource` is
+resolved from Swift.
+
+This project works around the gap with a small Run Script Build Phase
+in Xcode (`script/sync-compose-resources.sh`, wired up via
+`iosApp/project.yml`). The script runs the
+`assemble<Target>MainResources` Gradle task for every feature module
+that owns `composeResources/`, then rsyncs the result into the built
+`.app` bundle at the layout expected by the Compose Resources runtime.
+
+If you add a new feature module with its own `composeResources/`
+directory, append its Gradle path to the `MODULES` array in
+`script/sync-compose-resources.sh`.
 
 ## License
 
