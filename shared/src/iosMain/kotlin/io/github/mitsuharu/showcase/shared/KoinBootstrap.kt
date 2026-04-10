@@ -19,7 +19,7 @@ fun initKoin() {
 }
 
 /**
- * iOS から ViewModel を取得するためのヘルパー
+ * Helper for resolving ViewModels from iOS.
  */
 object ViewModelProvider : KoinComponent {
     fun loginViewModel(): LoginViewModel {

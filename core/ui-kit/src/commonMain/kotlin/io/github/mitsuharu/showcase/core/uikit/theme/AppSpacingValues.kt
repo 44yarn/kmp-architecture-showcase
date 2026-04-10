@@ -3,9 +3,10 @@
 package io.github.mitsuharu.showcase.core.uikit.theme
 
 /**
- * スペーシングトークンの生値（Float）。
- * Compose 型に依存しないため、iOS（Swift）からも shared.framework 経由で参照可能。
- * 単位は dp（Android）/ pt（iOS）。
+ * Raw spacing token values as [Float]s.
+ *
+ * These values do not depend on any Compose type, so they can also be referenced
+ * from iOS (Swift) via `shared.framework`. Units are dp (Android) / pt (iOS).
  */
 object AppSpacingValues {
 

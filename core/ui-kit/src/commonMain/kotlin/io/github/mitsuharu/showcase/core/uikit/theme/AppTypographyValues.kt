@@ -3,13 +3,16 @@
 package io.github.mitsuharu.showcase.core.uikit.theme
 
 /**
- * フォントトークンの生値（Float）。
- * Compose 型に依存しないため、iOS（Swift）からも shared.framework 経由で参照可能。
+ * Raw font token values as [Float]s.
  *
- * fontSize / lineHeight の単位は sp（Android）/ pt（iOS）。
- * LETTER_SPACING は nullable のため const 不可（null = Compose の TextUnit.Unspecified に対応）。
+ * These values do not depend on any Compose type, so they can also be referenced
+ * from iOS (Swift) via `shared.framework`.
+ *
+ * `fontSize` / `lineHeight` are in sp (Android) / pt (iOS).
+ * `letterSpacing` is nullable, so it cannot be declared as `const`
+ * (`null` maps to Compose's `TextUnit.Unspecified`).
  */
-/** 各フォントスタイル object が持つ共通プロパティ */
+/** Shared properties of each font style object. */
 interface TypographyEntry {
     val fontSize: Float
     val lineHeight: Float

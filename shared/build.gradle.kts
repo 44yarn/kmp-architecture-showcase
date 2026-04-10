@@ -12,7 +12,7 @@ android {
 }
 
 kotlin {
-    // iOS ターゲット — 単一の umbrella フレームワークを生成
+    // iOS targets — produce a single umbrella framework.
     val iosTargets = listOf(
         iosX64(),
         iosArm64(),
@@ -24,7 +24,8 @@ kotlin {
             baseName = "ShowcaseKit"
             isStatic = true
 
-            // 全モジュールを re-export して iOS から単一 import で利用可能にする
+            // Re-export every module so that iOS can consume everything
+            // via a single `import ShowcaseKit`.
             export(project(":core:foundation"))
             export(project(":core:data"))
             export(project(":core:ui-kit"))

@@ -3,8 +3,10 @@
 package io.github.mitsuharu.showcase.core.uikit.theme
 
 /**
- * カラートークンの生値（ARGB hex）。
- * Compose 型に依存しないため、iOS（Swift）からも shared.framework 経由で参照可能。
+ * Raw color token values as ARGB hex [Long]s.
+ *
+ * These values do not depend on any Compose type, so they can also be referenced
+ * from iOS (Swift) via `shared.framework`.
  */
 object AppColorValues {
 

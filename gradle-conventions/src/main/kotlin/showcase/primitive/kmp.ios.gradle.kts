@@ -8,14 +8,15 @@ plugins {
     id("org.jetbrains.kotlin.multiplatform")
 }
 
-// KMP iOS target 設定
-// framework 生成は shared に一本化。個別モジュールは iOS ターゲットとソースセットのみ定義する。
+// KMP iOS target configuration.
+// Framework generation is centralized in the `shared` module; individual
+// modules only declare their iOS targets and source sets here.
 extensions.configure<KotlinMultiplatformExtension> {
     iosX64()
     iosArm64()
     iosSimulatorArm64()
 
-    // iOS ソースセット設定
+    // iOS source set configuration.
     sourceSets.apply {
         val iosMain = create("iosMain") {
             dependsOn(getByName("commonMain"))

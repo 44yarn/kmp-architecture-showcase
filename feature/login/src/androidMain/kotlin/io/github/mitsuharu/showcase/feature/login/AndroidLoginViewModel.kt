@@ -10,8 +10,9 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 
 @HiltViewModel
-// ktlint の class-signature rule がコンストラクタを 1 行に折り畳もうとするため抑制。
-// DI を持つ wrapper VM は縦に並べた方が読みやすい。
+// Suppress ktlint's class-signature rule, which would collapse the constructor
+// onto a single line. Wrapper VMs with DI parameters are easier to read when
+// each parameter is on its own line.
 @Suppress("ktlint:standard:class-signature")
 class AndroidLoginViewModel @Inject constructor(
     authRepository: AuthRepository,

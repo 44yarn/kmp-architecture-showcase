@@ -7,7 +7,7 @@
 import ShowcaseKit
 import SwiftUI
 
-/// commonMain の AppColorValues から生成される SwiftUI カラートークン
+/// SwiftUI color tokens generated from `AppColorValues` in commonMain.
 struct AppColors {
     // Primary
     let primary: Color

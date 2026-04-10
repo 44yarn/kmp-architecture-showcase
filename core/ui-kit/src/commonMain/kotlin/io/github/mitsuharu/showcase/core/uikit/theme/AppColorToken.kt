@@ -6,21 +6,21 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 
 /*
-Material3 の ColorScheme（Compose公式）を参考に。
+Modeled after the Material 3 ColorScheme (Compose).
 https://m3.material.io/styles/color/the-color-system/color-roles
 
 -----------------------------
-App背景:	background	onBackground
-カード・ボトムシート等:	surface	onSurface
-surface の変種:	surfaceVariant	onSurfaceVariant
-ブランドカラー:	primary	onPrimary
-ブランド背景:	primaryContainer	onPrimaryContainer
+App background:            background            onBackground
+Cards, bottom sheets, etc: surface               onSurface
+Surface variants:          surfaceVariant        onSurfaceVariant
+Brand color:               primary               onPrimary
+Brand background:          primaryContainer      onPrimaryContainer
 
 -----------------------------
-<ブランドカラー>
-primary: 主軸カラー
-secondary: サポートカラー
-tertiary: 装飾的カラー
+<Brand colors>
+primary:   main brand color
+secondary: supporting color
+tertiary:  accent / decorative color
 */
 
 @Immutable

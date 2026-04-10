@@ -7,7 +7,7 @@
 import ShowcaseKit
 import SwiftUI
 
-/// commonMain の AppSpacingValues から生成される SwiftUI スペーシングトークン
+/// SwiftUI spacing tokens generated from `AppSpacingValues` in commonMain.
 enum AppSpacings {
     enum Padding {
         static let xxSmall = CGFloat(AppSpacingValues.Padding.shared.XX_SMALL)

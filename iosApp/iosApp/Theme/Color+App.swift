@@ -7,7 +7,7 @@
 import SwiftUI
 
 extension Color {
-    /// Kotlin Long（ARGB hex）から SwiftUI Color を生成する
+    /// Creates a SwiftUI `Color` from a Kotlin `Long` holding an ARGB hex value.
     init(argb value: Int64) {
         let a = Double((value >> 24) & 0xFF) / 255.0
         let r = Double((value >> 16) & 0xFF) / 255.0

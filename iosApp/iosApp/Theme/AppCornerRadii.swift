@@ -7,7 +7,7 @@
 import ShowcaseKit
 import SwiftUI
 
-/// commonMain の AppCornerRadiusValues から生成される SwiftUI コーナー半径トークン
+/// SwiftUI corner-radius tokens generated from `AppCornerRadiusValues` in commonMain.
 enum AppCornerRadii {
     static let small = CGFloat(AppCornerRadiusValues.shared.SMALL)
     static let medium = CGFloat(AppCornerRadiusValues.shared.MEDIUM)

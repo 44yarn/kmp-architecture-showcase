@@ -21,12 +21,12 @@ kotlin {
 
         commonMain {
             dependencies {
-                // Core モジュール依存
+                // Core module dependencies
                 implementation(project(":core:foundation"))
                 implementation(project(":core:data"))
                 api(project(":core:ui-kit"))
 
-                // Compose Multiplatform 基本依存
+                // Compose Multiplatform base dependencies
                 val compose =
                     project.extensions
                         .getByType(org.jetbrains.compose.ComposeExtension::class.java)
@@ -36,7 +36,7 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.ui)
 
-                // Jetpack ViewModel KMP
+                // Jetpack ViewModel (KMP)
                 implementation(libs.library("lifecycleViewModel"))
 
                 // Serialization

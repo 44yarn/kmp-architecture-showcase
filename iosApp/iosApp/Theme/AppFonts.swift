@@ -7,7 +7,7 @@
 import ShowcaseKit
 import SwiftUI
 
-/// フォントスタイル（regular / bold バリアント付き）
+/// A font style that exposes regular and bold variants.
 struct AppFontStyle {
     let fontSize: CGFloat
     let lineHeight: CGFloat
@@ -17,7 +17,8 @@ struct AppFontStyle {
     var bold: AppFontVariant { AppFontVariant(style: self, weight: .bold) }
 }
 
-/// Font + lineHeight / letterSpacing を一括適用するための型
+/// Combines a `Font` with its `lineHeight` and `letterSpacing` so they can be
+/// applied together in one place.
 struct AppFontVariant {
     let style: AppFontStyle
     let weight: Font.Weight
@@ -26,7 +27,7 @@ struct AppFontVariant {
 }
 
 extension View {
-    /// AppFontVariant を適用する（font + lineSpacing + tracking を一括設定）
+    /// Applies an `AppFontVariant` (font + lineSpacing + tracking) in one call.
     func appFont(_ variant: AppFontVariant) -> some View {
         let extraLineSpacing = variant.style.lineHeight - variant.style.fontSize
         return font(variant.font)
@@ -35,7 +36,7 @@ extension View {
     }
 }
 
-/// commonMain の AppTypographyValues から生成される SwiftUI フォントトークン
+/// SwiftUI font tokens generated from `AppTypographyValues` in commonMain.
 enum AppFonts {
     static let title1 = from(AppTypographyValues.Title1.shared)
     static let title2 = from(AppTypographyValues.Title2.shared)

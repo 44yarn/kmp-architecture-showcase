@@ -7,8 +7,8 @@ import showcase.config.AndroidConfig
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 /**
- * Android の基本設定を行う primitive Plugin。
- * compileSdk, minSdk, targetSdk, Java/Kotlin JVM 設定。
+ * Primitive plugin that applies the baseline Android configuration:
+ * `compileSdk`, `minSdk`, `targetSdk`, and Java/Kotlin JVM settings.
  */
 fun configureAndroid(extension: BaseExtension) {
     extension.apply {

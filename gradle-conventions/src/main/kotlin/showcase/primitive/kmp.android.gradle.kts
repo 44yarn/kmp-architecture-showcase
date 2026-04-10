@@ -12,7 +12,7 @@ plugins {
     id("com.android.library")
 }
 
-// KMP Android target 設定
+// KMP Android target configuration.
 extensions.configure<KotlinMultiplatformExtension> {
     androidTarget {
         compilations.all {
@@ -39,7 +39,7 @@ extensions.configure<KotlinMultiplatformExtension> {
     }
 }
 
-// Android Library 設定
+// Android Library configuration.
 extensions.configure<LibraryExtension> {
     namespace = "io.github.mitsuharu.showcase.${project.name.replace("-", ".")}"
     compileSdk = AndroidConfig.compileSdk
