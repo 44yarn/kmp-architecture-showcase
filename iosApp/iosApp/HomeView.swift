@@ -53,11 +53,6 @@ struct HomeView: View {
                         )
                         .padding(.bottom, 100)
                         .transition(.move(edge: .bottom).combined(with: .opacity))
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                withAnimation { snackbarMessage = nil }
-                            }
-                        }
                 }
             }
             .task {
@@ -72,9 +67,13 @@ struct HomeView: View {
                     }
                 }
             }
-            .onAppear {
-                if let msg = viewModel.getSnackbarMessage() {
-                    withAnimation { snackbarMessage = msg }
+            .onChange(of: viewModel.snackbarPresenter.snackbarUiState) {
+                if let state = viewModel.snackbarPresenter.snackbarUiState {
+                    withAnimation { snackbarMessage = state.message }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        viewModel.snackbarPresenter.hide()
+                        withAnimation { snackbarMessage = nil }
+                    }
                 }
             }
     }

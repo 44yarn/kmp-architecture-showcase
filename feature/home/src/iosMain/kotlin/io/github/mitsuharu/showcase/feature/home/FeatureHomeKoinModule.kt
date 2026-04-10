@@ -1,5 +1,6 @@
 package io.github.mitsuharu.showcase.feature.home
 
+import io.github.mitsuharu.showcase.core.uikit.snackbar.SnackbarPresenter
 import org.koin.dsl.module
 
 val featureHomeKoinModule = module {
@@ -8,6 +9,7 @@ val featureHomeKoinModule = module {
             preferenceStorage = get(),
             displayName = displayName,
             isGuest = isGuest,
+            snackbarPresenter = SnackbarPresenter(),
         )
     }
 }

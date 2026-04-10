@@ -40,21 +40,13 @@ fun HomeScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.getSnackbarMessage()?.let { message ->
-            viewModel.snackbarPresenter.show(
-                io.github.mitsuharu.showcase.core.uikit.snackbar.SnackbarUiState(message = message),
-            )
-        }
-    }
-
     Box(modifier = modifier.fillMaxSize()) {
         HomeContent(
             uiState = uiState,
             actions = viewModel.actions,
         )
 
-        SnackbarView(presenter = viewModel.snackbarPresenter)
+        SnackbarView(presenter = viewModel.commonSnackbarPresenter)
     }
 }
 

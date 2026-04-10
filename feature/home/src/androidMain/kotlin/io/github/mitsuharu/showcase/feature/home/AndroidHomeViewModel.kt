@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 class AndroidHomeViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     preferenceStorage: PreferenceStorage,
-    val snackbarPresenter: SnackbarPresenter,
 ) : ViewModel() {
 
     private val route = savedStateHandle.toRoute<HomeRoute>()
@@ -23,8 +22,10 @@ class AndroidHomeViewModel @Inject constructor(
         preferenceStorage = preferenceStorage,
         displayName = route.displayName,
         isGuest = route.isGuest,
+        snackbarPresenter = SnackbarPresenter(),
     )
 
+    val commonSnackbarPresenter: SnackbarPresenter = commonViewModel.snackbarPresenter
     val uiState: StateFlow<HomeUiState> = commonViewModel.uiState
     val effect = commonViewModel.effect
 
@@ -32,11 +33,9 @@ class AndroidHomeViewModel @Inject constructor(
         onToggleRememberEmail = commonViewModel::onToggleRememberEmail,
         onLogout = commonViewModel::onLogout,
         onBack = {
-            snackbarPresenter.show(SnackbarUiState(message = "Use the Logout button to sign out"))
+            commonSnackbarPresenter.show(SnackbarUiState(message = "Use the Logout button to sign out"))
         },
     )
-
-    fun getSnackbarMessage(): String? = commonViewModel.getSnackbarMessage()
 
     override fun onCleared() {
         commonViewModel.clear()

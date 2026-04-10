@@ -3,6 +3,8 @@ package io.github.mitsuharu.showcase.feature.home
 import io.github.mitsuharu.showcase.core.data.preference.PreferenceKey
 import io.github.mitsuharu.showcase.core.data.preference.PreferenceStorage
 import io.github.mitsuharu.showcase.core.foundation.KmpViewModel
+import io.github.mitsuharu.showcase.core.uikit.snackbar.SnackbarPresenter
+import io.github.mitsuharu.showcase.core.uikit.snackbar.SnackbarUiState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +14,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val preferenceStorage: PreferenceStorage, displayName: String, isGuest: Boolean,) : KmpViewModel() {
+class HomeViewModel(
+    private val preferenceStorage: PreferenceStorage,
+    displayName: String,
+    isGuest: Boolean,
+    val snackbarPresenter: SnackbarPresenter,
+) : KmpViewModel() {
 
     private val _uiState = MutableStateFlow(
         HomeUiState(
@@ -26,8 +33,6 @@ class HomeViewModel(private val preferenceStorage: PreferenceStorage, displayNam
     private val _effect = Channel<HomeEffect>()
     val effect = _effect.receiveAsFlow()
 
-    private var snackbarMessage: String? = null
-
     init {
         scope.launch {
             val savedEmail = preferenceStorage.getString(PreferenceKey.StringKey.SavedEmail)
@@ -36,7 +41,8 @@ class HomeViewModel(private val preferenceStorage: PreferenceStorage, displayNam
         }
         scope.launch {
             delay(500L)
-            snackbarMessage = "Welcome, $displayName!"
+            val message = if (isGuest) "Guest mode" else "Welcome, $displayName!"
+            snackbarPresenter.show(SnackbarUiState(message = message))
         }
     }
 
@@ -56,11 +62,5 @@ class HomeViewModel(private val preferenceStorage: PreferenceStorage, displayNam
         scope.launch {
             _effect.send(HomeEffect.NavigateToLogin)
         }
-    }
-
-    fun getSnackbarMessage(): String? {
-        val msg = snackbarMessage
-        snackbarMessage = null
-        return msg
     }
 }
