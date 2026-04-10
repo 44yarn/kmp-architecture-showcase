@@ -3,12 +3,13 @@ package io.github.mitsuharu.showcase.core.foundation.navigation
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 
 inline fun <reified T : Any> NavGraphBuilder.screen(
-    noinline content: @androidx.compose.runtime.Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
+    noinline content: @Composable AnimatedContentScope.(NavBackStackEntry) -> Unit,
 ) {
     composable<T>(
         enterTransition = {
