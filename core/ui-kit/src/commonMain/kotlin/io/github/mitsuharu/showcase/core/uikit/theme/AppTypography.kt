@@ -21,7 +21,11 @@ data class AppTypography internal constructor(
     val caption1: Style = styleOf(AppTypographyValues.Caption1),
     val caption2: Style = styleOf(AppTypographyValues.Caption2),
 ) {
-    data class Style(val fontSize: TextUnit, val lineHeight: TextUnit, val letterSpacing: TextUnit = TextUnit.Unspecified,) {
+    data class Style(
+        val fontSize: TextUnit,
+        val lineHeight: TextUnit,
+        val letterSpacing: TextUnit = TextUnit.Unspecified,
+    ) {
         val regular: TextStyle = TextStyle(
             fontSize = fontSize,
             lineHeight = lineHeight,

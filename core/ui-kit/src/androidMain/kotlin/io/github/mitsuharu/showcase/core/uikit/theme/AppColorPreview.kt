@@ -90,8 +90,16 @@ private fun ColorRoleList(modifier: Modifier, color: AppColorToken) {
         ColorRoleRowSet(
             listOf(
                 ColorRole("primaryContainer / onPrimaryContainer", color.primaryContainer, color.onPrimaryContainer),
-                ColorRole("secondaryContainer / onSecondaryContainer", color.secondaryContainer, color.onSecondaryContainer),
-                ColorRole("tertiaryContainer / onTertiaryContainer", color.tertiaryContainer, color.onTertiaryContainer),
+                ColorRole(
+                    "secondaryContainer / onSecondaryContainer",
+                    color.secondaryContainer,
+                    color.onSecondaryContainer
+                ),
+                ColorRole(
+                    "tertiaryContainer / onTertiaryContainer",
+                    color.tertiaryContainer,
+                    color.onTertiaryContainer
+                ),
             )
         )
         ColorRoleRowSet(
@@ -103,9 +111,21 @@ private fun ColorRoleList(modifier: Modifier, color: AppColorToken) {
         )
         ColorRoleRowSet(
             listOf(
-                ColorRole("primaryFixedDim / onPrimaryFixedVariant", color.primaryFixedDim, color.onPrimaryFixedVariant),
-                ColorRole("secondaryFixedDim / onSecondaryFixedVariant", color.secondaryFixedDim, color.onSecondaryFixedVariant),
-                ColorRole("tertiaryFixedDim / onTertiaryFixedVariant", color.tertiaryFixedDim, color.onTertiaryFixedVariant),
+                ColorRole(
+                    "primaryFixedDim / onPrimaryFixedVariant",
+                    color.primaryFixedDim,
+                    color.onPrimaryFixedVariant
+                ),
+                ColorRole(
+                    "secondaryFixedDim / onSecondaryFixedVariant",
+                    color.secondaryFixedDim,
+                    color.onSecondaryFixedVariant
+                ),
+                ColorRole(
+                    "tertiaryFixedDim / onTertiaryFixedVariant",
+                    color.tertiaryFixedDim,
+                    color.onTertiaryFixedVariant
+                ),
             )
         )
         ColorRoleRowSet(
