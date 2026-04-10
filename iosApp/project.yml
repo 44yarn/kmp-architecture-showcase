@@ -61,3 +61,7 @@ targets:
       - framework: ../shared/build/bin/iosSimulatorArm64/debugFramework/ShowcaseKit.framework
         embed: false
       - sdk: libsqlite3.tbd
+    postBuildScripts:
+      - path: ../script/sync-compose-resources.sh
+        name: "Sync Compose Resources"
+        basedOnDependencyAnalysis: false
