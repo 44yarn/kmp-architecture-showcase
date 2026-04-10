@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "io.github.mitsuharu.showcase.core.data"
+    namespace = "io.github.yarn44.kmp.showcase.core.data"
 }
 
 kotlin {
@@ -33,7 +33,7 @@ kotlin {
 sqldelight {
     databases {
         create("ShowcaseDatabase") {
-            packageName.set("io.github.mitsuharu.showcase.core.data.db")
+            packageName.set("io.github.yarn44.kmp.showcase.core.data.db")
         }
     }
 }

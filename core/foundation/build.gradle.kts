@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "io.github.mitsuharu.showcase.core.foundation"
+    namespace = "io.github.yarn44.kmp.showcase.core.foundation"
 }
 
 kotlin {

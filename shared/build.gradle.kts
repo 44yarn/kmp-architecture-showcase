@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "io.github.mitsuharu.showcase.shared"
+    namespace = "io.github.yarn44.kmp.showcase.shared"
 }
 
 kotlin {

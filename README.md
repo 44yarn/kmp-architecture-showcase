@@ -6,7 +6,7 @@ A Kotlin Multiplatform (KMP) sample application demonstrating cross-platform arc
 The same Login / Home / Info screens are implemented with Jetpack Compose (Android) and SwiftUI (iOS),
 sharing ViewModels, repositories, and design tokens through a common module.
 
-Based on [android-architecture-showcase](https://github.com/mitsuharu/android-architecture-showcase).
+Based on [android-architecture-showcase](https://github.com/44yarn/android-architecture-showcase).
 
 ## Screen Flow
 

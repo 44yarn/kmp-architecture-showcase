@@ -15,7 +15,6 @@
 		56B0305B5D3847FC6B326502 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */; };
 		5A1300E98F3885C3647EDBFA /* Color+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6963AB6A8CFF54CB5F83E877 /* Color+App.swift */; };
 		68040CE08AEDC7C1E192C50C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB12B8F33A658239E951429 /* HomeView.swift */; };
-		9B5635BC2F869A13009C2814 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5635BB2F869A13009C2814 /* LoginView.swift */; };
 		A5AAB819113E672808E647A2 /* AppCornerRadii.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6D45084AABBE4BC05B77CC /* AppCornerRadii.swift */; };
 		D488747AD197BC7C1635E66B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF4A054A43ED6B6C286E46F /* LoginView.swift */; };
 		D9DB336E16A6398B577A0AC1 /* AppFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2FE32A2393E3DCDAED2591 /* AppFonts.swift */; };
@@ -35,7 +34,6 @@
 		6DC7CEF6C924FA74EA7BECA7 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		86038AE1032E284E79B32AD6 /* iosApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8DB12B8F33A658239E951429 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		9B5635BB2F869A13009C2814 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		C117AD187833E2513BD2F553 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		ED6D45084AABBE4BC05B77CC /* AppCornerRadii.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCornerRadii.swift; sourceTree = "<group>"; };
@@ -58,7 +56,6 @@
 		1DB4B685CAEE8BEFEBBAEF94 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
-				9B5635BB2F869A13009C2814 /* LoginView.swift */,
 				CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */,
 				8DB12B8F33A658239E951429 /* HomeView.swift */,
 				C117AD187833E2513BD2F553 /* Info.plist */,
@@ -138,6 +135,8 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
 			};
 			buildConfigurationList = FF7CA1CA754D017066F1822F /* Build configuration list for PBXProject "iosApp" */;
 			developmentRegion = en;
@@ -169,7 +168,6 @@
 				3B6122AA530CC014CF71BFD0 /* AppSpacings.swift in Sources */,
 				5A1300E98F3885C3647EDBFA /* Color+App.swift in Sources */,
 				56B0305B5D3847FC6B326502 /* ContentView.swift in Sources */,
-				9B5635BC2F869A13009C2814 /* LoginView.swift in Sources */,
 				68040CE08AEDC7C1E192C50C /* HomeView.swift in Sources */,
 				3945B679EEB74DE188BE0250 /* InfoView.swift in Sources */,
 				EC1992CF3208D67247D98488 /* Koin.swift in Sources */,
@@ -317,7 +315,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.mitsuharu.showcase.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.yarn44.kmp.showcase.ios;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -343,7 +341,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = io.github.mitsuharu.showcase.ios;
+				PRODUCT_BUNDLE_IDENTIFIER = io.github.yarn44.kmp.showcase.ios;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

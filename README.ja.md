@@ -6,7 +6,7 @@ Kotlin Multiplatform (KMP) アーキテクチャパターンを実演するサ�
 同じ Login / Home / Info 画面を Jetpack Compose (Android) と SwiftUI (iOS) で実装し、
 ViewModel、リポジトリ、デザイントークンを共通モジュールで共有する。
 
-[android-architecture-showcase](https://github.com/mitsuharu/android-architecture-showcase) の KMP 版。
+[android-architecture-showcase](https://github.com/44yarn/android-architecture-showcase) の KMP 版。
 
 ## 画面構成
 

@@ -1,6 +1,6 @@
 name: iosApp
 options:
-  bundleIdPrefix: io.github.mitsuharu.showcase
+  bundleIdPrefix: io.github.yarn44.kmp.showcase
   deploymentTarget:
     iOS: "17.0"
 
@@ -36,7 +36,7 @@ targets:
     settings:
       base:
         INFOPLIST_FILE: iosApp/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: io.github.mitsuharu.showcase.ios
+        PRODUCT_BUNDLE_IDENTIFIER: io.github.yarn44.kmp.showcase.ios
         SWIFT_VERSION: "5.0"
         ENABLE_PREVIEWS: "YES"
         SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"

@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "io.github.mitsuharu.showcase.core.uikit"
+    namespace = "io.github.yarn44.kmp.showcase.core.uikit"
 }
 
 kotlin {

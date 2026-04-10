@@ -9,7 +9,7 @@ object AndroidConfig {
     const val targetSdk = 36
     const val versionCode = 1
     const val versionName = "1.0.0"
-    const val applicationId = "io.github.mitsuharu.showcase"
+    const val applicationId = "io.github.yarn44.kmp.showcase"
     val javaVersion = JavaVersion.VERSION_21
     val jvmTarget = JvmTarget.JVM_21
 }

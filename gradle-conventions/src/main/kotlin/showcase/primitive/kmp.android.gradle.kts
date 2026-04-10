@@ -41,7 +41,7 @@ extensions.configure<KotlinMultiplatformExtension> {
 
 // Android Library configuration.
 extensions.configure<LibraryExtension> {
-    namespace = "io.github.mitsuharu.showcase.${project.name.replace("-", ".")}"
+    namespace = "io.github.yarn44.kmp.showcase.${project.name.replace("-", ".")}"
     compileSdk = AndroidConfig.compileSdk
 
     defaultConfig {

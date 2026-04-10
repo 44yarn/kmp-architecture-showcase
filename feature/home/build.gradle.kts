@@ -3,5 +3,5 @@ plugins {
 }
 
 android {
-    namespace = "io.github.mitsuharu.showcase.feature.home"
+    namespace = "io.github.yarn44.kmp.showcase.feature.home"
 }

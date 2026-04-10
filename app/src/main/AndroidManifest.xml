@@ -20,7 +20,7 @@
         </activity>
 
         <activity
-            android:name="io.github.mitsuharu.showcase.feature.info.InfoActivity"
+            android:name="io.github.yarn44.kmp.showcase.feature.info.InfoActivity"
             android:exported="false"
             android:theme="@style/Theme.Showcase" />
     </application>
