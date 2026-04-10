@@ -29,17 +29,37 @@ import org.jetbrains.compose.resources.stringResource
  * The `@Composable val value` accessor is only usable from a Composable
  * context. For SwiftUI-based iOS consumers, a non-Composable `resolve()`
  * extension is provided in `iosMain` (see `AdaptiveString.ios.kt`).
+ *
+ * ## Construction
+ *
+ * The primary constructor is private to prevent callers from supplying
+ * invalid combinations of [text], [resource], and [formatArgs]. Use one of
+ * the public secondary constructors, each of which represents a valid
+ * shape:
+ *
+ * - `AdaptiveString(text: String)` -> literal
+ * - `AdaptiveString(resource: StringResource)` -> localized resource
+ * - `AdaptiveString(resource: StringResource, vararg formatArgs: Any)` ->
+ *   localized resource with format arguments
  */
 @Suppress("detekt.SpreadOperator")
-class AdaptiveString {
-    internal var text: String? = null
-        private set
+class AdaptiveString private constructor(
+    internal val text: String? = null,
+    internal val resource: StringResource? = null,
+    internal val formatArgs: Array<out Any>? = null,
+) {
+    /** Holds a plain literal string. */
+    constructor(text: String) : this(text = text, resource = null, formatArgs = null)
 
-    internal var resource: StringResource? = null
-        private set
+    /** Holds a localized resource reference. */
+    constructor(resource: StringResource) : this(text = null, resource = resource, formatArgs = null)
 
-    internal var formatArgs: Array<out Any>? = null
-        private set
+    /** Holds a localized resource reference with format arguments. */
+    constructor(resource: StringResource, vararg formatArgs: Any) : this(
+        text = null,
+        resource = resource,
+        formatArgs = formatArgs,
+    )
 
     /** Resolves the string in a Composable context. */
     val value: String
@@ -49,22 +69,6 @@ class AdaptiveString {
             val args = formatArgs ?: return stringResource(res)
             return stringResource(res, *args)
         }
-
-    /** Holds a plain literal string. */
-    constructor(text: String) {
-        this.text = text
-    }
-
-    /** Holds a localized resource reference. */
-    constructor(resource: StringResource) {
-        this.resource = resource
-    }
-
-    /** Holds a localized resource reference with format arguments. */
-    constructor(resource: StringResource, vararg formatArgs: Any) {
-        this.resource = resource
-        this.formatArgs = formatArgs
-    }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
