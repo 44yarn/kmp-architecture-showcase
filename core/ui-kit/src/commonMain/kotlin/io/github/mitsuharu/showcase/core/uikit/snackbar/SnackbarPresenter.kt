@@ -3,9 +3,8 @@ package io.github.mitsuharu.showcase.core.uikit.snackbar
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import javax.inject.Inject
 
-class SnackbarPresenter @Inject constructor() {
+class SnackbarPresenter {
     var snackbarUiState: SnackbarUiState? by mutableStateOf(null)
         private set
 
