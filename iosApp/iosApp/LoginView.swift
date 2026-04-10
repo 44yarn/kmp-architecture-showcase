@@ -12,7 +12,10 @@ struct LoginView: View {
     private let viewModel = KoinBootstrapKt.getLoginViewModel()
     @State private var uiState = LoginUiState(email: "", password: "", isPasswordVisible: false)
     @State private var isLoading = false
-    @State private var dialogState: DialogUiState?
+    // The dialog's AdaptiveString fields are resolved asynchronously via the
+    // commonMain `resolve()` extension (SKIE bridges Kotlin suspend to Swift
+    // async), then stored here for SwiftUI to render synchronously.
+    @State private var dialogResolved: ResolvedDialog?
     var onNavigate: (AppRoute) -> Void
 
     private var colors: AppColors { .resolve(colorScheme) }
@@ -27,24 +30,24 @@ struct LoginView: View {
         .background(colors.background.ignoresSafeArea())
         .navigationBarHidden(true)
         .alert(
-            dialogState?.title ?? "",
+            dialogResolved?.title ?? "",
             isPresented: Binding(
-                get: { dialogState != nil },
-                set: { if !$0 { viewModel.dialogPresenter.onDismiss(); dialogState = nil } }
+                get: { dialogResolved != nil },
+                set: { if !$0 { viewModel.dialogPresenter.onDismiss(); dialogResolved = nil } }
             )
         ) {
-            Button(dialogState?.positiveButton ?? "OK") {
+            Button(dialogResolved?.positiveButton ?? "OK") {
                 viewModel.dialogPresenter.onPositive()
-                dialogState = nil
+                dialogResolved = nil
             }
-            if let negativeButton = dialogState?.negativeButton {
+            if let negativeButton = dialogResolved?.negativeButton {
                 Button(negativeButton, role: .cancel) {
                     viewModel.dialogPresenter.onNegative()
-                    dialogState = nil
+                    dialogResolved = nil
                 }
             }
         } message: {
-            Text(dialogState?.message ?? "")
+            Text(dialogResolved?.message ?? "")
                 .appFont(AppFonts.body.regular)
                 .foregroundColor(colors.onSurface)
         }
@@ -75,8 +78,40 @@ struct LoginView: View {
         }
         .task {
             for await state in viewModel.dialogPresenter.uiState {
-                dialogState = state
+                if let state {
+                    dialogResolved = await ResolvedDialog.from(state)
+                } else {
+                    dialogResolved = nil
+                }
             }
+        }
+    }
+
+    /// Plain-String projection of a [DialogUiState] for SwiftUI consumption.
+    /// The conversion awaits `AdaptiveString.resolve()` for each non-nil field.
+    private struct ResolvedDialog {
+        let title: String
+        let message: String
+        let positiveButton: String
+        let negativeButton: String?
+
+        static func from(_ state: DialogUiState) async -> ResolvedDialog {
+            // SKIE bridges Kotlin suspend functions to Swift async throws,
+            // so `try?` is used to fall back to the default text on failure.
+            let title = await (try? state.title?.resolve()) ?? ""
+            let message = await (try? state.message?.resolve()) ?? ""
+            let positive = await (try? state.positiveButton?.resolve()) ?? "OK"
+            let negative: String? = if let neg = state.negativeButton {
+                try? await neg.resolve()
+            } else {
+                nil
+            }
+            return ResolvedDialog(
+                title: title,
+                message: message,
+                positiveButton: positive,
+                negativeButton: negative
+            )
         }
     }
 

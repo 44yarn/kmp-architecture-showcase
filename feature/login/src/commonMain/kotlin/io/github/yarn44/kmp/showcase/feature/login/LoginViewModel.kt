@@ -1,5 +1,6 @@
 package io.github.yarn44.kmp.showcase.feature.login
 
+import io.github.yarn44.kmp.showcase.core.data.auth.AuthException
 import io.github.yarn44.kmp.showcase.core.data.auth.AuthRepository
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceKey
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceStorage
@@ -8,6 +9,12 @@ import io.github.yarn44.kmp.showcase.core.uikit.dialog.DialogPresenter
 import io.github.yarn44.kmp.showcase.core.uikit.dialog.DialogResult
 import io.github.yarn44.kmp.showcase.core.uikit.dialog.DialogUiState
 import io.github.yarn44.kmp.showcase.core.uikit.indicator.IndicatorState
+import io.github.yarn44.kmp.showcase.core.uikit.model.AdaptiveString
+import io.github.yarn44.kmp.showcase.feature.login.resources.Res
+import io.github.yarn44.kmp.showcase.feature.login.resources.login_dialog_cancel
+import io.github.yarn44.kmp.showcase.feature.login.resources.login_dialog_guest_login
+import io.github.yarn44.kmp.showcase.feature.login.resources.login_failed_title
+import io.github.yarn44.kmp.showcase.feature.login.resources.login_invalid_credentials
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -63,19 +70,38 @@ class LoginViewModel(
                     _uiState.value.email,
                 )
                 _effect.send(LoginEffect.NavigateToHome(displayName, isGuest = false))
-            }.onFailure {
-                showLoginErrorDialog()
+            }.onFailure { throwable ->
+                showLoginErrorDialog(throwable)
             }
         }
     }
 
-    private suspend fun showLoginErrorDialog() {
+    /**
+     * Showcases the [AdaptiveString] pattern: the dialog mixes localized
+     * resources (title and buttons) with either a localized message
+     * (for known error types) or a literal fallback (for unknown errors).
+     *
+     * All fields are the same [AdaptiveString] type, so the dialog does not
+     * need to know whether each field came from a resource or a literal.
+     * Type-based mapping from exceptions to user-facing text is the
+     * responsibility of the UI layer (this ViewModel), not of the
+     * exception itself — see [AuthException]'s doc for the rationale.
+     */
+    private suspend fun showLoginErrorDialog(throwable: Throwable) {
+        val message = when (throwable) {
+            // Known error type -> pick a localized resource.
+            is AuthException -> AdaptiveString(Res.string.login_invalid_credentials)
+            // Unknown error -> fall back to a plain literal.
+            // (In a real project this could also come from a server
+            // response body, e.g. an error_message field.)
+            else -> AdaptiveString("An unexpected error occurred. Please try again later.")
+        }
         val result = dialogPresenter.requestDialogResult(
             DialogUiState(
-                title = "Login Failed",
-                message = "Invalid credentials. Would you like to continue as a guest?",
-                positiveButton = "Guest Login",
-                negativeButton = "Cancel",
+                title = AdaptiveString(Res.string.login_failed_title),
+                message = message,
+                positiveButton = AdaptiveString(Res.string.login_dialog_guest_login),
+                negativeButton = AdaptiveString(Res.string.login_dialog_cancel),
             ),
         )
         if (result == DialogResult.Positive) {
@@ -94,9 +120,9 @@ class LoginViewModel(
         currentJob = scope.launch {
             indicatorState.runWithLoading {
                 authRepository.login(_uiState.value.email, "error")
-            }.onFailure {
+            }.onFailure { throwable ->
                 _uiState.update { it.copy(password = savedPassword) }
-                showLoginErrorDialog()
+                showLoginErrorDialog(throwable)
             }
         }
     }
