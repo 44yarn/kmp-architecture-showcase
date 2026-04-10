@@ -52,7 +52,7 @@ Login --- Success ------------> Home ("Welcome, {name}!" Snackbar)
 - **SKIE** — Kotlin `StateFlow` / `Flow` automatically bridged to Swift `AsyncSequence`
 - **Actions class** — Callbacks aggregated into a data class
 - **Convention Plugin** — Shared build configuration via gradle-conventions
-- **PreferenceKey / PreferenceStorage** — Type-safe wrapper for DataStore (Android) / UserDefaults (iOS)
+- **PreferenceKey / PreferenceStorage** — Type-safe wrapper over Preferences DataStore (KMP), with the value type carried by the key
 - **DI** — Hilt (Android) + Koin (iOS)
 
 ## Module Structure
@@ -64,7 +64,7 @@ shared                   Umbrella framework (ShowcaseKit) for iOS
 +-- core
 |   +-- foundation       KmpViewModel, Result extensions
 |   +-- ui-kit           DialogPresenter, SnackbarPresenter, IndicatorState, AppTheme
-|   +-- data             AuthRepository, PreferenceStorage (DataStore / UserDefaults)
+|   +-- data             AuthRepository, PreferenceStorage (DataStore KMP)
 +-- feature
 |   +-- login            Login screen
 |   +-- home             Home screen
@@ -79,8 +79,9 @@ Dependency direction: `app/iosApp -> feature -> core` (unidirectional).
 | Plugin | Role |
 |--------|------|
 | showcase.convention.app | Application module setup |
-| showcase.convention.kmp.feature | KMP feature module (Compose + SKIE) |
-| showcase.convention.kmp.library | KMP library module |
+| showcase.convention.kmp-feature | KMP feature module (Compose + SKIE) |
+| showcase.convention.kmp-module | Base plugin for KMP core / library modules |
+| showcase.convention.kmp-sqldelight | Adds SQLDelight to a KMP module |
 | showcase.primitive.hilt | Hilt DI + KSP |
 | showcase.primitive.spotless | Code formatting |
 | showcase.primitive.detekt | Static analysis |
@@ -89,14 +90,23 @@ Dependency direction: `app/iosApp -> feature -> core` (unidirectional).
 
 | Category | Library |
 |----------|---------|
-| Language | Kotlin 2.1 / Swift 5.9 |
+| Language | Kotlin 2.3 / Swift 5.9 |
 | UI | Jetpack Compose (Android) / SwiftUI (iOS) |
 | DI | Hilt (Android) / Koin (iOS) |
 | Navigation | Navigation Compose (Android) / NavigationStack (iOS) |
 | Async | Kotlin Coroutines + Flow / SKIE AsyncSequence |
-| Storage | Preferences DataStore / UserDefaults |
-| Build | AGP 8.14, KSP, Convention Plugins, XcodeGen |
+| Storage | Preferences DataStore (KMP) |
+| Build | AGP 8.13, KSP, Convention Plugins, XcodeGen |
 | Code Quality | Spotless, detekt, SwiftFormat, SwiftLint |
+
+## Requirements
+
+- JDK 21
+- Android: minSdk 31 / compileSdk 36 / targetSdk 36
+- iOS: 17.0+
+- Xcode 16+
+- [Mint](https://github.com/yonaskolb/Mint) (for SwiftFormat / SwiftLint)
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen) (for Xcode project generation)
 
 ## Build
 
@@ -119,18 +129,9 @@ Dependency direction: `app/iosApp -> feature -> core` (unidirectional).
 # iOS framework
 ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
 
-# Full preflight pipeline
+# Full preflight pipeline (runs all of the above + iOS build)
 ./script/preflight.sh
 ```
-
-### Requirements
-
-- JDK 21
-- Android: minSdk 31 (Android 12)
-- iOS: 17.0+
-- Xcode 16+
-- [Mint](https://github.com/yonaskolb/Mint) (for SwiftFormat / SwiftLint)
-- [XcodeGen](https://github.com/yonaskolb/XcodeGen) (for Xcode project generation)
 
 ## License
 

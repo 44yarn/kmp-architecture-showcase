@@ -52,7 +52,7 @@ Login --- Login 成功 -----------> Home（"Welcome, {name}!" Snackbar）
 - **SKIE** — Kotlin `StateFlow` / `Flow` を Swift `AsyncSequence` に自動変換
 - **Actions クラス** — コールバックを data class に集約
 - **Convention Plugin** — gradle-conventions でビルド設定を共通化
-- **PreferenceKey / PreferenceStorage** — DataStore (Android) / UserDefaults (iOS) の型安全ラッパー
+- **PreferenceKey / PreferenceStorage** — Preferences DataStore (KMP) の型安全ラッパー。値の型をキー側に閉じ込める設計
 - **DI** — Hilt (Android) + Koin (iOS)
 
 ## モジュール構成
@@ -64,7 +64,7 @@ shared                   iOS 向け umbrella framework (ShowcaseKit)
 +-- core
 |   +-- foundation       KmpViewModel、Result 拡張
 |   +-- ui-kit           DialogPresenter、SnackbarPresenter、IndicatorState、AppTheme
-|   +-- data             AuthRepository、PreferenceStorage（DataStore / UserDefaults）
+|   +-- data             AuthRepository、PreferenceStorage（DataStore KMP）
 +-- feature
 |   +-- login            ログイン画面
 |   +-- home             ホーム画面
@@ -79,8 +79,9 @@ iosApp                   iOS アプリ（SwiftUI + XcodeGen）
 | プラグイン | 役割 |
 |-----------|------|
 | showcase.convention.app | Application モジュール設定 |
-| showcase.convention.kmp.feature | KMP feature モジュール（Compose + SKIE） |
-| showcase.convention.kmp.library | KMP library モジュール |
+| showcase.convention.kmp-feature | KMP feature モジュール（Compose + SKIE） |
+| showcase.convention.kmp-module | KMP core / library モジュールのベースプラグイン |
+| showcase.convention.kmp-sqldelight | KMP モジュールに SQLDelight を追加 |
 | showcase.primitive.hilt | Hilt DI + KSP |
 | showcase.primitive.spotless | コードフォーマット |
 | showcase.primitive.detekt | 静的解析 |
@@ -89,14 +90,23 @@ iosApp                   iOS アプリ（SwiftUI + XcodeGen）
 
 | カテゴリ | ライブラリ |
 |----------|-----------|
-| 言語 | Kotlin 2.1 / Swift 5.9 |
+| 言語 | Kotlin 2.3 / Swift 5.9 |
 | UI | Jetpack Compose (Android) / SwiftUI (iOS) |
 | DI | Hilt (Android) / Koin (iOS) |
 | Navigation | Navigation Compose (Android) / NavigationStack (iOS) |
 | 非同期 | Kotlin Coroutines + Flow / SKIE AsyncSequence |
-| データ保存 | Preferences DataStore / UserDefaults |
-| ビルド | AGP 8.14、KSP、Convention Plugins、XcodeGen |
+| データ保存 | Preferences DataStore (KMP) |
+| ビルド | AGP 8.13、KSP、Convention Plugins、XcodeGen |
 | コード品質 | Spotless、detekt、SwiftFormat、SwiftLint |
+
+## 動作要件
+
+- JDK 21
+- Android: minSdk 31 / compileSdk 36 / targetSdk 36
+- iOS: 17.0+
+- Xcode 16+
+- [Mint](https://github.com/yonaskolb/Mint)（SwiftFormat / SwiftLint 用）
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen)（Xcode プロジェクト生成用）
 
 ## ビルド
 
@@ -119,18 +129,9 @@ iosApp                   iOS アプリ（SwiftUI + XcodeGen）
 # iOS フレームワーク
 ./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
 
-# 全ステップ実行
+# 全ステップ一括実行（上記に加えて iOS ビルドまで走る）
 ./script/preflight.sh
 ```
-
-### 動作要件
-
-- JDK 21
-- Android: minSdk 31（Android 12）
-- iOS: 17.0+
-- Xcode 16+
-- [Mint](https://github.com/yonaskolb/Mint)（SwiftFormat / SwiftLint 用）
-- [XcodeGen](https://github.com/yonaskolb/XcodeGen)（Xcode プロジェクト生成用）
 
 ## ライセンス
 
