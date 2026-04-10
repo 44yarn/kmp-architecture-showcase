@@ -17,7 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,25 +24,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import kotlin.time.Duration.Companion.seconds
-import kotlinx.coroutines.delay
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun SnackbarView(
     presenter: SnackbarPresenter,
     modifier: Modifier = Modifier,
 ) {
-    val state = presenter.snackbarUiState
+    val state by presenter.uiState.collectAsStateWithLifecycle()
 
     var lastSnackbar by remember { mutableStateOf<SnackbarUiState?>(null) }
     if (state != null) lastSnackbar = state
-
-    LaunchedEffect(state) {
-        if (state != null) {
-            delay(3.seconds)
-            presenter.hide()
-        }
-    }
 
     Box(
         modifier = modifier

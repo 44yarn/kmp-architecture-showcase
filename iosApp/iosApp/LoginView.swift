@@ -73,8 +73,10 @@ struct LoginView: View {
                 }
             }
         }
-        .onChange(of: viewModel.dialogPresenter.dialogUiState) {
-            dialogState = viewModel.dialogPresenter.dialogUiState
+        .task {
+            for await state in viewModel.dialogPresenter.uiState {
+                dialogState = state
+            }
         }
     }
 

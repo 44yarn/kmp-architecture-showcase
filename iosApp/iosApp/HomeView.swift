@@ -67,13 +67,9 @@ struct HomeView: View {
                     }
                 }
             }
-            .onChange(of: viewModel.snackbarPresenter.snackbarUiState) {
-                if let state = viewModel.snackbarPresenter.snackbarUiState {
-                    withAnimation { snackbarMessage = state.message }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                        viewModel.snackbarPresenter.hide()
-                        withAnimation { snackbarMessage = nil }
-                    }
+            .task {
+                for await state in viewModel.snackbarPresenter.uiState {
+                    withAnimation { snackbarMessage = state?.message }
                 }
             }
     }

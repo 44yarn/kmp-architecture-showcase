@@ -5,25 +5,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 @Composable
 fun ShowcaseAlertDialog(
     presenter: DialogPresenter,
 ) {
-    val uiState = presenter.dialogUiState ?: return
+    val uiState by presenter.uiState.collectAsStateWithLifecycle()
+    val current = uiState ?: return
 
     AlertDialog(
         onDismissRequest = { presenter.onDismiss() },
         title = {
             Text(
-                text = uiState.title,
+                text = current.title,
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onSurface,
             )
         },
         text = {
             Text(
-                text = uiState.message,
+                text = current.message,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
@@ -31,13 +34,13 @@ fun ShowcaseAlertDialog(
         confirmButton = {
             TextButton(onClick = { presenter.onPositive() }) {
                 Text(
-                    text = uiState.positiveButton,
+                    text = current.positiveButton,
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary,
                 )
             }
         },
-        dismissButton = uiState.negativeButton?.let { negativeText ->
+        dismissButton = current.negativeButton?.let { negativeText ->
             {
                 TextButton(onClick = { presenter.onNegative() }) {
                     Text(

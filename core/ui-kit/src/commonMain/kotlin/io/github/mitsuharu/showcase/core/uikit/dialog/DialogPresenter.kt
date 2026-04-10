@@ -1,28 +1,28 @@
 package io.github.mitsuharu.showcase.core.uikit.dialog
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import kotlin.coroutines.resume
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 class DialogPresenter {
-    var dialogUiState: DialogUiState? by mutableStateOf(null)
-        private set
+    private val _uiState = MutableStateFlow<DialogUiState?>(null)
+    val uiState: StateFlow<DialogUiState?> = _uiState.asStateFlow()
 
     private var continuation: ((DialogResult) -> Unit)? = null
 
     suspend fun requestDialogResult(
         uiState: DialogUiState,
     ): DialogResult = suspendCancellableCoroutine { cont ->
-        dialogUiState = uiState
+        _uiState.value = uiState
         continuation = { result ->
-            dialogUiState = null
+            _uiState.value = null
             continuation = null
             cont.resume(result)
         }
         cont.invokeOnCancellation {
-            dialogUiState = null
+            _uiState.value = null
             continuation = null
         }
     }
