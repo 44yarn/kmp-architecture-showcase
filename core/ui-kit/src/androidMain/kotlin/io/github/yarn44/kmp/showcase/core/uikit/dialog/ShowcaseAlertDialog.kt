@@ -15,41 +15,58 @@ fun ShowcaseAlertDialog(
     val uiState by presenter.uiState.collectAsStateWithLifecycle()
     val current = uiState ?: return
 
+    // A dialog without a positive button makes no sense in this showcase,
+    // so bail out early if it is not provided.
+    val positive = current.positiveButton ?: return
+    val title = current.title
+    val message = current.message
+    val negative = current.negativeButton
+
     AlertDialog(
         onDismissRequest = { presenter.onDismiss() },
-        title = {
-            Text(
-                text = current.title,
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
+        title = if (title != null) {
+            {
+                Text(
+                    text = title.value,
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+            }
+        } else {
+            null
         },
-        text = {
-            Text(
-                text = current.message,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+        text = if (message != null) {
+            {
+                Text(
+                    text = message.value,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        } else {
+            null
         },
         confirmButton = {
             TextButton(onClick = { presenter.onPositive() }) {
                 Text(
-                    text = current.positiveButton,
+                    text = positive.value,
                     style = MaterialTheme.typography.labelLarge,
                     color = MaterialTheme.colorScheme.primary,
                 )
             }
         },
-        dismissButton = current.negativeButton?.let { negativeText ->
+        dismissButton = if (negative != null) {
             {
                 TextButton(onClick = { presenter.onNegative() }) {
                     Text(
-                        text = negativeText,
+                        text = negative.value,
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary,
                     )
                 }
             }
+        } else {
+            null
         },
     )
 }
