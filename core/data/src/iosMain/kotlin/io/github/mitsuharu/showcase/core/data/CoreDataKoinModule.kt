@@ -4,12 +4,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import io.github.mitsuharu.showcase.core.data.auth.AuthRepository
-import io.github.mitsuharu.showcase.core.data.auth.AuthRepositoryImpl
 import io.github.mitsuharu.showcase.core.data.preference.PreferenceStorage
 import kotlinx.cinterop.ExperimentalForeignApi
 import okio.Path.Companion.toPath
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
 import org.koin.dsl.module
 import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
@@ -22,7 +19,7 @@ val coreDataKoinModule = module {
             produceFile = { providePreferencesPath() },
         )
     }
-    singleOf(::AuthRepositoryImpl) bind AuthRepository::class
+    single { AuthRepository() }
     single { PreferenceStorage(get()) }
 }
 

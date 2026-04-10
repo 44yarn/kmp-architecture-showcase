@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.mitsuharu.showcase.core.data.preference.PreferenceStorage
 import javax.inject.Singleton
 import okio.Path.Companion.toPath
 
@@ -27,4 +28,10 @@ object PreferenceModule {
                 .toPath()
         },
     )
+
+    @Provides
+    @Singleton
+    fun providePreferenceStorage(
+        dataStore: DataStore<Preferences>,
+    ): PreferenceStorage = PreferenceStorage(dataStore)
 }
