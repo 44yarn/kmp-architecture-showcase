@@ -10,5 +10,5 @@ extensions.configure<DetektExtension> {
     parallel = true
     buildUponDefaultConfig = true
     allRules = false
-    config.setFrom(files("${rootProject.projectDir}/detekt.yml"))
+    config.setFrom(files("${rootProject.projectDir}/config/detekt/detekt.yml"))
 }
