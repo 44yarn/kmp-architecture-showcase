@@ -23,7 +23,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +31,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.yarn44.kmp.showcase.core.foundation.lifecycle.CollectAsEffect
 import io.github.yarn44.kmp.showcase.core.uikit.dialog.ShowcaseAlertDialog
 
 @Composable
@@ -44,12 +44,10 @@ fun LoginScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isLoading by viewModel.indicatorState.isLoading.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.effect.collect { effect ->
-            when (effect) {
-                is LoginEffect.NavigateToHome -> onNavigateToHome(effect.displayName, effect.isGuest)
-                is LoginEffect.LaunchActivity -> onLaunchActivity()
-            }
+    viewModel.effect.CollectAsEffect { effect ->
+        when (effect) {
+            is LoginEffect.NavigateToHome -> onNavigateToHome(effect.displayName, effect.isGuest)
+            is LoginEffect.LaunchActivity -> onLaunchActivity()
         }
     }
 

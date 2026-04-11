@@ -13,13 +13,13 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.yarn44.kmp.showcase.core.foundation.lifecycle.CollectAsEffect
 import io.github.yarn44.kmp.showcase.core.uikit.snackbar.SnackbarView
 
 @Composable
@@ -32,11 +32,9 @@ fun HomeScreen(
 
     BackHandler(onBack = viewModel.actions.onBack)
 
-    LaunchedEffect(Unit) {
-        viewModel.effect.collect { effect ->
-            when (effect) {
-                is HomeEffect.NavigateToLogin -> onNavigateToLogin()
-            }
+    viewModel.effect.CollectAsEffect { effect ->
+        when (effect) {
+            is HomeEffect.NavigateToLogin -> onNavigateToLogin()
         }
     }
 
