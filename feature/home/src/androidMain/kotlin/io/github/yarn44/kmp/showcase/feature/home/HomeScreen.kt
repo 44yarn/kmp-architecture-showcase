@@ -46,7 +46,7 @@ fun HomeScreen(
             actions = viewModel.actions,
         )
 
-        SnackbarView(presenter = viewModel.commonSnackbarPresenter)
+        SnackbarView(presenter = viewModel.snackbarPresenter)
     }
 }
 

@@ -31,7 +31,7 @@ class AndroidHomeViewModel @Inject constructor(
         snackbarPresenter = SnackbarPresenter(),
     )
 
-    val commonSnackbarPresenter: SnackbarPresenter = commonViewModel.snackbarPresenter
+    val snackbarPresenter: SnackbarPresenter = commonViewModel.snackbarPresenter
     val uiState: StateFlow<HomeUiState> = commonViewModel.uiState
     val effect = commonViewModel.effect
 
@@ -40,7 +40,7 @@ class AndroidHomeViewModel @Inject constructor(
         onLogout = commonViewModel::onLogout,
         onBack = {
             viewModelScope.launch {
-                commonSnackbarPresenter.show(SnackbarUiState(message = "Use the Logout button to sign out"))
+                snackbarPresenter.show(SnackbarUiState(message = "Use the Logout button to sign out"))
             }
         },
     )
