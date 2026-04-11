@@ -6,9 +6,7 @@ import io.github.yarn44.kmp.showcase.core.foundation.resultHandling.runCatchingC
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
-class AuthRepository(
-    private val dispatchers: DispatcherProvider,
-) {
+class AuthRepository(private val dispatchers: DispatcherProvider,) {
     suspend fun login(email: String, password: String): Result<String> =
         withContext(dispatchers.io) {
             runCatchingCancellable {
