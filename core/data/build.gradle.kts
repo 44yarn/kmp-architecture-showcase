@@ -27,6 +27,10 @@ kotlin {
                 implementation(libs.sqldelightNativeDriver)
             }
         }
+        commonTest.dependencies {
+            implementation(libs.kotlinTest)
+            implementation(libs.kotlinxCoroutinesTest)
+        }
     }
 }
 
