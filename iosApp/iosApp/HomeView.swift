@@ -30,7 +30,7 @@ struct HomeView: View {
             displayName: displayName,
             isGuest: isGuest,
             savedEmail: nil,
-            isRememberEmail: false
+            isRememberEmail: true
         ))
         self.onLogout = onLogout
     }

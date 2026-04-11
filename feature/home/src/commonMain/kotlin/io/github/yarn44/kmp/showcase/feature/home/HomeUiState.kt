@@ -4,7 +4,7 @@ data class HomeUiState(
     val displayName: String = "",
     val isGuest: Boolean = false,
     val savedEmail: String? = null,
-    val isRememberEmail: Boolean = false,
+    val isRememberEmail: Boolean = true,
 ) {
     val screenTitle: String get() = if (isGuest) "Guest Home" else "Home"
 }

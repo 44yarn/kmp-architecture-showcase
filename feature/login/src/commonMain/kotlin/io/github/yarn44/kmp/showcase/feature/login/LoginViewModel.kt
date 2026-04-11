@@ -80,7 +80,7 @@ class LoginViewModel(
     private suspend fun saveEmailIfRemembered() {
         val rememberEmail = preferenceStorage.getOrDefault(
             PreferenceKey.Auth.RememberEmail,
-            false,
+            true,
         )
         if (rememberEmail) {
             preferenceStorage.put(PreferenceKey.Auth.SavedEmail, _uiState.value.email)

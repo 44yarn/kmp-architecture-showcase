@@ -40,7 +40,7 @@ class HomeViewModel(
     init {
         scope.launch {
             val savedEmail = preferenceStorage.getOrNull(PreferenceKey.Auth.SavedEmail)
-            val rememberEmail = preferenceStorage.getOrDefault(PreferenceKey.Auth.RememberEmail, false)
+            val rememberEmail = preferenceStorage.getOrDefault(PreferenceKey.Auth.RememberEmail, true)
             _uiState.update { it.copy(savedEmail = savedEmail, isRememberEmail = rememberEmail) }
         }
         scope.launch {
