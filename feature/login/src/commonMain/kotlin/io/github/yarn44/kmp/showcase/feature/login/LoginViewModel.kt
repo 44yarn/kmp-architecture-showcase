@@ -69,14 +69,21 @@ class LoginViewModel(
             indicatorState.runWithLoading {
                 authRepository.login(_uiState.value.email, _uiState.value.password)
             }.onSuccess { displayName ->
-                preferenceStorage.put(
-                    PreferenceKey.Auth.SavedEmail,
-                    _uiState.value.email,
-                )
+                saveEmailIfRemembered()
                 _effect.send(LoginEffect.NavigateToHome(displayName, isGuest = false))
             }.onFailure { throwable ->
                 showLoginErrorDialog(throwable)
             }
+        }
+    }
+
+    private suspend fun saveEmailIfRemembered() {
+        val rememberEmail = preferenceStorage.getOrDefault(
+            PreferenceKey.Auth.RememberEmail,
+            false,
+        )
+        if (rememberEmail) {
+            preferenceStorage.put(PreferenceKey.Auth.SavedEmail, _uiState.value.email)
         }
     }
 
