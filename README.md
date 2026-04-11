@@ -54,6 +54,9 @@ Login --- Success ------------> Home ("Welcome, {name}!" Snackbar)
 - **Convention Plugin** — Shared build configuration via gradle-conventions
 - **PreferenceKey / PreferenceStorage** — Type-safe wrapper over Preferences DataStore (KMP), with the value type carried by the key
 - **AdaptiveString / AdaptiveImage** — Unify localized resources with literal strings / remote URLs behind a single consumer-facing type (see below)
+- **DI boundary** — Repositories and use-case classes live in `commonMain`. Platform-specific APIs (DataStore file paths, `Context`, `NSFileManager`, …) are referenced only inside DI modules (Hilt `@Provides` / Koin `module`) and injected as dependencies. No thin Hilt wrapper class just to attach `@Inject` — common classes are instantiated directly from `@Provides`.
+- **Stateless content split** — Each Android screen pairs a stateful `XxxScreen` (collects ViewModel state, wires effects) with a stateless `XxxContent` that only takes `uiState` + `actions`. The latter is what `@Preview` renders, so previews never touch DI or coroutines.
+- **Lifecycle-aware effect collection** — One-shot effect channels are collected via `Flow<T>.CollectAsEffect` (in `core/foundation`), which wraps `repeatOnLifecycle(STARTED)` so effects are not delivered while the screen is in the background.
 - **DI** — Hilt (Android) + Koin (iOS)
 
 ### Adaptive types: mixing resources and runtime values
