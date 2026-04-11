@@ -70,20 +70,20 @@ private fun HomeContent(
             Text(
                 text = uiState.screenTitle,
                 style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = AppTheme.colorToken.onBackground,
             )
 
             Text(
                 text = "Hello, ${uiState.displayName}!",
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = AppTheme.colorToken.onBackground,
             )
 
             uiState.savedEmail?.let { savedEmail ->
                 Text(
                     text = "Saved email: $savedEmail",
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.outline,
+                    color = AppTheme.colorToken.outline,
                 )
             }
 
@@ -95,7 +95,7 @@ private fun HomeContent(
                 Text(
                     text = "Remember Email",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = AppTheme.colorToken.onBackground,
                 )
                 Switch(
                     checked = uiState.isRememberEmail,
@@ -110,7 +110,7 @@ private fun HomeContent(
                 Text(
                     text = "Logout",
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = AppTheme.colorToken.primary,
                 )
             }
         }

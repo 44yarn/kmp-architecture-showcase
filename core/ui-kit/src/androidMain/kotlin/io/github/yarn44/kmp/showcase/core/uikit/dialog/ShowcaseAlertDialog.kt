@@ -7,6 +7,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.yarn44.kmp.showcase.core.uikit.theme.AppTheme
 
 @Composable
 fun ShowcaseAlertDialog(
@@ -29,7 +30,7 @@ fun ShowcaseAlertDialog(
                 Text(
                     text = title.value,
                     style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = AppTheme.colorToken.onSurface,
                 )
             }
         } else {
@@ -40,7 +41,7 @@ fun ShowcaseAlertDialog(
                 Text(
                     text = message.value,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    color = AppTheme.colorToken.onSurfaceVariant,
                 )
             }
         } else {
@@ -51,7 +52,7 @@ fun ShowcaseAlertDialog(
                 Text(
                     text = positive.value,
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = AppTheme.colorToken.primary,
                 )
             }
         },
@@ -61,7 +62,7 @@ fun ShowcaseAlertDialog(
                     Text(
                         text = negative.value,
                         style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = AppTheme.colorToken.primary,
                     )
                 }
             }

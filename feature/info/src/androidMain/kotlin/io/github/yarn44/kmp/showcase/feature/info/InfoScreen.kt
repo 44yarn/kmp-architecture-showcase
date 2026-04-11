@@ -31,7 +31,7 @@ fun InfoScreen(
         Text(
             text = InfoContent.TITLE,
             style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = AppTheme.colorToken.onBackground,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -39,7 +39,7 @@ fun InfoScreen(
         Text(
             text = InfoContent.DESCRIPTION,
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = AppTheme.colorToken.onBackground,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -47,7 +47,7 @@ fun InfoScreen(
         Text(
             text = "Version ${InfoContent.VERSION}",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = AppTheme.colorToken.onSurfaceVariant,
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -56,7 +56,7 @@ fun InfoScreen(
             Text(
                 text = "Back",
                 style = MaterialTheme.typography.labelLarge,
-                color = MaterialTheme.colorScheme.primary,
+                color = AppTheme.colorToken.primary,
             )
         }
     }

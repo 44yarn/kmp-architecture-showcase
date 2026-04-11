@@ -94,7 +94,7 @@ private fun LoginContent(
             Text(
                 text = "KMP Showcase",
                 style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = AppTheme.colorToken.onBackground,
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -106,7 +106,7 @@ private fun LoginContent(
                     Text(
                         text = "Email",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = AppTheme.colorToken.onSurfaceVariant,
                     )
                 },
                 singleLine = true,
@@ -128,7 +128,7 @@ private fun LoginContent(
                     Text(
                         text = "Password",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        color = AppTheme.colorToken.onSurfaceVariant,
                     )
                 },
                 singleLine = true,
@@ -164,7 +164,7 @@ private fun LoginContent(
                 Text(
                     text = "Login",
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    color = AppTheme.colorToken.onPrimary,
                 )
             }
 
@@ -180,7 +180,7 @@ private fun LoginContent(
                     Text(
                         text = "Login (Fail)",
                         style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = AppTheme.colorToken.primary,
                     )
                 }
 
@@ -192,7 +192,7 @@ private fun LoginContent(
                     Text(
                         text = "Cancel",
                         style = MaterialTheme.typography.labelLarge,
-                        color = MaterialTheme.colorScheme.primary,
+                        color = AppTheme.colorToken.primary,
                     )
                 }
             }
@@ -204,7 +204,7 @@ private fun LoginContent(
                 Text(
                     text = "Information",
                     style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                    color = AppTheme.colorToken.primary,
                 )
             }
         }

@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.yarn44.kmp.showcase.core.uikit.theme.AppTheme
 
 @Composable
 fun SnackbarView(
@@ -53,14 +54,14 @@ fun SnackbarView(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 8.dp),
                     shape = RoundedCornerShape(8.dp),
-                    color = MaterialTheme.colorScheme.inverseSurface,
-                    contentColor = MaterialTheme.colorScheme.inverseOnSurface,
+                    color = AppTheme.colorToken.inverseSurface,
+                    contentColor = AppTheme.colorToken.inverseOnSurface,
                 ) {
                     Text(
                         text = snackbar.message,
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.inverseOnSurface,
+                        color = AppTheme.colorToken.inverseOnSurface,
                     )
                 }
             }
