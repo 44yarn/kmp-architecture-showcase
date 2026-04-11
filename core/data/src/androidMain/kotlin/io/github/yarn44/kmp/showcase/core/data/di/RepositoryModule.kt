@@ -5,6 +5,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.yarn44.kmp.showcase.core.data.auth.AuthRepository
+import io.github.yarn44.kmp.showcase.core.foundation.coroutines.DefaultDispatcherProvider
+import io.github.yarn44.kmp.showcase.core.foundation.coroutines.DispatcherProvider
 import javax.inject.Singleton
 
 @Module
@@ -12,5 +14,11 @@ import javax.inject.Singleton
 object RepositoryModule {
     @Provides
     @Singleton
-    fun provideAuthRepository(): AuthRepository = AuthRepository()
+    fun provideDispatcherProvider(): DispatcherProvider = DefaultDispatcherProvider()
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(
+        dispatchers: DispatcherProvider,
+    ): AuthRepository = AuthRepository(dispatchers)
 }

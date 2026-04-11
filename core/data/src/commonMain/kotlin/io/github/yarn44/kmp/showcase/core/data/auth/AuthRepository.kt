@@ -1,18 +1,24 @@
 package io.github.yarn44.kmp.showcase.core.data.auth
 
+import io.github.yarn44.kmp.showcase.core.foundation.coroutines.DispatcherProvider
 import io.github.yarn44.kmp.showcase.core.foundation.resultHandling.logOnFailure
 import io.github.yarn44.kmp.showcase.core.foundation.resultHandling.runCatchingCancellable
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 
-class AuthRepository {
+class AuthRepository(
+    private val dispatchers: DispatcherProvider,
+) {
     suspend fun login(email: String, password: String): Result<String> =
-        runCatchingCancellable {
-            delay(1500L)
-            if (password == "error") {
-                throw AuthException("Authentication failed: invalid credentials")
-            }
-            email.substringBefore("@").replaceFirstChar { it.uppercase() }
-        }.logOnFailure()
+        withContext(dispatchers.io) {
+            runCatchingCancellable {
+                delay(1500L)
+                if (password == "error") {
+                    throw AuthException("Authentication failed: invalid credentials")
+                }
+                email.substringBefore("@").replaceFirstChar { it.uppercase() }
+            }.logOnFailure()
+        }
 }
 
 /**

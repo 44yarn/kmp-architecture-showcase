@@ -5,6 +5,8 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import io.github.yarn44.kmp.showcase.core.data.auth.AuthRepository
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceStorage
+import io.github.yarn44.kmp.showcase.core.foundation.coroutines.DefaultDispatcherProvider
+import io.github.yarn44.kmp.showcase.core.foundation.coroutines.DispatcherProvider
 import kotlinx.cinterop.ExperimentalForeignApi
 import okio.Path.Companion.toPath
 import org.koin.dsl.module
@@ -19,7 +21,8 @@ val coreDataKoinModule = module {
             produceFile = { providePreferencesPath() },
         )
     }
-    single { AuthRepository() }
+    single<DispatcherProvider> { DefaultDispatcherProvider() }
+    single { AuthRepository(get()) }
     single { PreferenceStorage(get()) }
 }
 

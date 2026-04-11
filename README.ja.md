@@ -55,6 +55,7 @@ Login --- Login 成功 -----------> Home（"Welcome, {name}!" Snackbar）
 - **PreferenceKey / PreferenceStorage** — Preferences DataStore (KMP) の型安全ラッパー。値の型をキー側に閉じ込める設計
 - **AdaptiveString / AdaptiveImage** — ローカライズリソースとリテラル文字列 / リモート URL を単一の型で扱う抽象化 (下記参照)
 - **DI 境界** — Repository / use-case 類は `commonMain` に置く。platform 固有 API (DataStore のファイルパス、`Context`、`NSFileManager` など) は DI モジュール (Hilt `@Provides` / Koin `module`) からのみ参照し、依存として注入する。`@Inject` を付けるためだけの薄い Hilt wrapper クラスは作らず、`@Provides` で commonMain クラスを直接インスタンス化する
+- **DispatcherProvider** — Repository は `Dispatchers.IO` / `.Default` / `.Main` を直接参照せず、`core/foundation/commonMain` の `DispatcherProvider` interface 経由で受け取る。本番 binding は `DefaultDispatcherProvider`、テストでは `TestDispatcher` ベースの実装に差し替え可能。interface パターンを採ることで JVM 専用の `@Qualifier` annotation を使わずに済み、Hilt / Koin の双方から同一形で binding できる
 - **Stateless content split** — Android の各画面は、ViewModel state を collect して effect を配線する stateful な `XxxScreen` と、`uiState` + `actions` だけを受け取る stateless な `XxxContent` のペアで構成する。`@Preview` が描画するのは後者なので、プレビューは DI や coroutine に触れない
 - **Lifecycle-aware effect 収集** — 一過性 effect の channel は `Flow<T>.CollectAsEffect` (`core/foundation`) で collect する。中で `repeatOnLifecycle(STARTED)` をラップしているので、画面が background の間に effect が配信されない
 - **DI** — Hilt (Android) + Koin (iOS)
