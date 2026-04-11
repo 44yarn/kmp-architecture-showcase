@@ -28,11 +28,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.yarn44.kmp.showcase.core.foundation.lifecycle.CollectAsEffect
 import io.github.yarn44.kmp.showcase.core.uikit.dialog.ShowcaseAlertDialog
+import io.github.yarn44.kmp.showcase.core.uikit.theme.AppTheme
 
 @Composable
 fun LoginScreen(
@@ -206,5 +208,37 @@ private fun LoginContent(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LoginContentPreview() {
+    AppTheme {
+        LoginContent(
+            uiState = LoginUiState(
+                email = "demo@example.com",
+                password = "password",
+                isPasswordVisible = false,
+            ),
+            isLoading = false,
+            actions = LoginActions(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LoginContentLoadingPreview() {
+    AppTheme {
+        LoginContent(
+            uiState = LoginUiState(
+                email = "demo@example.com",
+                password = "password",
+                isPasswordVisible = false,
+            ),
+            isLoading = true,
+            actions = LoginActions(),
+        )
     }
 }

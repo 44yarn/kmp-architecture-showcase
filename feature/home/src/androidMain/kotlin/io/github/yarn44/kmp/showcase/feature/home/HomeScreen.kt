@@ -16,11 +16,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.yarn44.kmp.showcase.core.foundation.lifecycle.CollectAsEffect
 import io.github.yarn44.kmp.showcase.core.uikit.snackbar.SnackbarView
+import io.github.yarn44.kmp.showcase.core.uikit.theme.AppTheme
 
 @Composable
 fun HomeScreen(
@@ -112,5 +114,37 @@ private fun HomeContent(
                 )
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeContentPreview() {
+    AppTheme {
+        HomeContent(
+            uiState = HomeUiState(
+                displayName = "Demo User",
+                isGuest = false,
+                savedEmail = "demo@example.com",
+                isRememberEmail = true,
+            ),
+            actions = HomeActions(),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun HomeContentGuestPreview() {
+    AppTheme {
+        HomeContent(
+            uiState = HomeUiState(
+                displayName = "Guest",
+                isGuest = true,
+                savedEmail = "",
+                isRememberEmail = false,
+            ),
+            actions = HomeActions(),
+        )
     }
 }

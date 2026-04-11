@@ -12,7 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.yarn44.kmp.showcase.core.uikit.theme.AppTheme
 
 @Composable
 fun InfoScreen(
@@ -57,5 +59,13 @@ fun InfoScreen(
                 color = MaterialTheme.colorScheme.primary,
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun InfoScreenPreview() {
+    AppTheme {
+        InfoScreen(onBack = {})
     }
 }
