@@ -79,9 +79,9 @@ private fun HomeContent(
                 color = MaterialTheme.colorScheme.onBackground,
             )
 
-            if (uiState.savedEmail.isNotEmpty()) {
+            uiState.savedEmail?.let { savedEmail ->
                 Text(
-                    text = "Saved email: ${uiState.savedEmail}",
+                    text = "Saved email: $savedEmail",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.outline,
                 )
@@ -141,7 +141,7 @@ private fun HomeContentGuestPreview() {
             uiState = HomeUiState(
                 displayName = "Guest",
                 isGuest = true,
-                savedEmail = "",
+                savedEmail = null,
                 isRememberEmail = false,
             ),
             actions = HomeActions(),

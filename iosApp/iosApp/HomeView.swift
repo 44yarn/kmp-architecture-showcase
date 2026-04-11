@@ -29,7 +29,7 @@ struct HomeView: View {
         _uiState = State(initialValue: HomeUiState(
             displayName: displayName,
             isGuest: isGuest,
-            savedEmail: "",
+            savedEmail: nil,
             isRememberEmail: false
         ))
         self.onLogout = onLogout
@@ -82,8 +82,8 @@ struct HomeView: View {
                 .appFont(AppFonts.body.regular)
                 .foregroundColor(colors.onBackground)
 
-            if !uiState.savedEmail.isEmpty {
-                Text("Saved email: \(uiState.savedEmail)")
+            if let savedEmail = uiState.savedEmail {
+                Text("Saved email: \(savedEmail)")
                     .appFont(AppFonts.subheadline.regular)
                     .foregroundColor(colors.onSurfaceVariant)
             }
