@@ -30,6 +30,10 @@ class HomeViewModel(
 
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
+    // Rendezvous channel: effects are UI side-effects that require a live
+    // collector on the screen. Suspending the producer when no one is
+    // listening is intentional — queuing would risk delivering a stale
+    // navigation to the next screen.
     private val _effect = Channel<HomeEffect>()
     val effect = _effect.receiveAsFlow()
 
