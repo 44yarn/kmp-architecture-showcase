@@ -38,8 +38,7 @@ struct HomeView: View {
     var body: some View {
         boxContent
             .background(colors.background.ignoresSafeArea())
-            .navigationTitle(uiState.screenTitle)
-            .navigationBarBackButtonHidden(true)
+            .toolbar(.hidden, for: .navigationBar)
             .overlay(alignment: .bottom) {
                 if let message = snackbarMessage {
                     Text(message)
@@ -77,6 +76,10 @@ struct HomeView: View {
     private var boxContent: some View {
         VStack(spacing: AppSpacings.Padding.medium) {
             Spacer()
+
+            Text(uiState.screenTitle)
+                .appFont(AppFonts.title2.bold)
+                .foregroundColor(colors.onBackground)
 
             Text("Hello, \(uiState.displayName)!")
                 .appFont(AppFonts.body.regular)

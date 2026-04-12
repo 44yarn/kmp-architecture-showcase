@@ -40,5 +40,6 @@ struct InfoView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(colors.background.ignoresSafeArea())
         .navigationTitle("Info")
+        .toolbarVisibility(.visible, for: .navigationBar)
     }
 }
