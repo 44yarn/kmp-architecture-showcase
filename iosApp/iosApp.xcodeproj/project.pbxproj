@@ -18,14 +18,12 @@
 		A5AAB819113E672808E647A2 /* AppCornerRadii.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6D45084AABBE4BC05B77CC /* AppCornerRadii.swift */; };
 		D488747AD197BC7C1635E66B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF4A054A43ED6B6C286E46F /* LoginView.swift */; };
 		D9DB336E16A6398B577A0AC1 /* AppFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2FE32A2393E3DCDAED2591 /* AppFonts.swift */; };
-		EC1992CF3208D67247D98488 /* Koin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B39E5FC1264F8AC08FEA3D4 /* Koin.swift */; };
 		F7C33B50A94DA01F2E82C280 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 245434685F34A9A15B1AC406 /* libsqlite3.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		02AC86C890784898EA768EC3 /* ShowcaseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowcaseApp.swift; sourceTree = "<group>"; };
 		13B2F1B7EB63407872D7A6EE /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
-		1B39E5FC1264F8AC08FEA3D4 /* Koin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Koin.swift; sourceTree = "<group>"; };
 		245434685F34A9A15B1AC406 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		43F8E712BF3EBE66FA92EDC3 /* ShowcaseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShowcaseKit.framework; path = ../shared/build/bin/iosSimulatorArm64/debugFramework/ShowcaseKit.framework; sourceTree = "<group>"; };
 		5E2FE32A2393E3DCDAED2591 /* AppFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFonts.swift; sourceTree = "<group>"; };
@@ -56,16 +54,31 @@
 		1DB4B685CAEE8BEFEBBAEF94 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
-				CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */,
-				8DB12B8F33A658239E951429 /* HomeView.swift */,
-				C117AD187833E2513BD2F553 /* Info.plist */,
-				6DC7CEF6C924FA74EA7BECA7 /* InfoView.swift */,
-				1B39E5FC1264F8AC08FEA3D4 /* Koin.swift */,
-				5EF4A054A43ED6B6C286E46F /* LoginView.swift */,
-				02AC86C890784898EA768EC3 /* ShowcaseApp.swift */,
+				A1B2C3D4E5F6A7B8C9D0E1F2 /* App */,
+				B2C3D4E5F6A7B8C9D0E1F2A3 /* Screens */,
 				4795698A257B423F254DDC14 /* Theme */,
+				C117AD187833E2513BD2F553 /* Info.plist */,
 			);
 			path = iosApp;
+			sourceTree = "<group>";
+		};
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				02AC86C890784898EA768EC3 /* ShowcaseApp.swift */,
+				CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		B2C3D4E5F6A7B8C9D0E1F2A3 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				5EF4A054A43ED6B6C286E46F /* LoginView.swift */,
+				8DB12B8F33A658239E951429 /* HomeView.swift */,
+				6DC7CEF6C924FA74EA7BECA7 /* InfoView.swift */,
+			);
+			path = Screens;
 			sourceTree = "<group>";
 		};
 		3666012298E772D226418813 /* Frameworks */ = {
@@ -191,7 +204,6 @@
 				56B0305B5D3847FC6B326502 /* ContentView.swift in Sources */,
 				68040CE08AEDC7C1E192C50C /* HomeView.swift in Sources */,
 				3945B679EEB74DE188BE0250 /* InfoView.swift in Sources */,
-				EC1992CF3208D67247D98488 /* Koin.swift in Sources */,
 				D488747AD197BC7C1635E66B /* LoginView.swift in Sources */,
 				14E4AAFB2DF7164712FFEF2E /* ShowcaseApp.swift in Sources */,
 			);
