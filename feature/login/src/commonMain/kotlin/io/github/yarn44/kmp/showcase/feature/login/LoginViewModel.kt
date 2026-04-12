@@ -42,6 +42,7 @@ class LoginViewModel(
     val effect = _effect.receiveAsFlow()
 
     private var currentJob: Job? = null
+    private var passwordBeforeFailureDemo: String? = null
 
     init {
         scope.launch {
@@ -126,13 +127,13 @@ class LoginViewModel(
     }
 
     fun onLoginFailureDemo() {
-        val savedPassword = _uiState.value.password
+        passwordBeforeFailureDemo = _uiState.value.password
         _uiState.update { it.copy(password = "error") }
         currentJob = scope.launch {
             indicatorState.runWithLoading {
                 authRepository.login(_uiState.value.email, "error")
             }.onFailure { throwable ->
-                _uiState.update { it.copy(password = savedPassword) }
+                restorePassword()
                 showLoginErrorDialog(throwable)
             }
         }
@@ -141,6 +142,14 @@ class LoginViewModel(
     fun onCancel() {
         currentJob?.cancel()
         currentJob = null
+        restorePassword()
+    }
+
+    private fun restorePassword() {
+        passwordBeforeFailureDemo?.let { saved ->
+            _uiState.update { it.copy(password = saved) }
+            passwordBeforeFailureDemo = null
+        }
     }
 
     fun onInfo() {
