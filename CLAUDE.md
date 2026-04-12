@@ -33,6 +33,12 @@ android-architecture-showcase の KMP 版。同じ画面構成 (Login / Home / I
   - これらに該当しないなら単一 class で書き、必要になった時点で interface 化すれば良い。テスト用差し替えは多くの場合、より下層の依存（DI で渡すインスタンス）を差し替えるだけで足りる
 - **型情報はキー側に閉じ込める**: `PreferenceKey<T : Any>` のように generic で型を運び、Storage 側は `get/put/observe/remove` の単一メソッドで全型を扱う。`getString`/`getBoolean` のような型ごとのメソッド分割は避ける
 
+## KMP iOS 連携の注意事項
+
+- **Kotlin の `init` prefix は Swift で `doInit` に変換される** — Swift の `init` は予約語のため、Kotlin/Native が自動で `do` prefix を付与する。iOS 向けの top-level 関数名には `init` を避け、`bootstrap` 等の動詞を使う
+- **iOS framework は Kotlin 変更後に手動 rebuild が必要** — `./gradlew :shared:linkDebugFrameworkIosSimulatorArm64` を Xcode ビルド前に実行する。Xcode は Kotlin framework を自動再ビルドしない
+- **Kotlin の sealed interface / enum 変更時は Swift 側の `switch` を確認** — Kotlin 側でメンバーを rename/削除した場合、Swift の `switch` 文が古い型名を参照してコンパイルエラーになる。`grep -r "旧名" iosApp/` で漏れを検出する
+
 ## 参照プロジェクト
 
 - `~/apprica/android-architecture-showcase` — 元となる Android 版。UI 外観はこれに合わせる
