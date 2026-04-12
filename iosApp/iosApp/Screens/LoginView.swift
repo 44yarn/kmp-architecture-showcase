@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @Environment(\.colorScheme) private var colorScheme
-    private let viewModel = KoinBootstrapKt.getLoginViewModel()
+    @State private var viewModel = KoinBootstrapKt.getLoginViewModel()
     @State private var uiState = LoginUiState(email: "", password: "", isPasswordVisible: false)
     @State private var isLoading = false
     // The dialog's AdaptiveString fields are resolved asynchronously via the
@@ -19,6 +19,8 @@ struct LoginView: View {
     var onNavigate: (AppRoute) -> Void
 
     private var colors: AppColors { .resolve(colorScheme) }
+    private var isLoginDisabled: Bool { isLoading || uiState.email.isEmpty || uiState.password.isEmpty }
+    private var isCancelDisabled: Bool { !isLoading }
 
     var body: some View {
         ZStack {
@@ -181,11 +183,10 @@ struct LoginView: View {
                     .padding()
                     .background(
                         RoundedRectangle(cornerRadius: AppCornerRadii.small)
-                            .fill(isLoading || uiState.email.isEmpty || uiState.password.isEmpty
-                                ? colors.secondary : colors.primary)
+                            .fill(isLoginDisabled ? colors.secondary : colors.primary)
                     )
             }
-            .disabled(isLoading || uiState.email.isEmpty || uiState.password.isEmpty)
+            .disabled(isLoginDisabled)
 
             // Login (Fail) / Cancel row
             HStack(spacing: AppSpacings.Padding.xSmall) {
@@ -205,15 +206,15 @@ struct LoginView: View {
                 Button(action: { viewModel.onCancel() }) {
                     Text("Cancel")
                         .appFont(AppFonts.body.regular)
-                        .foregroundColor(!isLoading ? colors.secondary : colors.primary)
+                        .foregroundColor(isCancelDisabled ? colors.secondary : colors.primary)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(
                             RoundedRectangle(cornerRadius: AppCornerRadii.small)
-                                .stroke(!isLoading ? colors.secondary : colors.primary, lineWidth: 1)
+                                .stroke(isCancelDisabled ? colors.secondary : colors.primary, lineWidth: 1)
                         )
                 }
-                .disabled(!isLoading)
+                .disabled(isCancelDisabled)
             }
 
             // Information button

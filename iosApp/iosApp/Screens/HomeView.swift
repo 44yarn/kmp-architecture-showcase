@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @Environment(\.colorScheme) private var colorScheme
-    private let viewModel: HomeViewModel
+    @State private var viewModel: HomeViewModel
     @State private var uiState: HomeUiState
     var onLogout: () -> Void
 
@@ -22,10 +22,10 @@ struct HomeView: View {
         isGuest: Bool,
         onLogout: @escaping () -> Void
     ) {
-        viewModel = KoinBootstrapKt.getHomeViewModel(
+        _viewModel = State(initialValue: KoinBootstrapKt.getHomeViewModel(
             displayName: displayName,
             isGuest: isGuest
-        )
+        ))
         _uiState = State(initialValue: HomeUiState(
             displayName: displayName,
             isGuest: isGuest,
