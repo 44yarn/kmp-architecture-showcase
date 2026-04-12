@@ -59,6 +59,8 @@ Login --- Success ------------> Home ("Welcome, {name}!" Snackbar)
 - **Stateless content split** — Each Android screen pairs a stateful `XxxScreen` (collects ViewModel state, wires effects) with a stateless `XxxContent` that only takes `uiState` + `actions`. The latter is what `@Preview` renders, so previews never touch DI or coroutines.
 - **Lifecycle-aware effect collection** — One-shot effect channels are collected via `Flow<T>.CollectAsEffect` (in `core/foundation`), which wraps `repeatOnLifecycle(STARTED)` so effects are not delivered while the screen is in the background.
 - **DI** — Hilt (Android) + Koin (iOS)
+- **iOS string strategy** — Static UI chrome (screen titles, button labels) uses SwiftUI string literals. Dynamic or logic-driven text (error messages, dialog content) is resolved from `AdaptiveString` via SKIE's `async throws` bridge (`suspend resolve()` in `iosMain`). This two-layer approach avoids async overhead for static labels while keeping shared localization for content that originates in `commonMain` ViewModels.
+- **Effect collection lifecycle** — iOS uses SwiftUI `.task { for await ... }`, which SwiftUI automatically cancels on view disappear. Android wraps the same `Flow.collect` with `repeatOnLifecycle(STARTED)` via `CollectAsEffect`. Both platforms observe effects only while the screen is visible, preventing delivery of stale navigation events after the screen goes to the background.
 
 ### Adaptive types: mixing resources and runtime values
 

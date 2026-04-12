@@ -59,6 +59,8 @@ Login --- Login 成功 -----------> Home（"Welcome, {name}!" Snackbar）
 - **Stateless content split** — Android の各画面は、ViewModel state を collect して effect を配線する stateful な `XxxScreen` と、`uiState` + `actions` だけを受け取る stateless な `XxxContent` のペアで構成する。`@Preview` が描画するのは後者なので、プレビューは DI や coroutine に触れない
 - **Lifecycle-aware effect 収集** — 一過性 effect の channel は `Flow<T>.CollectAsEffect` (`core/foundation`) で collect する。中で `repeatOnLifecycle(STARTED)` をラップしているので、画面が background の間に effect が配信されない
 - **DI** — Hilt (Android) + Koin (iOS)
+- **iOS 文字列方針** — 静的な UI chrome (画面タイトル、ボタンラベル等) は SwiftUI の文字列リテラルを使用。動的テキスト (エラーメッセージ、ダイアログ内容等) は `AdaptiveString` を SKIE の `async throws` ブリッジ (`iosMain` の `suspend resolve()`) で解決する。この 2 層方式により、静的ラベルで不要な async オーバーヘッドを避けつつ、`commonMain` ViewModel 由来のコンテンツは共有ローカライゼーションを維持する
+- **Effect 収集のライフサイクル** — iOS は SwiftUI `.task { for await ... }` を使い、view disappear 時に SwiftUI が自動的にキャンセルする。Android は同じ `Flow.collect` を `repeatOnLifecycle(STARTED)` (`CollectAsEffect`) でラップする。どちらのプラットフォームも画面が表示されている間のみ effect を observe し、バックグラウンド遷移後のステール navigation event 配信を防止する
 
 ### Adaptive types: リソースとランタイム値の混在を扱う
 
