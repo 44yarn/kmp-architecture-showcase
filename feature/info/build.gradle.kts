@@ -5,3 +5,11 @@ plugins {
 android {
     namespace = "io.github.yarn44.kmp.showcase.feature.info"
 }
+
+kotlin {
+    sourceSets {
+        androidMain.dependencies {
+            implementation(libs.composeMaterialIconsExtended)
+        }
+    }
+}
