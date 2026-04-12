@@ -1,6 +1,7 @@
 package io.github.yarn44.kmp.showcase.shared
 
 import io.github.yarn44.kmp.showcase.core.data.coreDataKoinModule
+import io.github.yarn44.kmp.showcase.core.foundation.CoreKoinBridgeIos
 import io.github.yarn44.kmp.showcase.core.foundation.startKoinForIos
 import io.github.yarn44.kmp.showcase.feature.home.HomeViewModel
 import io.github.yarn44.kmp.showcase.feature.home.featureHomeKoinModule
@@ -10,7 +11,8 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import org.koin.core.parameter.parametersOf
 
-fun initKoin() {
+fun bootstrapKoin() {
+    if (CoreKoinBridgeIos.isStarted()) return
     startKoinForIos(
         coreDataKoinModule,
         featureLoginKoinModule,
@@ -18,22 +20,14 @@ fun initKoin() {
     )
 }
 
-/**
- * Helper for resolving ViewModels from iOS.
- */
-object ViewModelProvider : KoinComponent {
-    fun loginViewModel(): LoginViewModel {
-        val vm: LoginViewModel by inject()
-        return vm
-    }
+private object KoinBridge : KoinComponent
 
-    fun homeViewModel(displayName: String, isGuest: Boolean): HomeViewModel {
-        val vm: HomeViewModel by inject { parametersOf(displayName, isGuest) }
-        return vm
-    }
+fun getLoginViewModel(): LoginViewModel {
+    val vm: LoginViewModel by KoinBridge.inject()
+    return vm
 }
 
-fun getLoginViewModel(): LoginViewModel = ViewModelProvider.loginViewModel()
-
-fun getHomeViewModel(displayName: String, isGuest: Boolean): HomeViewModel =
-    ViewModelProvider.homeViewModel(displayName, isGuest)
+fun getHomeViewModel(displayName: String, isGuest: Boolean): HomeViewModel {
+    val vm: HomeViewModel by KoinBridge.inject { parametersOf(displayName, isGuest) }
+    return vm
+}

@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct ShowcaseApp: App {
     init() {
-        KoinBootstrapKt.doInitKoin()
+        KoinBootstrapKt.bootstrapKoin()
     }
 
     var body: some Scene {
