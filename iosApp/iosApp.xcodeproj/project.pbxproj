@@ -25,7 +25,7 @@
 		02AC86C890784898EA768EC3 /* ShowcaseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowcaseApp.swift; sourceTree = "<group>"; };
 		13B2F1B7EB63407872D7A6EE /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		245434685F34A9A15B1AC406 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		43F8E712BF3EBE66FA92EDC3 /* ShowcaseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShowcaseKit.framework; path = ../shared/build/bin/iosSimulatorArm64/debugFramework/ShowcaseKit.framework; sourceTree = "<group>"; };
+		43F8E712BF3EBE66FA92EDC3 /* ShowcaseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShowcaseKit.framework; path = "../shared/build/xcode-frameworks/Debug/iphonesimulator/ShowcaseKit.framework"; sourceTree = "<group>"; };
 		5E2FE32A2393E3DCDAED2591 /* AppFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFonts.swift; sourceTree = "<group>"; };
 		5EF4A054A43ED6B6C286E46F /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		6963AB6A8CFF54CB5F83E877 /* Color+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+App.swift"; sourceTree = "<group>"; };
@@ -60,25 +60,6 @@
 				C117AD187833E2513BD2F553 /* Info.plist */,
 			);
 			path = iosApp;
-			sourceTree = "<group>";
-		};
-		A1B2C3D4E5F6A7B8C9D0E1F2 /* App */ = {
-			isa = PBXGroup;
-			children = (
-				02AC86C890784898EA768EC3 /* ShowcaseApp.swift */,
-				CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */,
-			);
-			path = App;
-			sourceTree = "<group>";
-		};
-		B2C3D4E5F6A7B8C9D0E1F2A3 /* Screens */ = {
-			isa = PBXGroup;
-			children = (
-				5EF4A054A43ED6B6C286E46F /* LoginView.swift */,
-				8DB12B8F33A658239E951429 /* HomeView.swift */,
-				6DC7CEF6C924FA74EA7BECA7 /* InfoView.swift */,
-			);
-			path = Screens;
 			sourceTree = "<group>";
 		};
 		3666012298E772D226418813 /* Frameworks */ = {
@@ -119,6 +100,25 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A1B2C3D4E5F6A7B8C9D0E1F2 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				02AC86C890784898EA768EC3 /* ShowcaseApp.swift */,
+				CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		B2C3D4E5F6A7B8C9D0E1F2A3 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				5EF4A054A43ED6B6C286E46F /* LoginView.swift */,
+				8DB12B8F33A658239E951429 /* HomeView.swift */,
+				6DC7CEF6C924FA74EA7BECA7 /* InfoView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -126,6 +126,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 29DCA9F0B3A40325067EB163 /* Build configuration list for PBXNativeTarget "iosApp" */;
 			buildPhases = (
+				9B8034032F8E6A4A00292C7A /* ShellScript */,
 				297B59D9CE634556D6007C40 /* Sources */,
 				EF8A6E9BFD470986D9D5C9B5 /* Frameworks */,
 				2D30A78DD44DE9FE52C0AFE1 /* Sync Compose Resources */,
@@ -189,6 +190,23 @@
 			shellPath = /bin/sh;
 			shellScript = "#!/usr/bin/env bash\n\nset -Eeuo pipefail\n\n# Sync Compose Multiplatform Resources into the iOS app bundle.\n#\n# Why this script exists:\n#   Compose Multiplatform's Gradle plugin compiles composeResources into .cvr\n#   files under each module's build directory, but when the iOS side of a\n#   KMP project is written in SwiftUI (i.e. NOT Compose Multiplatform UI),\n#   the plugin does not copy those files into the iOS app bundle. The\n#   Compose Resources runtime then fails to resolve any StringResource with\n#   a MissingResourceException whose path points at\n#     <app>/compose-resources/composeResources/<package>/values/<file>.cvr\n#\n#   This script runs as an Xcode build phase (see iosApp/project.yml),\n#   invokes the `assemble<Target>MainResources` Gradle task for each\n#   module that ships composeResources, and rsyncs the resulting tree\n#   into the built .app bundle at the layout expected at runtime.\n#\n# When to touch this script:\n#   - Add a new module to the MODULES list below when it gains its own\n#     src/commonMain/composeResources/values/strings.xml.\n#   - Update the platform -> Kotlin/Native target mapping if a new\n#     iOS target is introduced.\n\nlog() { echo \"sync-compose-resources: $*\"; }\n\n# Required Xcode environment variables.\n: \"${PLATFORM_NAME:?Not running under Xcode (PLATFORM_NAME unset)}\"\n: \"${ARCHS:?Not running under Xcode (ARCHS unset)}\"\n: \"${BUILT_PRODUCTS_DIR:?Not running under Xcode (BUILT_PRODUCTS_DIR unset)}\"\n: \"${UNLOCALIZED_RESOURCES_FOLDER_PATH:?Not running under Xcode (UNLOCALIZED_RESOURCES_FOLDER_PATH unset)}\"\n: \"${SRCROOT:?Not running under Xcode (SRCROOT unset)}\"\n\n# Map Xcode platform/arch to the Kotlin/Native target name.\ncase \"${PLATFORM_NAME}\" in\n    iphoneos)\n        KN_TARGET_CAP=\"IosArm64\"\n        ;;\n    iphonesimulator)\n        if [[ \"${ARCHS}\" == *\"arm64\"* ]]; then\n            KN_TARGET_CAP=\"IosSimulatorArm64\"\n        else\n            KN_TARGET_CAP=\"IosX64\"\n        fi\n        ;;\n    *)\n        log \"unsupported platform: ${PLATFORM_NAME}\"\n        exit 1\n        ;;\nesac\n\n# Directory name uses the first letter in lowercase\n# (e.g. \"IosSimulatorArm64\" -> \"iosSimulatorArm64Main\").\nKN_TARGET_LC=\"$(echo \"${KN_TARGET_CAP:0:1}\" | tr '[:upper:]' '[:lower:]')${KN_TARGET_CAP:1}\"\n\n# Locate the repository root (one level up from iosApp/).\nPROJECT_ROOT=\"${SRCROOT}/..\"\n\n# Modules that ship their own composeResources/values/strings.xml.\n# Add new entries here (Gradle project paths) when a new module gains\n# its own composeResources tree.\nMODULES=(\n    \"feature:login\"\n)\n\n# Run Gradle to (re)assemble the resources for this target.\nGRADLE_TASKS=()\nfor MODULE in \"${MODULES[@]}\"; do\n    GRADLE_TASKS+=(\":${MODULE}:assemble${KN_TARGET_CAP}MainResources\")\ndone\n\nlog \"running Gradle for target ${KN_TARGET_CAP}: ${GRADLE_TASKS[*]}\"\n(cd \"${PROJECT_ROOT}\" && ./gradlew \"${GRADLE_TASKS[@]}\")\n\n# Destination layout expected by the Compose Resources runtime at load time:\n#   <app>/compose-resources/composeResources/<package>/<qualifier>/<file>.cvr\nDEST_ROOT=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/compose-resources\"\nrm -rf \"${DEST_ROOT}\"\nmkdir -p \"${DEST_ROOT}/composeResources\"\n\nfor MODULE in \"${MODULES[@]}\"; do\n    MODULE_PATH=\"${MODULE//://}\"\n    SRC=\"${PROJECT_ROOT}/${MODULE_PATH}/build/generated/compose/resourceGenerator/assembledResources/${KN_TARGET_LC}Main/composeResources\"\n    if [[ -d \"${SRC}\" ]]; then\n        log \"copying ${SRC}/ -> ${DEST_ROOT}/composeResources/\"\n        rsync -a \"${SRC}/\" \"${DEST_ROOT}/composeResources/\"\n    else\n        log \"warning: no resources at ${SRC} (module ${MODULE})\"\n    fi\ndone\n\nlog \"done\"\n";
 		};
+		9B8034032F8E6A4A00292C7A /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncd \"$SRCROOT/..\" && ./gradlew :shared:embedAndSignAppleFrameworkForXcode\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -249,6 +267,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -305,6 +324,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -335,13 +355,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U4J98WGS2K;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../shared/build/bin/iosSimulatorArm64/debugFramework",
-					"$(SRCROOT)/../shared/build/bin/iosX64/debugFramework",
-					"\"../shared/build/bin/iosSimulatorArm64/debugFramework\"",
+					"$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 				);
 				INFOPLIST_FILE = iosApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
@@ -362,13 +381,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U4J98WGS2K;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(SRCROOT)/../shared/build/bin/iosSimulatorArm64/releaseFramework",
-					"$(SRCROOT)/../shared/build/bin/iosArm64/releaseFramework",
-					"\"../shared/build/bin/iosSimulatorArm64/debugFramework\"",
+					"$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
 				);
 				INFOPLIST_FILE = iosApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
