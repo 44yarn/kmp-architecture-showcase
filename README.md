@@ -8,6 +8,18 @@ sharing ViewModels, repositories, and design tokens through a common module.
 
 Based on [android-architecture-showcase](https://github.com/44yarn/android-architecture-showcase).
 
+### DI Migration PoC
+
+This project also serves as a testbed for evaluating KMP-unified DI frameworks.
+Two PoC branches migrate the current Hilt (Android) + Koin (iOS) dual setup to a single compile-time DI:
+
+| Branch | Framework | PR |
+|--------|-----------|-----|
+| `feature/metro-di-poc` | [Metro](https://github.com/ZacSweers/metro) 0.10.4 | [#1](https://github.com/44yarn/kmp-architecture-showcase/pull/1) |
+| `feature/kotlin-inject-poc` | [kotlin-inject](https://github.com/evant/kotlin-inject) 0.9.0 + [kotlin-inject-anvil](https://github.com/amzn/kotlin-inject-anvil) 0.1.7 | [#2](https://github.com/44yarn/kmp-architecture-showcase/pull/2) |
+
+See [docs/kmp-di-comparison.md](docs/kmp-di-comparison.md) for the full comparison and findings.
+
 ## Screen Flow
 
 ```

@@ -8,6 +8,18 @@ ViewModel、リポジトリ、デザイントークンを共通モジュール�
 
 [android-architecture-showcase](https://github.com/44yarn/android-architecture-showcase) の KMP 版。
 
+### DI 移行 PoC
+
+本プロジェクトは KMP 統一 DI フレームワークの評価テストベッドも兼ねている。
+現在の Hilt (Android) + Koin (iOS) 二重構成から、コンパイル時 DI への移行を 2 本の PoC ブランチで実施:
+
+| ブランチ | フレームワーク | PR |
+|---------|--------------|-----|
+| `feature/metro-di-poc` | [Metro](https://github.com/ZacSweers/metro) 0.10.4 | [#1](https://github.com/44yarn/kmp-architecture-showcase/pull/1) |
+| `feature/kotlin-inject-poc` | [kotlin-inject](https://github.com/evant/kotlin-inject) 0.9.0 + [kotlin-inject-anvil](https://github.com/amzn/kotlin-inject-anvil) 0.1.7 | [#2](https://github.com/44yarn/kmp-architecture-showcase/pull/2) |
+
+比較結果の詳細は [docs/kmp-di-comparison-ja.md](docs/kmp-di-comparison-ja.md) を参照。
+
 ## 画面構成
 
 ```
