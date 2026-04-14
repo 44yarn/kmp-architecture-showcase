@@ -23,10 +23,7 @@ ktlint_standard_function-expression-body = disabled
 ktlint_standard_function-literal = disabled
 ktlint_standard_function-signature = disabled
 
-# NOTE: With ktlint 1.7.1, disabling the class-signature rule or setting its
-#   threshold property through .editorconfig did not take effect. For the
-#   files that need it, we annotate the class directly with
-#   @Suppress("ktlint:standard:class-signature").
+ktlint_standard_class-signature = disabled
 
 # Disable property-naming (to accommodate KMP constant patterns).
 ktlint_standard_property-naming = disabled
