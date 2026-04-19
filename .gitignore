@@ -25,6 +25,7 @@ iosApp/iosApp.xcodeproj/xcuserdata/
 iosApp/iosApp.xcodeproj/project.xcworkspace/xcuserdata/
 iosApp/Pods/
 
-# Claude Code
+# Claude Code 個人設定（非公開）
 .claude/
+CLAUDE.local.md
 .tasks/
