@@ -29,3 +29,4 @@ iosApp/Pods/
 .claude/
 CLAUDE.local.md
 .tasks/
+.mcp.json
