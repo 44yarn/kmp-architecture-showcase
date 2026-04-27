@@ -33,6 +33,11 @@ log() { echo "sync-compose-resources: $*"; }
 : "${UNLOCALIZED_RESOURCES_FOLDER_PATH:?Not running under Xcode (UNLOCALIZED_RESOURCES_FOLDER_PATH unset)}"
 : "${SRCROOT:?Not running under Xcode (SRCROOT unset)}"
 
+# Xcode build phase scripts do not inherit JAVA_HOME from the user's shell.
+# Without this, gradlew falls back to the system default JDK (e.g. JDK 25)
+# which the Kotlin Gradle Plugin rejects with a cryptic version-only error.
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+
 # Map Xcode platform/arch to the Kotlin/Native target name.
 case "${PLATFORM_NAME}" in
     iphoneos)
