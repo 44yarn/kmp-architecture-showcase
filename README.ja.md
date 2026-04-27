@@ -76,8 +76,8 @@ Login --- Login 成功 -----------> Home（"Welcome, {name}!" Snackbar）
 
 ### Adaptive types: リソースとランタイム値の混在を扱う
 
-`core/ui-kit` には `AdaptiveString` と `AdaptiveImage` という、同じ
-設計思想を持つ 2 つの型がある。それぞれ、**カプセル化された単一クラス**で
+`core/ui`（`adaptive/` 配下）には `AdaptiveString` と `AdaptiveImage`
+という、同じ設計思想を持つ 2 つの型がある。それぞれ、**カプセル化された単一クラス**で
 Compose Multiplatform のローカライズリソースとランタイム値 (リテラル
 文字列 / リモート URL) を単一の consumer 向け型に統合する。
 
@@ -144,8 +144,8 @@ constructor** が有効な組み合わせだけを公開する。呼び出し側
 文字列リソースも drawable リソースも、各 feature の
 `src/commonMain/composeResources/` 配下 (文字列は `values/strings.xml`、
 画像は `drawable/`) に配置する。feature 固有のリソースは feature 内に
-閉じる。`core/ui-kit` には `AdaptiveString` / `AdaptiveImage` の型定義
-だけを置き、リソースファイルは置かない。
+閉じる。`core/ui` には `AdaptiveString` / `AdaptiveImage` の型定義
+（`adaptive/` パッケージ）だけを置き、リソースファイルは置かない。
 
 ## モジュール構成
 
@@ -155,7 +155,7 @@ app                      Android アプリ本体、NavGraph、Hilt セットア�
 shared                   iOS 向け umbrella framework (ShowcaseKit)
 +-- core
 |   +-- foundation       KmpViewModel、Result 拡張
-|   +-- ui-kit           DialogPresenter、SnackbarPresenter、IndicatorState、AppTheme、AdaptiveString、AdaptiveImage
+|   +-- ui               DialogPresenter、SnackbarPresenter、IndicatorState、AppTheme、AdaptiveString、AdaptiveImage
 |   +-- data             AuthRepository、PreferenceStorage（DataStore KMP）
 +-- feature
 |   +-- login            ログイン画面

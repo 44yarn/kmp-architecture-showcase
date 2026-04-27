@@ -76,8 +76,9 @@ Login --- Success ------------> Home ("Welcome, {name}!" Snackbar)
 
 ### Adaptive types: mixing resources and runtime values
 
-This project ships two related types in `core/ui-kit` — `AdaptiveString`
-and `AdaptiveImage` — that share the same design philosophy. Each is an
+This project ships two related types in `core/ui` (under
+`adaptive/`) — `AdaptiveString` and `AdaptiveImage` — that share the
+same design philosophy. Each is an
 **encapsulated single class** that unifies a localized Compose
 Multiplatform resource with a runtime value (a literal string or a
 remote URL) behind a single consumer-facing type.
@@ -144,8 +145,8 @@ thumbnail, or header image needs to blend remote and local sources.
 String and drawable resources live in each feature's
 `src/commonMain/composeResources/` tree (under `values/strings.xml` for
 strings, `drawable/` for images), next to the feature that uses them.
-`core/ui-kit` hosts only the `AdaptiveString` / `AdaptiveImage` types
-themselves — no resource files.
+`core/ui` hosts only the `AdaptiveString` / `AdaptiveImage` types
+themselves (in the `adaptive/` package) — no resource files.
 
 ## Module Structure
 
@@ -155,7 +156,7 @@ app                      Android app entry point, NavGraph, Hilt setup
 shared                   Umbrella framework (ShowcaseKit) for iOS
 +-- core
 |   +-- foundation       KmpViewModel, Result extensions
-|   +-- ui-kit           DialogPresenter, SnackbarPresenter, IndicatorState, AppTheme, AdaptiveString, AdaptiveImage
+|   +-- ui               DialogPresenter, SnackbarPresenter, IndicatorState, AppTheme, AdaptiveString, AdaptiveImage
 |   +-- data             AuthRepository, PreferenceStorage (DataStore KMP)
 +-- feature
 |   +-- login            Login screen
