@@ -24,7 +24,7 @@ kotlin {
                 // Core module dependencies
                 implementation(project(":core:foundation"))
                 implementation(project(":core:data"))
-                api(project(":core:ui-kit"))
+                api(project(":core:ui"))
 
                 // Compose Multiplatform base dependencies
                 val compose =

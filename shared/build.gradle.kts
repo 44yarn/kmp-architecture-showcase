@@ -28,7 +28,7 @@ kotlin {
             // via a single `import ShowcaseKit`.
             export(project(":core:foundation"))
             export(project(":core:data"))
-            export(project(":core:ui-kit"))
+            export(project(":core:ui"))
             export(project(":feature:login"))
             export(project(":feature:home"))
             export(project(":feature:info"))
@@ -47,7 +47,7 @@ kotlin {
             dependencies {
                 api(project(":core:foundation"))
                 api(project(":core:data"))
-                api(project(":core:ui-kit"))
+                api(project(":core:ui"))
                 api(project(":feature:login"))
                 api(project(":feature:home"))
                 api(project(":feature:info"))

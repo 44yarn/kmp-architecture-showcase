@@ -6,8 +6,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceStorage
-import io.github.yarn44.kmp.showcase.core.uikit.snackbar.SnackbarPresenter
-import io.github.yarn44.kmp.showcase.core.uikit.snackbar.SnackbarUiState
+import io.github.yarn44.kmp.showcase.core.ui.snackbar.SnackbarPresenter
+import io.github.yarn44.kmp.showcase.core.ui.snackbar.SnackbarUiState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

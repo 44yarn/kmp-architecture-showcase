@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.yarn44.kmp.showcase.core.foundation.lifecycle.CollectAsEffect
-import io.github.yarn44.kmp.showcase.core.uikit.dialog.ShowcaseAlertDialog
-import io.github.yarn44.kmp.showcase.core.uikit.theme.AppTheme
+import io.github.yarn44.kmp.showcase.core.ui.dialog.ShowcaseAlertDialog
+import io.github.yarn44.kmp.showcase.core.ui.theme.AppTheme
 
 @Composable
 fun LoginScreen(

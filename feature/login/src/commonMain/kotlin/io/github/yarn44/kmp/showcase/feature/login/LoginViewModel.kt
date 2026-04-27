@@ -5,11 +5,11 @@ import io.github.yarn44.kmp.showcase.core.data.auth.AuthRepository
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceKey
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceStorage
 import io.github.yarn44.kmp.showcase.core.foundation.KmpViewModel
-import io.github.yarn44.kmp.showcase.core.uikit.dialog.DialogPresenter
-import io.github.yarn44.kmp.showcase.core.uikit.dialog.DialogResult
-import io.github.yarn44.kmp.showcase.core.uikit.dialog.DialogUiState
-import io.github.yarn44.kmp.showcase.core.uikit.indicator.IndicatorState
-import io.github.yarn44.kmp.showcase.core.uikit.model.AdaptiveString
+import io.github.yarn44.kmp.showcase.core.ui.adaptive.AdaptiveString
+import io.github.yarn44.kmp.showcase.core.ui.dialog.DialogPresenter
+import io.github.yarn44.kmp.showcase.core.ui.dialog.DialogResult
+import io.github.yarn44.kmp.showcase.core.ui.dialog.DialogUiState
+import io.github.yarn44.kmp.showcase.core.ui.indicator.IndicatorState
 import io.github.yarn44.kmp.showcase.feature.login.resources.Res
 import io.github.yarn44.kmp.showcase.feature.login.resources.login_dialog_cancel
 import io.github.yarn44.kmp.showcase.feature.login.resources.login_dialog_guest_login

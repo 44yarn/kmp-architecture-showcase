@@ -1,6 +1,6 @@
 package io.github.yarn44.kmp.showcase.feature.home
 
-import io.github.yarn44.kmp.showcase.core.uikit.snackbar.SnackbarPresenter
+import io.github.yarn44.kmp.showcase.core.ui.snackbar.SnackbarPresenter
 import org.koin.dsl.module
 
 val featureHomeKoinModule = module {

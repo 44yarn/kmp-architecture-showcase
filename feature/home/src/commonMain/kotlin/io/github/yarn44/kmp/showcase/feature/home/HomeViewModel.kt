@@ -3,8 +3,8 @@ package io.github.yarn44.kmp.showcase.feature.home
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceKey
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceStorage
 import io.github.yarn44.kmp.showcase.core.foundation.KmpViewModel
-import io.github.yarn44.kmp.showcase.core.uikit.snackbar.SnackbarPresenter
-import io.github.yarn44.kmp.showcase.core.uikit.snackbar.SnackbarUiState
+import io.github.yarn44.kmp.showcase.core.ui.snackbar.SnackbarPresenter
+import io.github.yarn44.kmp.showcase.core.ui.snackbar.SnackbarUiState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

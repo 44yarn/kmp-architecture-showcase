@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.yarn44.kmp.showcase.core.data.auth.AuthRepository
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceStorage
-import io.github.yarn44.kmp.showcase.core.uikit.dialog.DialogPresenter
-import io.github.yarn44.kmp.showcase.core.uikit.indicator.IndicatorState
+import io.github.yarn44.kmp.showcase.core.ui.dialog.DialogPresenter
+import io.github.yarn44.kmp.showcase.core.ui.indicator.IndicatorState
 import javax.inject.Inject
 import kotlinx.coroutines.flow.StateFlow
 

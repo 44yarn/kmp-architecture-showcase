@@ -28,7 +28,7 @@ rootProject.name = "kmp-architecture-showcase"
 include(":app")
 include(":shared")
 include(":core:foundation")
-include(":core:ui-kit")
+include(":core:ui")
 include(":core:data")
 include(":feature:login")
 include(":feature:home")
