@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.library")
@@ -12,6 +14,11 @@ android {
 }
 
 kotlin {
+    // XCFramework bundles all iOS target binaries into a single distributable
+    // artifact under shared/build/XCFrameworks/<buildType>/ShowcaseKit.xcframework.
+    // The Swift Package (shared/Package.swift) consumes this via `binaryTarget`.
+    val showcaseXcf = XCFramework("ShowcaseKit")
+
     // iOS targets — produce a single umbrella framework.
     val iosTargets = listOf(
         iosX64(),
@@ -23,6 +30,7 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ShowcaseKit"
             isStatic = true
+            showcaseXcf.add(this)
 
             // Re-export every module so that iOS can consume everything
             // via a single `import ShowcaseKit`.
