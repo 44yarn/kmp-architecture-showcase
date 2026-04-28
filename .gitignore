@@ -25,6 +25,10 @@ iosApp/iosApp.xcodeproj/xcuserdata/
 iosApp/iosApp.xcodeproj/project.xcworkspace/xcuserdata/
 iosApp/Pods/
 
+# Swift Package Manager (SPM build outputs and metadata)
+**/.build/
+**/.swiftpm/
+
 # Claude Code 個人設定（非公開）
 .claude/
 CLAUDE.local.md
