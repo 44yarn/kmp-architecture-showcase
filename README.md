@@ -60,17 +60,17 @@ Login --- Success ------------> Home ("Welcome, {name}!" Snackbar)
 
 ### Other Design Patterns
 
-- **KMP ViewModel** — Common ViewModel in `commonMain`, `@HiltViewModel` wrapper in `androidMain`
+- **KMP ViewModel** — Common ViewModel in `commonMain` with `@Inject` (Metro), extending `androidx.lifecycle.ViewModel` (KMP). Retrieved via `viewModel { appGraph.loginViewModel }` on Android and `IosAppGraphKt.getLoginViewModel()` on iOS
 - **SKIE** — Kotlin `StateFlow` / `Flow` automatically bridged to Swift `AsyncSequence`
 - **Actions class** — Callbacks aggregated into a data class
 - **Convention Plugin** — Shared build configuration via gradle-conventions
 - **PreferenceKey / PreferenceStorage** — Type-safe wrapper over Preferences DataStore (KMP), with the value type carried by the key
 - **AdaptiveString / AdaptiveImage** — Unify localized resources with literal strings / remote URLs behind a single consumer-facing type (see below)
-- **DI boundary** — Repositories and use-case classes live in `commonMain`. Platform-specific APIs (DataStore file paths, `Context`, `NSFileManager`, …) are referenced only inside DI modules (Hilt `@Provides` / Koin `module`) and injected as dependencies. No thin Hilt wrapper class just to attach `@Inject` — common classes are instantiated directly from `@Provides`.
-- **DispatcherProvider** — Repositories receive a `DispatcherProvider` interface (in `core/foundation/commonMain`) instead of referencing `Dispatchers.IO` / `.Default` / `.Main` directly. Production binding is `DefaultDispatcherProvider`; tests substitute a `TestDispatcherProvider` backed by `StandardTestDispatcher`, which lets `runTest` virtualize production `delay()` calls (see `core/data/commonTest/.../AuthRepositoryTest.kt`). The interface approach avoids JVM-only `@Qualifier` annotations and works uniformly under both Hilt and Koin.
+- **DI boundary** — Repositories and use-case classes live in `commonMain` with Metro `@Inject` constructors. Platform-specific APIs (DataStore file paths, `Context`, `NSFileManager`, …) are provided inline inside each platform's `@DependencyGraph` (`ShowcaseAppGraph` on Android, `IosAppGraph` on iOS).
+- **`@IoDispatcher` qualifier** — Repositories receive a `@IoDispatcher CoroutineDispatcher` via Metro's `@Qualifier` annotation in `commonMain` instead of referencing `Dispatchers.IO` directly. Tests pass a `StandardTestDispatcher` via the constructor, which lets `runTest` virtualize production `delay()` calls (see `core/data/commonTest/.../AuthRepositoryTest.kt`). Unlike Hilt's JVM-only `javax.inject.Qualifier`, Metro's qualifier works in `commonMain` across all KMP targets.
 - **Stateless content split** — Each Android screen pairs a stateful `XxxScreen` (collects ViewModel state, wires effects) with a stateless `XxxContent` that only takes `uiState` + `actions`. The latter is what `@Preview` renders, so previews never touch DI or coroutines.
 - **Lifecycle-aware effect collection** — One-shot effect channels are collected via `Flow<T>.CollectAsEffect` (in `core/foundation`), which wraps `repeatOnLifecycle(STARTED)` so effects are not delivered while the screen is in the background.
-- **DI** — Hilt (Android) + Koin (iOS)
+- **DI** — Metro 0.10.4 (KMP unified, compile-time graph validation)
 - **iOS string strategy** — Static UI chrome (screen titles, button labels) uses SwiftUI string literals. Dynamic or logic-driven text (error messages, dialog content) is resolved from `AdaptiveString` via SKIE's `async throws` bridge (`suspend resolve()` in `iosMain`). This two-layer approach avoids async overhead for static labels while keeping shared localization for content that originates in `commonMain` ViewModels.
 - **Effect collection lifecycle** — iOS uses SwiftUI `.task { for await ... }`, which SwiftUI automatically cancels on view disappear. Android wraps the same `Flow.collect` with `repeatOnLifecycle(STARTED)` via `CollectAsEffect`. Both platforms observe effects only while the screen is visible, preventing delivery of stale navigation events after the screen goes to the background.
 
@@ -152,7 +152,7 @@ themselves (in the `adaptive/` package) — no resource files.
 
 ```
 gradle-conventions       Convention Plugins (shared build configuration)
-app                      Android app entry point, NavGraph, Hilt setup
+app                      Android app entry point, NavGraph, Metro graph
 shared                   Umbrella framework (ShowcaseKit) for iOS
 +-- core
 |   +-- foundation       KmpViewModel, Result extensions
@@ -175,7 +175,7 @@ Dependency direction: `app/iosApp -> feature -> core` (unidirectional).
 | showcase.convention.kmp-feature | KMP feature module (Compose + SKIE) |
 | showcase.convention.kmp-module | Base plugin for KMP core / library modules |
 | showcase.convention.kmp-sqldelight | Adds SQLDelight to a KMP module |
-| showcase.primitive.hilt | Hilt DI + KSP |
+| showcase.primitive.metro | Metro DI (compiler plugin) |
 | showcase.primitive.spotless | Code formatting |
 | showcase.primitive.detekt | Static analysis |
 
@@ -185,7 +185,7 @@ Dependency direction: `app/iosApp -> feature -> core` (unidirectional).
 |----------|---------|
 | Language | Kotlin 2.3 / Swift 5.9 |
 | UI | Jetpack Compose (Android) / SwiftUI (iOS) |
-| DI | Hilt (Android) / Koin (iOS) |
+| DI | Metro 0.10.4 (KMP unified) |
 | Navigation | Navigation Compose (Android) / NavigationStack (iOS) |
 | Async | Kotlin Coroutines + Flow / SKIE AsyncSequence |
 | Storage | Preferences DataStore (KMP) |

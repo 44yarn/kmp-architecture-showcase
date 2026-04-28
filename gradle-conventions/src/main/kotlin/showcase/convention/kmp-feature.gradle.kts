@@ -7,7 +7,6 @@ plugins {
     id("showcase.convention.kmp-module")
     id("showcase.primitive.compose")
     id("showcase.primitive.kmp.compose")
-    id("showcase.primitive.hilt")
     id("showcase.primitive.logging")
     id("showcase.primitive.unit-test")
     id("org.jetbrains.kotlin.plugin.serialization")
@@ -48,8 +47,10 @@ kotlin {
             implementation(libs.library("composeUiTooling"))
         }
 
-        findByName("iosMain")?.dependencies {
-            implementation(libs.library("koinCore"))
-        }
+        // iosMain previously pulled in Koin by default. After Stage 4 of
+        // the Metro DI migration, features no longer depend on Koin on
+        // iOS — the single `IosAppGraph` in the `shared` module is the
+        // sole DI entry point and resolves per-feature view models
+        // through Metro's compiler-plugin-generated implementation.
     }
 }

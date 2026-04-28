@@ -1,6 +1,5 @@
 package io.github.yarn44.kmp.showcase.core.data.auth
 
-import io.github.yarn44.kmp.showcase.core.data.testing.TestDispatcherProvider
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -9,25 +8,27 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 
 /**
- * Showcase test for [AuthRepository] demonstrating the [DispatcherProvider]
- * substitution pattern.
+ * Showcase test for [AuthRepository] demonstrating test-dispatcher
+ * substitution via Metro's `@IoDispatcher` constructor injection.
  *
  * The production [AuthRepository] wraps its body in
- * `withContext(dispatchers.io)` and contains a `delay(1500L)`. By injecting
- * a [TestDispatcherProvider] backed by a `StandardTestDispatcher` linked to
- * `runTest`'s `testScheduler`, the delay is **virtualized** — the test
+ * `withContext(ioDispatcher)` and contains a `delay(1500L)`. By passing a
+ * `StandardTestDispatcher` linked to `runTest`'s `testScheduler` as the
+ * `CoroutineDispatcher` argument, the delay is **virtualized** — the test
  * advances `currentTime` by 1500 ms without actually waiting.
  *
- * Without the [DispatcherProvider] indirection, the only way to test this
- * Repository would be to wait 1.5 real seconds per test case, or to use
- * brittle thread-manipulation hacks.
+ * For unit tests we construct [AuthRepository] directly rather than going
+ * through a Metro `@DependencyGraph`. Tests that need a real Metro graph
+ * with swapped-in bindings can instead declare a
+ * `@ContributesTo(AppScope::class, replaces = [CoroutineDependenciesProviders::class])`
+ * test interface, following the `TestCoroutineDependenciesProviders`
+ * pattern from DroidKaigi conference-app-2025.
  */
 class AuthRepositoryTest {
 
     @Test
     fun loginReturnsCapitalizedNameFromEmailWhenPasswordIsValid() = runTest {
-        val dispatchers = TestDispatcherProvider(StandardTestDispatcher(testScheduler))
-        val repository = AuthRepository(dispatchers)
+        val repository = AuthRepository(StandardTestDispatcher(testScheduler))
 
         val result = repository.login("alice@example.com", "anything")
 
@@ -37,8 +38,7 @@ class AuthRepositoryTest {
 
     @Test
     fun loginReturnsAuthExceptionWhenPasswordIsErrorSentinel() = runTest {
-        val dispatchers = TestDispatcherProvider(StandardTestDispatcher(testScheduler))
-        val repository = AuthRepository(dispatchers)
+        val repository = AuthRepository(StandardTestDispatcher(testScheduler))
 
         val result = repository.login("alice@example.com", "error")
 
@@ -50,16 +50,15 @@ class AuthRepositoryTest {
     }
 
     /**
-     * The killer demo for [DispatcherProvider]: this test asserts that the
-     * production `delay(1500L)` advances **virtual** time by exactly 1500 ms.
-     * Without dispatcher substitution this assertion would be impossible —
-     * the test would either take 1.5 real seconds or fail.
+     * The killer demo for test dispatcher substitution: this test asserts
+     * that the production `delay(1500L)` advances **virtual** time by
+     * exactly 1500 ms. Without dispatcher substitution this assertion would
+     * be impossible — the test would either take 1.5 real seconds or fail.
      */
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun loginVirtualizesProductionDelayUnderTestDispatcher() = runTest {
-        val dispatchers = TestDispatcherProvider(StandardTestDispatcher(testScheduler))
-        val repository = AuthRepository(dispatchers)
+        val repository = AuthRepository(StandardTestDispatcher(testScheduler))
 
         val virtualTimeBefore = testScheduler.currentTime
         repository.login("bob@example.com", "password")

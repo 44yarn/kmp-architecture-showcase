@@ -1,10 +1,12 @@
 package io.github.yarn44.kmp.showcase.feature.login
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dev.zacsweers.metro.Inject
 import io.github.yarn44.kmp.showcase.core.data.auth.AuthException
 import io.github.yarn44.kmp.showcase.core.data.auth.AuthRepository
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceKey
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceStorage
-import io.github.yarn44.kmp.showcase.core.foundation.KmpViewModel
 import io.github.yarn44.kmp.showcase.core.ui.adaptive.AdaptiveString
 import io.github.yarn44.kmp.showcase.core.ui.dialog.DialogPresenter
 import io.github.yarn44.kmp.showcase.core.ui.dialog.DialogResult
@@ -24,12 +26,22 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * `AuthRepository` and `PreferenceStorage` are provided by the DI graph
+ * through their own `@Inject` constructors. `IndicatorState` and
+ * `DialogPresenter` are **intentionally not graph-managed**: they are
+ * short-lived per-view-model collaborators that carry screen-local UI
+ * state. Default argument values let Metro construct fresh instances
+ * tied to the view model's lifecycle, and tests can still pass a spy by
+ * providing the argument explicitly.
+ */
+@Inject
 class LoginViewModel(
     private val authRepository: AuthRepository,
     private val preferenceStorage: PreferenceStorage,
-    val indicatorState: IndicatorState,
-    val dialogPresenter: DialogPresenter,
-) : KmpViewModel() {
+    val indicatorState: IndicatorState = IndicatorState(),
+    val dialogPresenter: DialogPresenter = DialogPresenter(),
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
@@ -41,11 +53,22 @@ class LoginViewModel(
     private val _effect = Channel<LoginEffect>()
     val effect = _effect.receiveAsFlow()
 
+    val actions: LoginActions = LoginActions(
+        onEmailChanged = ::onEmailChanged,
+        onPasswordChanged = ::onPasswordChanged,
+        onTogglePasswordVisibility = ::onTogglePasswordVisibility,
+        onLogin = ::onLogin,
+        onRandomEmail = ::onRandomEmail,
+        onLoginFailureDemo = ::onLoginFailureDemo,
+        onCancel = ::onCancel,
+        onInfo = ::onInfo,
+    )
+
     private var currentJob: Job? = null
     private var passwordBeforeFailureDemo: String? = null
 
     init {
-        scope.launch {
+        viewModelScope.launch {
             val savedEmail = preferenceStorage.getOrNull(PreferenceKey.Auth.SavedEmail)
             if (savedEmail != null) {
                 _uiState.update { it.copy(email = savedEmail) }
@@ -66,7 +89,7 @@ class LoginViewModel(
     }
 
     fun onLogin() {
-        currentJob = scope.launch {
+        currentJob = viewModelScope.launch {
             indicatorState.runWithLoading {
                 authRepository.login(_uiState.value.email, _uiState.value.password)
             }.onSuccess { displayName ->
@@ -129,7 +152,7 @@ class LoginViewModel(
     fun onLoginFailureDemo() {
         passwordBeforeFailureDemo = _uiState.value.password
         _uiState.update { it.copy(password = "error") }
-        currentJob = scope.launch {
+        currentJob = viewModelScope.launch {
             indicatorState.runWithLoading {
                 authRepository.login(_uiState.value.email, "error")
             }.onFailure { throwable ->
@@ -153,13 +176,13 @@ class LoginViewModel(
     }
 
     fun onInfo() {
-        scope.launch {
-            _effect.send(LoginEffect.LaunchActivity)
+        viewModelScope.launch {
+            _effect.send(LoginEffect.NavigateToInfo)
         }
     }
 
     fun onGuestLogin() {
-        scope.launch {
+        viewModelScope.launch {
             _effect.send(LoginEffect.NavigateToHome("Guest", isGuest = true))
         }
     }

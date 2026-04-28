@@ -60,17 +60,17 @@ Login --- Login 成功 -----------> Home（"Welcome, {name}!" Snackbar）
 
 ### その他の設計パターン
 
-- **KMP ViewModel** — `commonMain` に共通 ViewModel、`androidMain` に `@HiltViewModel` ラッパー
+- **KMP ViewModel** — `commonMain` に共通 ViewModel (`@Inject` + Metro)、`androidx.lifecycle.ViewModel` (KMP) を継承。Android は `viewModel { appGraph.loginViewModel }`、iOS は `IosAppGraphKt.getLoginViewModel()` で取得
 - **SKIE** — Kotlin `StateFlow` / `Flow` を Swift `AsyncSequence` に自動変換
 - **Actions クラス** — コールバックを data class に集約
 - **Convention Plugin** — gradle-conventions でビルド設定を共通化
 - **PreferenceKey / PreferenceStorage** — Preferences DataStore (KMP) の型安全ラッパー。値の型をキー側に閉じ込める設計
 - **AdaptiveString / AdaptiveImage** — ローカライズリソースとリテラル文字列 / リモート URL を単一の型で扱う抽象化 (下記参照)
-- **DI 境界** — Repository / use-case 類は `commonMain` に置く。platform 固有 API (DataStore のファイルパス、`Context`、`NSFileManager` など) は DI モジュール (Hilt `@Provides` / Koin `module`) からのみ参照し、依存として注入する。`@Inject` を付けるためだけの薄い Hilt wrapper クラスは作らず、`@Provides` で commonMain クラスを直接インスタンス化する
-- **DispatcherProvider** — Repository は `Dispatchers.IO` / `.Default` / `.Main` を直接参照せず、`core/foundation/commonMain` の `DispatcherProvider` interface 経由で受け取る。本番 binding は `DefaultDispatcherProvider`、テストでは `StandardTestDispatcher` を持った `TestDispatcherProvider` に差し替えることで、`runTest` が production の `delay()` を virtualize できる (`core/data/commonTest/.../AuthRepositoryTest.kt` 参照)。interface パターンを採ることで JVM 専用の `@Qualifier` annotation を使わずに済み、Hilt / Koin の双方から同一形で binding できる
+- **DI 境界** — Repository / use-case 類は `commonMain` に Metro `@Inject` constructor を持つ。platform 固有 API (DataStore のファイルパス、`Context`、`NSFileManager` など) は各 platform の `@DependencyGraph` (`ShowcaseAppGraph` (Android) / `IosAppGraph` (iOS)) にインラインで `@Provides` する
+- **`@IoDispatcher` qualifier** — Repository は `Dispatchers.IO` を直接参照せず、Metro の `@Qualifier` annotation (`@IoDispatcher`) で `CoroutineDispatcher` を `commonMain` から受け取る。テストでは `StandardTestDispatcher` を constructor に直接渡すことで `runTest` が production の `delay()` を virtualize できる (`core/data/commonTest/.../AuthRepositoryTest.kt` 参照)。Hilt の JVM-only `javax.inject.Qualifier` とは異なり、Metro の qualifier は `commonMain` で全 KMP ターゲットに対応する
 - **Stateless content split** — Android の各画面は、ViewModel state を collect して effect を配線する stateful な `XxxScreen` と、`uiState` + `actions` だけを受け取る stateless な `XxxContent` のペアで構成する。`@Preview` が描画するのは後者なので、プレビューは DI や coroutine に触れない
 - **Lifecycle-aware effect 収集** — 一過性 effect の channel は `Flow<T>.CollectAsEffect` (`core/foundation`) で collect する。中で `repeatOnLifecycle(STARTED)` をラップしているので、画面が background の間に effect が配信されない
-- **DI** — Hilt (Android) + Koin (iOS)
+- **DI** — Metro 0.10.4 (KMP 統一、コンパイル時グラフ検証)
 - **iOS 文字列方針** — 静的な UI chrome (画面タイトル、ボタンラベル等) は SwiftUI の文字列リテラルを使用。動的テキスト (エラーメッセージ、ダイアログ内容等) は `AdaptiveString` を SKIE の `async throws` ブリッジ (`iosMain` の `suspend resolve()`) で解決する。この 2 層方式により、静的ラベルで不要な async オーバーヘッドを避けつつ、`commonMain` ViewModel 由来のコンテンツは共有ローカライゼーションを維持する
 - **Effect 収集のライフサイクル** — iOS は SwiftUI `.task { for await ... }` を使い、view disappear 時に SwiftUI が自動的にキャンセルする。Android は同じ `Flow.collect` を `repeatOnLifecycle(STARTED)` (`CollectAsEffect`) でラップする。どちらのプラットフォームも画面が表示されている間のみ effect を observe し、バックグラウンド遷移後のステール navigation event 配信を防止する
 
@@ -151,7 +151,7 @@ constructor** が有効な組み合わせだけを公開する。呼び出し側
 
 ```
 gradle-conventions       Convention Plugins（ビルド設定の共通化）
-app                      Android アプリ本体、NavGraph、Hilt セットアップ
+app                      Android アプリ本体、NavGraph、Metro グラフ
 shared                   iOS 向け umbrella framework (ShowcaseKit)
 +-- core
 |   +-- foundation       KmpViewModel、Result 拡張
@@ -174,7 +174,7 @@ iosApp                   iOS アプリ（SwiftUI + XcodeGen）
 | showcase.convention.kmp-feature | KMP feature モジュール（Compose + SKIE） |
 | showcase.convention.kmp-module | KMP core / library モジュールのベースプラグイン |
 | showcase.convention.kmp-sqldelight | KMP モジュールに SQLDelight を追加 |
-| showcase.primitive.hilt | Hilt DI + KSP |
+| showcase.primitive.metro | Metro DI (compiler plugin) |
 | showcase.primitive.spotless | コードフォーマット |
 | showcase.primitive.detekt | 静的解析 |
 
@@ -184,7 +184,7 @@ iosApp                   iOS アプリ（SwiftUI + XcodeGen）
 |----------|-----------|
 | 言語 | Kotlin 2.3 / Swift 5.9 |
 | UI | Jetpack Compose (Android) / SwiftUI (iOS) |
-| DI | Hilt (Android) / Koin (iOS) |
+| DI | Metro 0.10.4 (KMP 統一) |
 | Navigation | Navigation Compose (Android) / NavigationStack (iOS) |
 | 非同期 | Kotlin Coroutines + Flow / SKIE AsyncSequence |
 | データ保存 | Preferences DataStore (KMP) |

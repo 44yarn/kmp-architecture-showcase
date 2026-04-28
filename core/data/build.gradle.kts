@@ -1,7 +1,7 @@
 plugins {
     id("showcase.convention.kmp-module")
     id("showcase.convention.kmp-sqldelight")
-    id("showcase.primitive.hilt")
+    id("showcase.primitive.metro")
     id("showcase.primitive.unit-test")
 }
 
@@ -16,14 +16,15 @@ kotlin {
             implementation(libs.sqldelightRuntime)
             implementation(libs.sqldelightCoroutines)
             implementation(libs.kotlinxSerializationJson)
-            implementation(libs.datastorePreferencesCore)
+            api(libs.datastorePreferencesCore)
         }
         androidMain.dependencies {
             implementation(libs.sqldelightAndroidDriver)
         }
         iosMain {
             dependencies {
-                implementation(libs.koinCore)
+                // Koin dep removed during Stage 4 — iOS DI is now provided
+                // entirely by Metro via `shared/src/iosMain/.../IosAppGraph.kt`.
                 implementation(libs.sqldelightNativeDriver)
             }
         }
