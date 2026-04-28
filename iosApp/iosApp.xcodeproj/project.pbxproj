@@ -7,33 +7,33 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		14E4AAFB2DF7164712FFEF2E /* ShowcaseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC86C890784898EA768EC3 /* ShowcaseApp.swift */; };
-		2D6A49000C050731B5007847 /* ShowcaseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43F8E712BF3EBE66FA92EDC3 /* ShowcaseKit.framework */; };
-		3945B679EEB74DE188BE0250 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DC7CEF6C924FA74EA7BECA7 /* InfoView.swift */; };
+		1C81D6F669B7BB6D2FFCCEB3 /* ShowcaseKit in Frameworks */ = {isa = PBXBuildFile; productRef = DD74E3858696F41F656D62A1 /* ShowcaseKit */; };
+		268C2C8ECF8279AD4F854F46 /* ShowcaseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F0B4337AF1B086200C4B2EC /* ShowcaseApp.swift */; };
+		32480967B8BEE62BD2101435 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014EB7A33C3FE7F6F56EBE93 /* InfoView.swift */; };
 		3B6122AA530CC014CF71BFD0 /* AppSpacings.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF752395862D9691B58A03DD /* AppSpacings.swift */; };
 		3F89F49C2E2D3B22E2F3CDE2 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B2F1B7EB63407872D7A6EE /* AppColors.swift */; };
-		56B0305B5D3847FC6B326502 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */; };
+		554EC41F7859ABC375A9D3A4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D3263698045DA87405A951 /* ContentView.swift */; };
 		5A1300E98F3885C3647EDBFA /* Color+App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6963AB6A8CFF54CB5F83E877 /* Color+App.swift */; };
-		68040CE08AEDC7C1E192C50C /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB12B8F33A658239E951429 /* HomeView.swift */; };
 		A5AAB819113E672808E647A2 /* AppCornerRadii.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED6D45084AABBE4BC05B77CC /* AppCornerRadii.swift */; };
-		D488747AD197BC7C1635E66B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EF4A054A43ED6B6C286E46F /* LoginView.swift */; };
+		D59A707554F91EC7479C64E7 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7105C2E9E9943F55A4EAB3DB /* HomeView.swift */; };
 		D9DB336E16A6398B577A0AC1 /* AppFonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2FE32A2393E3DCDAED2591 /* AppFonts.swift */; };
+		E91A5B49B8EEAEB4075D4CC1 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2829004C3D088008FCB8E6 /* LoginView.swift */; };
 		F7C33B50A94DA01F2E82C280 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 245434685F34A9A15B1AC406 /* libsqlite3.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		02AC86C890784898EA768EC3 /* ShowcaseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowcaseApp.swift; sourceTree = "<group>"; };
+		014EB7A33C3FE7F6F56EBE93 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		13B2F1B7EB63407872D7A6EE /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		18B91F3A47829EF7C911043F /* shared */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shared; path = ../shared; sourceTree = SOURCE_ROOT; };
 		245434685F34A9A15B1AC406 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		43F8E712BF3EBE66FA92EDC3 /* ShowcaseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ShowcaseKit.framework; path = "../shared/build/xcode-frameworks/Debug/iphonesimulator/ShowcaseKit.framework"; sourceTree = "<group>"; };
+		29D3263698045DA87405A951 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		2F0B4337AF1B086200C4B2EC /* ShowcaseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowcaseApp.swift; sourceTree = "<group>"; };
 		5E2FE32A2393E3DCDAED2591 /* AppFonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFonts.swift; sourceTree = "<group>"; };
-		5EF4A054A43ED6B6C286E46F /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		6963AB6A8CFF54CB5F83E877 /* Color+App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+App.swift"; sourceTree = "<group>"; };
-		6DC7CEF6C924FA74EA7BECA7 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		7105C2E9E9943F55A4EAB3DB /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		86038AE1032E284E79B32AD6 /* iosApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iosApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8DB12B8F33A658239E951429 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		C117AD187833E2513BD2F553 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		DD2829004C3D088008FCB8E6 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		ED6D45084AABBE4BC05B77CC /* AppCornerRadii.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCornerRadii.swift; sourceTree = "<group>"; };
 		EF752395862D9691B58A03DD /* AppSpacings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSpacings.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -43,7 +43,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2D6A49000C050731B5007847 /* ShowcaseKit.framework in Frameworks */,
+				1C81D6F669B7BB6D2FFCCEB3 /* ShowcaseKit in Frameworks */,
 				F7C33B50A94DA01F2E82C280 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -54,19 +54,26 @@
 		1DB4B685CAEE8BEFEBBAEF94 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
-				A1B2C3D4E5F6A7B8C9D0E1F2 /* App */,
-				B2C3D4E5F6A7B8C9D0E1F2A3 /* Screens */,
-				4795698A257B423F254DDC14 /* Theme */,
 				C117AD187833E2513BD2F553 /* Info.plist */,
+				5DBDE60058A6672895D37E2A /* App */,
+				8B838DEB08640EB448E69248 /* Screens */,
+				4795698A257B423F254DDC14 /* Theme */,
 			);
 			path = iosApp;
+			sourceTree = "<group>";
+		};
+		2BE9D1071031C3FC069C34FC /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				18B91F3A47829EF7C911043F /* shared */,
+			);
+			name = Packages;
 			sourceTree = "<group>";
 		};
 		3666012298E772D226418813 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				245434685F34A9A15B1AC406 /* libsqlite3.tbd */,
-				43F8E712BF3EBE66FA92EDC3 /* ShowcaseKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -75,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				1DB4B685CAEE8BEFEBBAEF94 /* iosApp */,
+				2BE9D1071031C3FC069C34FC /* Packages */,
 				3666012298E772D226418813 /* Frameworks */,
 				94C98B8B3A2BFC1966447269 /* Products */,
 			);
@@ -92,31 +100,31 @@
 			path = Theme;
 			sourceTree = "<group>";
 		};
+		5DBDE60058A6672895D37E2A /* App */ = {
+			isa = PBXGroup;
+			children = (
+				29D3263698045DA87405A951 /* ContentView.swift */,
+				2F0B4337AF1B086200C4B2EC /* ShowcaseApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		8B838DEB08640EB448E69248 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				7105C2E9E9943F55A4EAB3DB /* HomeView.swift */,
+				014EB7A33C3FE7F6F56EBE93 /* InfoView.swift */,
+				DD2829004C3D088008FCB8E6 /* LoginView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
 		94C98B8B3A2BFC1966447269 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				86038AE1032E284E79B32AD6 /* iosApp.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		A1B2C3D4E5F6A7B8C9D0E1F2 /* App */ = {
-			isa = PBXGroup;
-			children = (
-				02AC86C890784898EA768EC3 /* ShowcaseApp.swift */,
-				CE8509E5A49E4A5CAAEB3ADB /* ContentView.swift */,
-			);
-			path = App;
-			sourceTree = "<group>";
-		};
-		B2C3D4E5F6A7B8C9D0E1F2A3 /* Screens */ = {
-			isa = PBXGroup;
-			children = (
-				5EF4A054A43ED6B6C286E46F /* LoginView.swift */,
-				8DB12B8F33A658239E951429 /* HomeView.swift */,
-				6DC7CEF6C924FA74EA7BECA7 /* InfoView.swift */,
-			);
-			path = Screens;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -126,7 +134,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 29DCA9F0B3A40325067EB163 /* Build configuration list for PBXNativeTarget "iosApp" */;
 			buildPhases = (
-				9B8034032F8E6A4A00292C7A /* ShellScript */,
+				4B44A75E2FD10EFE3C97FCF5 /* Compile Kotlin Framework */,
 				297B59D9CE634556D6007C40 /* Sources */,
 				EF8A6E9BFD470986D9D5C9B5 /* Frameworks */,
 				2D30A78DD44DE9FE52C0AFE1 /* Sync Compose Resources */,
@@ -137,6 +145,7 @@
 			);
 			name = iosApp;
 			packageProductDependencies = (
+				DD74E3858696F41F656D62A1 /* ShowcaseKit */,
 			);
 			productName = iosApp;
 			productReference = 86038AE1032E284E79B32AD6 /* iosApp.app */;
@@ -150,6 +159,11 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					78B53CC79860CBFC2F5543C6 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = FF7CA1CA754D017066F1822F /* Build configuration list for PBXProject "iosApp" */;
 			developmentRegion = en;
@@ -160,6 +174,9 @@
 			);
 			mainGroup = 38B69C3F79CD97858CF7B609;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				2EE54B352BA05A9D9A2E332D /* XCLocalSwiftPackageReference "../shared" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 94C98B8B3A2BFC1966447269 /* Products */;
 			projectDirPath = "";
@@ -190,8 +207,9 @@
 			shellPath = /bin/sh;
 			shellScript = "#!/usr/bin/env bash\n\nset -Eeuo pipefail\n\n# Sync Compose Multiplatform Resources into the iOS app bundle.\n#\n# Why this script exists:\n#   Compose Multiplatform's Gradle plugin compiles composeResources into .cvr\n#   files under each module's build directory, but when the iOS side of a\n#   KMP project is written in SwiftUI (i.e. NOT Compose Multiplatform UI),\n#   the plugin does not copy those files into the iOS app bundle. The\n#   Compose Resources runtime then fails to resolve any StringResource with\n#   a MissingResourceException whose path points at\n#     <app>/compose-resources/composeResources/<package>/values/<file>.cvr\n#\n#   This script runs as an Xcode build phase (see iosApp/project.yml),\n#   invokes the `assemble<Target>MainResources` Gradle task for each\n#   module that ships composeResources, and rsyncs the resulting tree\n#   into the built .app bundle at the layout expected at runtime.\n#\n# When to touch this script:\n#   - Add a new module to the MODULES list below when it gains its own\n#     src/commonMain/composeResources/values/strings.xml.\n#   - Update the platform -> Kotlin/Native target mapping if a new\n#     iOS target is introduced.\n\nlog() { echo \"sync-compose-resources: $*\"; }\n\n# Required Xcode environment variables.\n: \"${PLATFORM_NAME:?Not running under Xcode (PLATFORM_NAME unset)}\"\n: \"${ARCHS:?Not running under Xcode (ARCHS unset)}\"\n: \"${BUILT_PRODUCTS_DIR:?Not running under Xcode (BUILT_PRODUCTS_DIR unset)}\"\n: \"${UNLOCALIZED_RESOURCES_FOLDER_PATH:?Not running under Xcode (UNLOCALIZED_RESOURCES_FOLDER_PATH unset)}\"\n: \"${SRCROOT:?Not running under Xcode (SRCROOT unset)}\"\n\n# Xcode build phase scripts do not inherit JAVA_HOME from the user's shell.\n# Without this, gradlew falls back to the system default JDK (e.g. JDK 25)\n# which the Kotlin Gradle Plugin rejects with a cryptic version-only error.\nexport JAVA_HOME=$(/usr/libexec/java_home -v 21)\n\n# Map Xcode platform/arch to the Kotlin/Native target name.\ncase \"${PLATFORM_NAME}\" in\n    iphoneos)\n        KN_TARGET_CAP=\"IosArm64\"\n        ;;\n    iphonesimulator)\n        if [[ \"${ARCHS}\" == *\"arm64\"* ]]; then\n            KN_TARGET_CAP=\"IosSimulatorArm64\"\n        else\n            KN_TARGET_CAP=\"IosX64\"\n        fi\n        ;;\n    *)\n        log \"unsupported platform: ${PLATFORM_NAME}\"\n        exit 1\n        ;;\nesac\n\n# Directory name uses the first letter in lowercase\n# (e.g. \"IosSimulatorArm64\" -> \"iosSimulatorArm64Main\").\nKN_TARGET_LC=\"$(echo \"${KN_TARGET_CAP:0:1}\" | tr '[:upper:]' '[:lower:]')${KN_TARGET_CAP:1}\"\n\n# Locate the repository root (one level up from iosApp/).\nPROJECT_ROOT=\"${SRCROOT}/..\"\n\n# Modules that ship their own composeResources/values/strings.xml.\n# Add new entries here (Gradle project paths) when a new module gains\n# its own composeResources tree.\nMODULES=(\n    \"feature:login\"\n)\n\n# Run Gradle to (re)assemble the resources for this target.\nGRADLE_TASKS=()\nfor MODULE in \"${MODULES[@]}\"; do\n    GRADLE_TASKS+=(\":${MODULE}:assemble${KN_TARGET_CAP}MainResources\")\ndone\n\nlog \"running Gradle for target ${KN_TARGET_CAP}: ${GRADLE_TASKS[*]}\"\n(cd \"${PROJECT_ROOT}\" && ./gradlew \"${GRADLE_TASKS[@]}\")\n\n# Destination layout expected by the Compose Resources runtime at load time:\n#   <app>/compose-resources/composeResources/<package>/<qualifier>/<file>.cvr\nDEST_ROOT=\"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/compose-resources\"\nrm -rf \"${DEST_ROOT}\"\nmkdir -p \"${DEST_ROOT}/composeResources\"\n\nfor MODULE in \"${MODULES[@]}\"; do\n    MODULE_PATH=\"${MODULE//://}\"\n    SRC=\"${PROJECT_ROOT}/${MODULE_PATH}/build/generated/compose/resourceGenerator/assembledResources/${KN_TARGET_LC}Main/composeResources\"\n    if [[ -d \"${SRC}\" ]]; then\n        log \"copying ${SRC}/ -> ${DEST_ROOT}/composeResources/\"\n        rsync -a \"${SRC}/\" \"${DEST_ROOT}/composeResources/\"\n    else\n        log \"warning: no resources at ${SRC} (module ${MODULE})\"\n    fi\ndone\n\nlog \"done\"\n";
 		};
-		9B8034032F8E6A4A00292C7A /* ShellScript */ = {
+		4B44A75E2FD10EFE3C97FCF5 /* Compile Kotlin Framework */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -199,13 +217,14 @@
 			);
 			inputPaths = (
 			);
+			name = "Compile Kotlin Framework";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nexport JAVA_HOME=$(/usr/libexec/java_home -v 21)\ncd \"$SRCROOT/..\" && ./gradlew :shared:embedAndSignAppleFrameworkForXcode\n";
+			shellScript = "# Skip in CI: the XCFramework is expected to be built and cached separately\nif [ -n \"$CI\" ] || [ -n \"$GITHUB_ACTIONS\" ]; then\n    echo \"Skipping KMP build in CI environment\"\n    exit 0\nfi\n# Xcode build phase scripts do not inherit JAVA_HOME from the user's\n# shell. Pin JDK 21 explicitly so the Kotlin Gradle Plugin does not\n# fall back to the system default JDK (e.g. JDK 25 on macOS Tahoe).\nexport JAVA_HOME=$(/usr/libexec/java_home -v 21)\ncd \"$SRCROOT/..\" && ./gradlew :shared:assembleShowcaseKitDebugXCFramework\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -219,11 +238,11 @@
 				D9DB336E16A6398B577A0AC1 /* AppFonts.swift in Sources */,
 				3B6122AA530CC014CF71BFD0 /* AppSpacings.swift in Sources */,
 				5A1300E98F3885C3647EDBFA /* Color+App.swift in Sources */,
-				56B0305B5D3847FC6B326502 /* ContentView.swift in Sources */,
-				68040CE08AEDC7C1E192C50C /* HomeView.swift in Sources */,
-				3945B679EEB74DE188BE0250 /* InfoView.swift in Sources */,
-				D488747AD197BC7C1635E66B /* LoginView.swift in Sources */,
-				14E4AAFB2DF7164712FFEF2E /* ShowcaseApp.swift in Sources */,
+				554EC41F7859ABC375A9D3A4 /* ContentView.swift in Sources */,
+				D59A707554F91EC7479C64E7 /* HomeView.swift in Sources */,
+				32480967B8BEE62BD2101435 /* InfoView.swift in Sources */,
+				E91A5B49B8EEAEB4075D4CC1 /* LoginView.swift in Sources */,
+				268C2C8ECF8279AD4F854F46 /* ShowcaseApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,7 +286,6 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -276,7 +294,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -324,7 +342,6 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -339,7 +356,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -355,14 +372,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U4J98WGS2K;
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
-				);
 				INFOPLIST_FILE = iosApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -380,14 +394,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = U4J98WGS2K;
 				ENABLE_PREVIEWS = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(SRCROOT)/../shared/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)",
-				);
 				INFOPLIST_FILE = iosApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -423,6 +434,20 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		2EE54B352BA05A9D9A2E332D /* XCLocalSwiftPackageReference "../shared" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../shared;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		DD74E3858696F41F656D62A1 /* ShowcaseKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ShowcaseKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 242FB5348943441C388468CE /* Project object */;
 }

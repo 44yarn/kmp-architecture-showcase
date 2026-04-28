@@ -12,6 +12,10 @@ schemes:
     run:
       config: Debug
 
+packages:
+  ShowcaseKit:
+    path: ../shared
+
 targets:
   iosApp:
     type: application
@@ -41,26 +45,25 @@ targets:
         ENABLE_PREVIEWS: "YES"
         SUPPORTED_PLATFORMS: "iphoneos iphonesimulator"
         SUPPORTS_MACCATALYST: "NO"
-        FRAMEWORK_SEARCH_PATHS:
-          - "$(inherited)"
-          - "$(SRCROOT)/../shared/build/bin/iosSimulatorArm64/debugFramework"
-          - "$(SRCROOT)/../shared/build/bin/iosArm64/releaseFramework"
-          - "$(SRCROOT)/../shared/build/bin/iosX64/debugFramework"
-      configs:
-        Debug:
-          FRAMEWORK_SEARCH_PATHS:
-            - "$(inherited)"
-            - "$(SRCROOT)/../shared/build/bin/iosSimulatorArm64/debugFramework"
-            - "$(SRCROOT)/../shared/build/bin/iosX64/debugFramework"
-        Release:
-          FRAMEWORK_SEARCH_PATHS:
-            - "$(inherited)"
-            - "$(SRCROOT)/../shared/build/bin/iosSimulatorArm64/releaseFramework"
-            - "$(SRCROOT)/../shared/build/bin/iosArm64/releaseFramework"
+        TARGETED_DEVICE_FAMILY: "1,2"
+        CODE_SIGN_STYLE: Automatic
     dependencies:
-      - framework: ../shared/build/bin/iosSimulatorArm64/debugFramework/ShowcaseKit.framework
-        embed: false
+      - package: ShowcaseKit
       - sdk: libsqlite3.tbd
+    preBuildScripts:
+      - name: "Compile Kotlin Framework"
+        script: |
+          # Skip in CI: the XCFramework is expected to be built and cached separately
+          if [ -n "$CI" ] || [ -n "$GITHUB_ACTIONS" ]; then
+              echo "Skipping KMP build in CI environment"
+              exit 0
+          fi
+          # Xcode build phase scripts do not inherit JAVA_HOME from the user's
+          # shell. Pin JDK 21 explicitly so the Kotlin Gradle Plugin does not
+          # fall back to the system default JDK (e.g. JDK 25 on macOS Tahoe).
+          export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+          cd "$SRCROOT/.." && ./gradlew :shared:assembleShowcaseKitDebugXCFramework
+        basedOnDependencyAnalysis: false
     postBuildScripts:
       - path: ../script/sync-compose-resources.sh
         name: "Sync Compose Resources"
