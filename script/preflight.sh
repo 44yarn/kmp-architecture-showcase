@@ -74,9 +74,13 @@ if [[ -z "${IOS_DESTINATION:-}" ]]; then
     _SIM_LINE=""
     if command -v xcrun >/dev/null 2>&1; then
       # Example line: "    iPhone 17 Pro (ABCDEF12-...) (Shutdown)"
+      # `xcrun simctl list devices available` は古い OS から昇順で出力するため、
+      # 末尾を取ることで最新 OS の iPhone をピックする。
+      # （head だと古い OS の iPhone が選ばれ、deployment target が新しい iosApp で
+      # destination 不一致になる）
       _SIM_LINE=$(xcrun simctl list devices available 2>/dev/null \
         | grep -E '^\s*iPhone' \
-        | head -n 1 || true)
+        | tail -n 1 || true)
     fi
     if [[ -n "$_SIM_LINE" ]]; then
       _SIM_ID=$(printf '%s' "$_SIM_LINE" | sed -E 's/.*\(([0-9A-F-]+)\).*/\1/')
