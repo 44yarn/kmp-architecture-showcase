@@ -215,6 +215,26 @@ your machine.
    shipped pbxproj.
 4. Build & Run (⌘R).
 
+### iOS shared module workflow
+
+The Kotlin shared module (`:shared`) is exposed to iOS as an
+**XCFramework** consumed via a **local Swift Package**:
+
+- Gradle task `:shared:assembleShowcaseKitDebugXCFramework` produces
+  `shared/build/XCFrameworks/debug/ShowcaseKit.xcframework`.
+- `shared/Package.swift` declares this XCFramework as a `binaryTarget`.
+- `iosApp.xcodeproj` references the local Swift Package (`../shared`)
+  and links the `ShowcaseKit` product.
+- The `Compile Kotlin Framework` build phase in `iosApp` invokes the
+  Gradle task automatically before Swift compile, so day-to-day
+  Kotlin edits flow into the next Xcode build with no extra step.
+- In CI (`$CI` or `$GITHUB_ACTIONS` set), the build phase skips the
+  Gradle invocation — CI is expected to assemble the XCFramework
+  separately and cache it.
+
+`iosApp/project.yml` is the source of truth for the Xcode project.
+After editing it, regenerate with `cd iosApp && xcodegen generate`.
+
 ### Troubleshooting
 
 - **`Command PhaseScriptExecution failed` with `* What went wrong: 25.0.1`**
@@ -222,10 +242,14 @@ your machine.
   scripts in this project pin JDK 21 via `/usr/libexec/java_home -v 21`.
   Make sure JDK 21 is installed and findable by `java_home`
   (`brew install --cask zulu@21` or equivalent).
-- **`xcodegen generate` is risky here.** This project ships hand-curated
-  pbxproj edits (e.g. the `embedAndSign` Run Script with `JAVA_HOME`
-  export, framework search paths). Until those entries are migrated to
-  `project.yml`, regenerating with XcodeGen will lose them.
+- **`Missing package product 'ShowcaseKit'`**
+  Xcode's Swift Package cache is stale. Quit Xcode completely (⌘Q),
+  then in Xcode use `File → Packages → Reset Package Caches` and
+  `Resolve Package Versions`. If that does not help, remove
+  `~/Library/Developer/Xcode/DerivedData/iosApp-*` and reopen.
+- **The XCFramework is missing.**
+  Run `./gradlew :shared:assembleShowcaseKitDebugXCFramework` from the
+  repository root to rebuild it.
 
 ## Build
 

@@ -212,6 +212,26 @@ clone 直後に iOS アプリを動かすまでの手順:
    公開リポジトリに残さない方針）
 4. Build & Run（⌘R）
 
+### iOS shared module のワークフロー
+
+Kotlin の shared module（`:shared`）は **XCFramework** を生成し、
+**ローカル Swift Package** 経由で iOS に提供する構成:
+
+- Gradle タスク `:shared:assembleShowcaseKitDebugXCFramework` が
+  `shared/build/XCFrameworks/debug/ShowcaseKit.xcframework` を生成
+- `shared/Package.swift` がこの XCFramework を `binaryTarget` として宣言
+- `iosApp.xcodeproj` はローカル Swift Package（`../shared`）を参照し、
+  `ShowcaseKit` プロダクトをリンク
+- `iosApp` の `Compile Kotlin Framework` build phase が Swift コンパイル前に
+  上記 Gradle タスクを自動実行するため、Kotlin 側の編集は次の Xcode
+  build に自然に反映される
+- CI 環境（`$CI` か `$GITHUB_ACTIONS` がセット）では build phase は
+  Gradle 実行をスキップ。CI 側で別途 XCFramework をビルド・キャッシュする
+  運用を想定
+
+`iosApp/project.yml` が Xcode プロジェクトの真実の源。編集後は
+`cd iosApp && xcodegen generate` で再生成可能。
+
 ### トラブルシューティング
 
 - **`Command PhaseScriptExecution failed` + `* What went wrong: 25.0.1`**
@@ -219,10 +239,14 @@ clone 直後に iOS アプリを動かすまでの手順:
   build phase scripts は `/usr/libexec/java_home -v 21` で JDK 21 を pin
   しているので、JDK 21 がインストールされ `java_home` から見つかる状態
   にしておく（`brew install --cask zulu@21` 等）
-- **`xcodegen generate` には注意**
-  本プロジェクトは pbxproj に手書きの設定（`embedAndSign` Run Script の
-  `JAVA_HOME` export、framework 探索パス等）を保持している。これらを
-  `project.yml` に移行するまで、XcodeGen で再生成すると消える
+- **`Missing package product 'ShowcaseKit'`**
+  Xcode の Swift Package キャッシュが古い状態。Xcode を完全終了（⌘Q）し、
+  再起動後に `File → Packages → Reset Package Caches` および
+  `Resolve Package Versions` を実行。それでも解消しなければ
+  `~/Library/Developer/Xcode/DerivedData/iosApp-*` を削除して開き直す
+- **XCFramework が見つからない**
+  リポジトリルートで `./gradlew :shared:assembleShowcaseKitDebugXCFramework`
+  を実行すれば再生成される
 
 ## ビルド
 
