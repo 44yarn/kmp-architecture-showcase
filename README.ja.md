@@ -225,6 +225,10 @@ Kotlin の shared module（`:shared`）は **XCFramework** を生成し、
 - `iosApp` の `Compile Kotlin Framework` build phase が Swift コンパイル前に
   上記 Gradle タスクを自動実行するため、Kotlin 側の編集は次の Xcode
   build に自然に反映される
+- build phase は `-Papp.ios.shared.arch=arm64` を渡して iosX64
+  (Intel-Mac シミュレータ) ターゲットを除外し、dev ビルドを高速化する。
+  CI / リリースビルドは同タスクをフラグ無しで実行し、3 つの iOS ターゲット
+  全てを生成する
 - CI 環境（`$CI` か `$GITHUB_ACTIONS` がセット）では build phase は
   Gradle 実行をスキップ。CI 側で別途 XCFramework をビルド・キャッシュする
   運用を想定
@@ -266,8 +270,11 @@ Kotlin の shared module（`:shared`）は **XCFramework** を生成し、
 # Swift フォーマット
 ./script/format-swift.sh
 
-# iOS フレームワーク
-./gradlew :shared:linkDebugFrameworkIosSimulatorArm64
+# iOS shared XCFramework（フル: arm64 device + Apple Silicon + Intel シミュレータ）
+./gradlew :shared:assembleShowcaseKitDebugXCFramework
+
+# iOS shared XCFramework（dev: arm64 のみ、高速）
+./gradlew :shared:assembleShowcaseKitDebugXCFramework -Papp.ios.shared.arch=arm64
 
 # 全ステップ一括実行（上記に加えて iOS ビルドまで走る）
 ./script/preflight.sh
