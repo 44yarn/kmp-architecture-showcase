@@ -34,3 +34,6 @@ iosApp/Pods/
 CLAUDE.local.md
 .tasks/
 .mcp.json
+
+# serena MCP runtime cache
+.serena/
