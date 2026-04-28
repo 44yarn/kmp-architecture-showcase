@@ -28,9 +28,6 @@ dependencies {
     implementation("com.android.application:com.android.application.gradle.plugin:$agpVersion")
     implementation("com.android.library:com.android.library.gradle.plugin:$agpVersion")
 
-    val hiltVersion = libs.versions.hilt.get()
-    implementation("com.google.dagger.hilt.android:com.google.dagger.hilt.android.gradle.plugin:$hiltVersion")
-
     val kspVersion = libs.versions.ksp.get()
     implementation("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:$kspVersion")
 

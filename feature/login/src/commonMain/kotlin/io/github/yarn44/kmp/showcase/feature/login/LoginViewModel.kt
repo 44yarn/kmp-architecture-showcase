@@ -1,10 +1,11 @@
 package io.github.yarn44.kmp.showcase.feature.login
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import io.github.yarn44.kmp.showcase.core.data.auth.AuthException
 import io.github.yarn44.kmp.showcase.core.data.auth.AuthRepository
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceKey
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceStorage
-import io.github.yarn44.kmp.showcase.core.foundation.KmpViewModel
 import io.github.yarn44.kmp.showcase.core.ui.adaptive.AdaptiveString
 import io.github.yarn44.kmp.showcase.core.ui.dialog.DialogPresenter
 import io.github.yarn44.kmp.showcase.core.ui.dialog.DialogResult
@@ -23,13 +24,26 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
 
+@Inject
 class LoginViewModel(
     private val authRepository: AuthRepository,
     private val preferenceStorage: PreferenceStorage,
     val indicatorState: IndicatorState,
     val dialogPresenter: DialogPresenter,
-) : KmpViewModel() {
+) : ViewModel() {
+
+    val actions = LoginActions(
+        onEmailChanged = ::onEmailChanged,
+        onPasswordChanged = ::onPasswordChanged,
+        onTogglePasswordVisibility = ::onTogglePasswordVisibility,
+        onLogin = ::onLogin,
+        onRandomEmail = ::onRandomEmail,
+        onLoginFailureDemo = ::onLoginFailureDemo,
+        onCancel = ::onCancel,
+        onInfo = ::onInfo,
+    )
 
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
@@ -45,7 +59,7 @@ class LoginViewModel(
     private var passwordBeforeFailureDemo: String? = null
 
     init {
-        scope.launch {
+        viewModelScope.launch {
             val savedEmail = preferenceStorage.getOrNull(PreferenceKey.Auth.SavedEmail)
             if (savedEmail != null) {
                 _uiState.update { it.copy(email = savedEmail) }
@@ -66,7 +80,7 @@ class LoginViewModel(
     }
 
     fun onLogin() {
-        currentJob = scope.launch {
+        currentJob = viewModelScope.launch {
             indicatorState.runWithLoading {
                 authRepository.login(_uiState.value.email, _uiState.value.password)
             }.onSuccess { displayName ->
@@ -129,7 +143,7 @@ class LoginViewModel(
     fun onLoginFailureDemo() {
         passwordBeforeFailureDemo = _uiState.value.password
         _uiState.update { it.copy(password = "error") }
-        currentJob = scope.launch {
+        currentJob = viewModelScope.launch {
             indicatorState.runWithLoading {
                 authRepository.login(_uiState.value.email, "error")
             }.onFailure { throwable ->
@@ -153,13 +167,13 @@ class LoginViewModel(
     }
 
     fun onInfo() {
-        scope.launch {
-            _effect.send(LoginEffect.LaunchActivity)
+        viewModelScope.launch {
+            _effect.send(LoginEffect.NavigateToInfo)
         }
     }
 
     fun onGuestLogin() {
-        scope.launch {
+        viewModelScope.launch {
             _effect.send(LoginEffect.NavigateToHome("Guest", isGuest = true))
         }
     }

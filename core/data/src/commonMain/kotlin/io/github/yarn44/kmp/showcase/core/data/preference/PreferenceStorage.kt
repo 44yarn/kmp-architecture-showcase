@@ -13,7 +13,9 @@ import kotlinx.coroutines.flow.map
  * The value type is carried by the [PreferenceKey] itself, so callers do not need
  * to think about it at the call site.
  */
-class PreferenceStorage(private val dataStore: DataStore<Preferences>,) {
+class PreferenceStorage(
+    private val dataStore: DataStore<Preferences>,
+) {
     suspend fun <T : Any> getOrNull(key: PreferenceKey<T>): T? =
         dataStore.data.first()[key.dataStoreKey()]
 
