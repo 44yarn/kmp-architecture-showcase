@@ -200,6 +200,30 @@ iosApp                   iOS アプリ（SwiftUI + XcodeGen）
 - [Mint](https://github.com/yonaskolb/Mint)（SwiftFormat / SwiftLint 用）
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen)（Xcode プロジェクト生成用）
 
+## iOS 初回セットアップ
+
+clone 直後に iOS アプリを動かすまでの手順:
+
+1. `mint bootstrap` — SwiftFormat / SwiftLint / XcodeGen をインストール
+2. Xcode で `iosApp/iosApp.xcodeproj` を開く
+3. `iosApp` ターゲット → **Signing & Capabilities** → Apple Developer Team
+   を選択。Xcode は `DEVELOPMENT_TEAM` を `iosApp/iosApp.xcodeproj/project.pbxproj`
+   に書き戻すが、**この変更はコミットしない**こと（per-developer 値であり、
+   公開リポジトリに残さない方針）
+4. Build & Run（⌘R）
+
+### トラブルシューティング
+
+- **`Command PhaseScriptExecution failed` + `* What went wrong: 25.0.1`**
+  デフォルト JDK が 25 になっている（macOS Tahoe 同梱）。本プロジェクトの
+  build phase scripts は `/usr/libexec/java_home -v 21` で JDK 21 を pin
+  しているので、JDK 21 がインストールされ `java_home` から見つかる状態
+  にしておく（`brew install --cask zulu@21` 等）
+- **`xcodegen generate` には注意**
+  本プロジェクトは pbxproj に手書きの設定（`embedAndSign` Run Script の
+  `JAVA_HOME` export、framework 探索パス等）を保持している。これらを
+  `project.yml` に移行するまで、XcodeGen で再生成すると消える
+
 ## ビルド
 
 ```bash

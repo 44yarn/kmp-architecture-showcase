@@ -201,6 +201,32 @@ Dependency direction: `app/iosApp -> feature -> core` (unidirectional).
 - [Mint](https://github.com/yonaskolb/Mint) (for SwiftFormat / SwiftLint)
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen) (for Xcode project generation)
 
+## iOS First-Time Setup
+
+After cloning, run through these steps once to make the iOS app build on
+your machine.
+
+1. `mint bootstrap` — installs SwiftFormat / SwiftLint / XcodeGen.
+2. Open `iosApp/iosApp.xcodeproj` in Xcode.
+3. Select the `iosApp` target → **Signing & Capabilities** → choose your
+   Apple Developer Team. Xcode will write `DEVELOPMENT_TEAM` back to
+   `iosApp/iosApp.xcodeproj/project.pbxproj`. **Do not commit that
+   change** — it is per-developer and intentionally absent from the
+   shipped pbxproj.
+4. Build & Run (⌘R).
+
+### Troubleshooting
+
+- **`Command PhaseScriptExecution failed` with `* What went wrong: 25.0.1`**
+  Your default JDK is 25 (macOS Tahoe ships this). The build phase
+  scripts in this project pin JDK 21 via `/usr/libexec/java_home -v 21`.
+  Make sure JDK 21 is installed and findable by `java_home`
+  (`brew install --cask zulu@21` or equivalent).
+- **`xcodegen generate` is risky here.** This project ships hand-curated
+  pbxproj edits (e.g. the `embedAndSign` Run Script with `JAVA_HOME`
+  export, framework search paths). Until those entries are migrated to
+  `project.yml`, regenerating with XcodeGen will lose them.
+
 ## Build
 
 ```bash
