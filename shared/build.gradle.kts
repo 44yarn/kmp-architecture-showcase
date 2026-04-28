@@ -5,6 +5,7 @@ plugins {
     id("com.android.library")
     id("showcase.primitive.kmp.android")
     id("showcase.primitive.kmp.skie")
+    id("showcase.primitive.metro")
     id("showcase.primitive.spotless")
     id("showcase.primitive.detekt")
 }
@@ -73,8 +74,12 @@ kotlin {
         val iosMain = create("iosMain") {
             dependsOn(commonMain)
             dependencies {
-                implementation(libs.koinCore)
                 implementation(libs.kotlinxCoroutinesCore)
+                // `IosAppGraph.provideDataStore` returns
+                // `DataStore<Preferences>` so shared needs the symbol
+                // directly. Mirrors the equivalent add in
+                // `app/build.gradle.kts`.
+                implementation(libs.datastorePreferencesCore)
             }
         }
 

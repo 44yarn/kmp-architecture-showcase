@@ -1,5 +1,6 @@
 plugins {
     id("showcase.convention.kmp-feature")
+    id("showcase.primitive.metro")
 }
 
 android {

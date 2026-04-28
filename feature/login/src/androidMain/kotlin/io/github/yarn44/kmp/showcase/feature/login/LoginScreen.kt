@@ -30,7 +30,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.yarn44.kmp.showcase.core.foundation.lifecycle.CollectAsEffect
 import io.github.yarn44.kmp.showcase.core.ui.dialog.ShowcaseAlertDialog
@@ -38,10 +37,10 @@ import io.github.yarn44.kmp.showcase.core.ui.theme.AppTheme
 
 @Composable
 fun LoginScreen(
+    viewModel: LoginViewModel,
     onNavigateToHome: (String, Boolean) -> Unit,
-    onLaunchActivity: () -> Unit,
+    onNavigateToInfo: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AndroidLoginViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val isLoading by viewModel.indicatorState.isLoading.collectAsStateWithLifecycle()
@@ -49,7 +48,7 @@ fun LoginScreen(
     viewModel.effect.CollectAsEffect { effect ->
         when (effect) {
             is LoginEffect.NavigateToHome -> onNavigateToHome(effect.displayName, effect.isGuest)
-            is LoginEffect.LaunchActivity -> onLaunchActivity()
+            is LoginEffect.NavigateToInfo -> onNavigateToInfo()
         }
     }
 

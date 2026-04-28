@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.yarn44.kmp.showcase.core.foundation.lifecycle.CollectAsEffect
 import io.github.yarn44.kmp.showcase.core.ui.snackbar.SnackbarView
@@ -26,9 +25,9 @@ import io.github.yarn44.kmp.showcase.core.ui.theme.AppTheme
 
 @Composable
 fun HomeScreen(
+    viewModel: HomeViewModel,
     onNavigateToLogin: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: AndroidHomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
