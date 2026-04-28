@@ -1,16 +1,19 @@
 package io.github.yarn44.kmp.showcase.core.data.auth
 
-import io.github.yarn44.kmp.showcase.core.foundation.coroutines.DispatcherProvider
+import io.github.yarn44.kmp.showcase.core.foundation.coroutines.IoDispatcher
 import io.github.yarn44.kmp.showcase.core.foundation.resultHandling.logOnFailure
 import io.github.yarn44.kmp.showcase.core.foundation.resultHandling.runCatchingCancellable
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import me.tatarka.inject.annotations.Inject
 
+@Inject
 class AuthRepository(
-    private val dispatchers: DispatcherProvider,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) {
     suspend fun login(email: String, password: String): Result<String> =
-        withContext(dispatchers.io) {
+        withContext(ioDispatcher) {
             runCatchingCancellable {
                 delay(1500L)
                 if (password == "error") {

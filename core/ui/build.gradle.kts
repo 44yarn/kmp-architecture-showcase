@@ -1,7 +1,6 @@
 plugins {
     id("showcase.convention.kmp-module")
     id("showcase.primitive.kmp.compose")
-    id("showcase.primitive.hilt")
     id("showcase.primitive.unit-test")
 }
 

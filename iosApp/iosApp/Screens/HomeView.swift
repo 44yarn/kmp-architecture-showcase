@@ -22,7 +22,7 @@ struct HomeView: View {
         isGuest: Bool,
         onLogout: @escaping () -> Void
     ) {
-        _viewModel = State(initialValue: KoinBootstrapKt.getHomeViewModel(
+        _viewModel = State(initialValue: IosAppComponentKt.getHomeViewModel(
             displayName: displayName,
             isGuest: isGuest
         ))
