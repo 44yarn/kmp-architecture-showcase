@@ -1,7 +1,7 @@
 plugins {
     id("showcase.convention.kmp-module")
     id("showcase.primitive.kmp.compose")
-    id("showcase.primitive.hilt")
+    id("showcase.primitive.kotlin-inject")
     id("showcase.primitive.logging")
     id("showcase.primitive.unit-test")
 }
@@ -14,6 +14,9 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             implementation(compose.runtime)
+            implementation(libs.kotlinInjectRuntime)
+            implementation(libs.kotlinInjectAnvilRuntime)
+            implementation(libs.kotlinInjectAnvilRuntimeOptional)
         }
         androidMain.dependencies {
             implementation(libs.androidxCoreKtx)
@@ -21,9 +24,15 @@ kotlin {
             implementation(libs.composeAnimation)
         }
         iosMain {
-            dependencies {
-                implementation(libs.koinCore)
-            }
         }
+    }
+}
+
+dependencies {
+    add("kspAndroid", libs.kotlinInjectCompiler)
+    add("kspAndroid", libs.kotlinInjectAnvilCompiler)
+    listOf("kspIosX64", "kspIosArm64", "kspIosSimulatorArm64").forEach { config ->
+        add(config, libs.kotlinInjectCompiler)
+        add(config, libs.kotlinInjectAnvilCompiler)
     }
 }

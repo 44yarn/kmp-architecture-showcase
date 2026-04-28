@@ -1,5 +1,6 @@
 plugins {
     id("showcase.convention.kmp-feature")
+    id("showcase.primitive.kotlin-inject")
 }
 
 android {
@@ -16,12 +17,22 @@ compose.resources {
 kotlin {
     sourceSets {
         commonMain.dependencies {
-            // Needed so that the generated `Res` object and the
-            // @Composable stringResource(...) helper are available here.
             implementation(compose.components.resources)
+            implementation(libs.kotlinInjectRuntime)
+            implementation(libs.kotlinInjectAnvilRuntime)
+            implementation(libs.kotlinInjectAnvilRuntimeOptional)
         }
         androidMain.dependencies {
             implementation(libs.composeMaterialIconsExtended)
         }
+    }
+}
+
+dependencies {
+    add("kspAndroid", libs.kotlinInjectCompiler)
+    add("kspAndroid", libs.kotlinInjectAnvilCompiler)
+    listOf("kspIosX64", "kspIosArm64", "kspIosSimulatorArm64").forEach { config ->
+        add(config, libs.kotlinInjectCompiler)
+        add(config, libs.kotlinInjectAnvilCompiler)
     }
 }

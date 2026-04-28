@@ -1,5 +1,6 @@
 plugins {
     id("showcase.convention.kmp-feature")
+    id("showcase.primitive.kotlin-inject")
 }
 
 android {
@@ -8,8 +9,22 @@ android {
 
 kotlin {
     sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinInjectRuntime)
+            implementation(libs.kotlinInjectAnvilRuntime)
+            implementation(libs.kotlinInjectAnvilRuntimeOptional)
+        }
         androidMain.dependencies {
             implementation(libs.composeMaterialIconsExtended)
         }
+    }
+}
+
+dependencies {
+    add("kspAndroid", libs.kotlinInjectCompiler)
+    add("kspAndroid", libs.kotlinInjectAnvilCompiler)
+    listOf("kspIosX64", "kspIosArm64", "kspIosSimulatorArm64").forEach { config ->
+        add(config, libs.kotlinInjectCompiler)
+        add(config, libs.kotlinInjectAnvilCompiler)
     }
 }

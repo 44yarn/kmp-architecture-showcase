@@ -7,7 +7,6 @@ plugins {
     id("showcase.convention.kmp-module")
     id("showcase.primitive.compose")
     id("showcase.primitive.kmp.compose")
-    id("showcase.primitive.hilt")
     id("showcase.primitive.logging")
     id("showcase.primitive.unit-test")
     id("org.jetbrains.kotlin.plugin.serialization")
@@ -48,8 +47,5 @@ kotlin {
             implementation(libs.library("composeUiTooling"))
         }
 
-        findByName("iosMain")?.dependencies {
-            implementation(libs.library("koinCore"))
-        }
     }
 }
