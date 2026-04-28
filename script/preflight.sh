@@ -133,7 +133,7 @@ main() {
   fi
   DESCS+=("🧼 Format Swift: format-swift.sh"); CMDS+=("./script/format-swift.sh"); HINTS+=("$format_swift_hint")
 
-  DESCS+=("🧩 Link iOS KMP framework: :shared:linkDebugFrameworkIosSimulatorArm64"); CMDS+=("./gradlew :shared:linkDebugFrameworkIosSimulatorArm64"); HINTS+=("")
+  DESCS+=("🧩 Build iOS XCFramework: :shared:assembleShowcaseKitDebugXCFramework"); CMDS+=("./gradlew :shared:assembleShowcaseKitDebugXCFramework -Papp.ios.shared.arch=arm64"); HINTS+=("Required before Xcode builds. After 'gradlew clean', this step regenerates the XCFramework so the SPM binaryTarget in shared/Package.swift can resolve. -Papp.ios.shared.arch=arm64 skips iosX64 for faster dev builds.")
 
   DESCS+=("📦 Build APK: assembleDebug"); CMDS+=("./gradlew assembleDebug"); HINTS+=("")
 
