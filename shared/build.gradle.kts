@@ -19,9 +19,17 @@ kotlin {
     // The Swift Package (shared/Package.swift) consumes this via `binaryTarget`.
     val showcaseXcf = XCFramework("ShowcaseKit")
 
+    // Allow restricting iOS targets for faster dev iteration. Passing
+    // `-Papp.ios.shared.arch=arm64` drops iosX64 (Intel-Mac simulator), so
+    // only iosArm64 (iPhone device) and iosSimulatorArm64 (Apple Silicon Mac
+    // simulator) are built. Without the property, all three iOS targets are
+    // built — typical for CI / release.
+    val sharedArch = providers.gradleProperty("app.ios.shared.arch").orNull
+    val includeIosX64 = sharedArch != "arm64"
+
     // iOS targets — produce a single umbrella framework.
-    val iosTargets = listOf(
-        iosX64(),
+    val iosTargets = listOfNotNull(
+        if (includeIosX64) iosX64() else null,
         iosArm64(),
         iosSimulatorArm64(),
     )
@@ -70,8 +78,8 @@ kotlin {
             }
         }
 
-        listOf("iosX64", "iosArm64", "iosSimulatorArm64").forEach { targetName ->
-            getByName("${targetName}Main") {
+        iosTargets.forEach { iosTarget ->
+            getByName("${iosTarget.name}Main") {
                 dependsOn(iosMain)
             }
         }

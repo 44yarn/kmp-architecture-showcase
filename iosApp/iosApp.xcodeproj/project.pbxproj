@@ -224,7 +224,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Skip in CI: the XCFramework is expected to be built and cached separately\nif [ -n \"$CI\" ] || [ -n \"$GITHUB_ACTIONS\" ]; then\n    echo \"Skipping KMP build in CI environment\"\n    exit 0\nfi\n# Xcode build phase scripts do not inherit JAVA_HOME from the user's\n# shell. Pin JDK 21 explicitly so the Kotlin Gradle Plugin does not\n# fall back to the system default JDK (e.g. JDK 25 on macOS Tahoe).\nexport JAVA_HOME=$(/usr/libexec/java_home -v 21)\ncd \"$SRCROOT/..\" && ./gradlew :shared:assembleShowcaseKitDebugXCFramework\n";
+			shellScript = "# Skip in CI: the XCFramework is expected to be built and cached separately\nif [ -n \"$CI\" ] || [ -n \"$GITHUB_ACTIONS\" ]; then\n    echo \"Skipping KMP build in CI environment\"\n    exit 0\nfi\n# Xcode build phase scripts do not inherit JAVA_HOME from the user's\n# shell. Pin JDK 21 explicitly so the Kotlin Gradle Plugin does not\n# fall back to the system default JDK (e.g. JDK 25 on macOS Tahoe).\nexport JAVA_HOME=$(/usr/libexec/java_home -v 21)\n# `-Papp.ios.shared.arch=arm64` drops iosX64 (Intel-Mac simulator)\n# to speed up day-to-day dev builds. Drop the flag for full\n# release / CI to also produce iosX64.\ncd \"$SRCROOT/..\" && ./gradlew :shared:assembleShowcaseKitDebugXCFramework -Papp.ios.shared.arch=arm64\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

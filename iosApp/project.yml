@@ -62,7 +62,10 @@ targets:
           # shell. Pin JDK 21 explicitly so the Kotlin Gradle Plugin does not
           # fall back to the system default JDK (e.g. JDK 25 on macOS Tahoe).
           export JAVA_HOME=$(/usr/libexec/java_home -v 21)
-          cd "$SRCROOT/.." && ./gradlew :shared:assembleShowcaseKitDebugXCFramework
+          # `-Papp.ios.shared.arch=arm64` drops iosX64 (Intel-Mac simulator)
+          # to speed up day-to-day dev builds. Drop the flag for full
+          # release / CI to also produce iosX64.
+          cd "$SRCROOT/.." && ./gradlew :shared:assembleShowcaseKitDebugXCFramework -Papp.ios.shared.arch=arm64
         basedOnDependencyAnalysis: false
     postBuildScripts:
       - path: ../script/sync-compose-resources.sh
