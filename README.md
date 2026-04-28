@@ -196,7 +196,7 @@ Dependency direction: `app/iosApp -> feature -> core` (unidirectional).
 
 - JDK 21
 - Android: minSdk 31 / compileSdk 36 / targetSdk 36
-- iOS: 17.0+
+- iOS: 18.6+
 - Xcode 16+
 - [Mint](https://github.com/yonaskolb/Mint) (for SwiftFormat / SwiftLint)
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen) (for Xcode project generation)

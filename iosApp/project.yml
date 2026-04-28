@@ -2,7 +2,7 @@ name: iosApp
 options:
   bundleIdPrefix: io.github.yarn44.kmp.showcase
   deploymentTarget:
-    iOS: "17.0"
+    iOS: "18.6"
 
 schemes:
   iosApp:
