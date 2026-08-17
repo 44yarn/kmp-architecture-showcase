@@ -9,10 +9,11 @@ plugins {
 }
 
 // KMP iOS target configuration.
+// NOTE: iosX64 (Intel-Mac simulator) is dropped because Compose Multiplatform
+// 1.11.0+ no longer ships Apple x86_64 artifacts (KT-81596).
 // Framework generation is centralized in the `shared` module; individual
 // modules only declare their iOS targets and source sets here.
 extensions.configure<KotlinMultiplatformExtension> {
-    iosX64()
     iosArm64()
     iosSimulatorArm64()
 
@@ -29,7 +30,7 @@ extensions.configure<KotlinMultiplatformExtension> {
             dependsOn(getByName("commonTest"))
         }
 
-        listOf("iosX64", "iosArm64", "iosSimulatorArm64").forEach { targetName ->
+        listOf("iosArm64", "iosSimulatorArm64").forEach { targetName ->
             getByName("${targetName}Main") {
                 dependsOn(iosMain)
             }

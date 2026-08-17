@@ -31,7 +31,7 @@ kotlin {
 dependencies {
     add("kspAndroid", libs.kotlinInjectCompiler)
     add("kspAndroid", libs.kotlinInjectAnvilCompiler)
-    listOf("kspIosX64", "kspIosArm64", "kspIosSimulatorArm64").forEach { config ->
+    listOf("kspIosArm64", "kspIosSimulatorArm64").forEach { config ->
         add(config, libs.kotlinInjectCompiler)
         add(config, libs.kotlinInjectAnvilCompiler)
     }

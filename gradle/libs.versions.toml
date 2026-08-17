@@ -1,12 +1,12 @@
 [versions]
 # Kotlin & Android
-kotlin = "2.3.10"
+kotlin = "2.4.10"
 agp = "8.13.2"
 composeBom = "2024.12.01"
-composeMultiplatform = "1.10.3"
+composeMultiplatform = "1.11.1"
 
 # KMP
-skie = "0.10.11"
+skie = "0.10.14"
 
 # AndroidX
 androidxCoreKtx = "1.16.0"
@@ -20,6 +20,9 @@ kotlinxCoroutines = "1.10.2"
 kotlinxSerialization = "1.10.0"
 
 # DI
+# NOTE: KSP >= 2.3.7 bumped its Kotlin target language version to 2.3, which the
+# gradle-conventions precompiled-script-plugin build (Gradle 8.14.3 embedded
+# Kotlin 2.0) cannot read. Pinned to 2.3.6 until Gradle is upgraded.
 ksp = "2.3.6"
 kotlinInject = "0.9.0"
 kotlinInjectAnvil = "0.1.7"
