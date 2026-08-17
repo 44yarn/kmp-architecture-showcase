@@ -1,21 +1,22 @@
 package io.github.yarn44.kmp.showcase.di
 
 import android.content.Context
+import dev.zacsweers.metro.AppScope
+import dev.zacsweers.metro.DependencyGraph
+import dev.zacsweers.metro.Provides
+import dev.zacsweers.metro.SingleIn
 import io.github.yarn44.kmp.showcase.feature.home.HomeViewModel
 import io.github.yarn44.kmp.showcase.feature.login.LoginViewModel
-import me.tatarka.inject.annotations.Component
-import me.tatarka.inject.annotations.Provides
-import software.amazon.lastmile.kotlin.inject.anvil.AppScope
-import software.amazon.lastmile.kotlin.inject.anvil.MergeComponent
-import software.amazon.lastmile.kotlin.inject.anvil.SingleIn
 
-@MergeComponent(AppScope::class)
+@DependencyGraph(AppScope::class)
 @SingleIn(AppScope::class)
-abstract class ShowcaseAppComponent(
-    @get:Provides val applicationContext: Context,
-) {
-    abstract val loginViewModel: LoginViewModel
-    abstract val homeViewModelFactory: HomeViewModel.Factory
+interface ShowcaseAppComponent {
 
-    companion object
+    val loginViewModel: LoginViewModel
+    val homeViewModelFactory: HomeViewModel.Factory
+
+    @DependencyGraph.Factory
+    fun interface Factory {
+        fun create(@Provides applicationContext: Context): ShowcaseAppComponent
+    }
 }

@@ -1,7 +1,7 @@
 plugins {
     id("showcase.convention.kmp-module")
     id("showcase.convention.kmp-sqldelight")
-    id("showcase.primitive.kotlin-inject")
+    id("dev.zacsweers.metro")
     id("showcase.primitive.unit-test")
 }
 
@@ -17,9 +17,6 @@ kotlin {
             implementation(libs.sqldelightCoroutines)
             implementation(libs.kotlinxSerializationJson)
             api(libs.datastorePreferencesCore)
-            implementation(libs.kotlinInjectRuntime)
-            implementation(libs.kotlinInjectAnvilRuntime)
-            implementation(libs.kotlinInjectAnvilRuntimeOptional)
         }
         androidMain.dependencies {
             implementation(libs.sqldelightAndroidDriver)
@@ -33,15 +30,6 @@ kotlin {
             implementation(libs.kotlinTest)
             implementation(libs.kotlinxCoroutinesTest)
         }
-    }
-}
-
-dependencies {
-    add("kspAndroid", libs.kotlinInjectCompiler)
-    add("kspAndroid", libs.kotlinInjectAnvilCompiler)
-    listOf("kspIosArm64", "kspIosSimulatorArm64").forEach { config ->
-        add(config, libs.kotlinInjectCompiler)
-        add(config, libs.kotlinInjectAnvilCompiler)
     }
 }
 

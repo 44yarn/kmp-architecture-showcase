@@ -2,6 +2,7 @@ package io.github.yarn44.kmp.showcase.feature.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.zacsweers.metro.Inject
 import io.github.yarn44.kmp.showcase.core.data.auth.AuthException
 import io.github.yarn44.kmp.showcase.core.data.auth.AuthRepository
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceKey
@@ -24,7 +25,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class LoginViewModel(

@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 plugins {
     id("org.jetbrains.kotlin.multiplatform")
     id("com.android.library")
-    id("com.google.devtools.ksp")
+    id("dev.zacsweers.metro")
     id("showcase.primitive.kmp.android")
     id("showcase.primitive.kmp.skie")
     id("showcase.primitive.spotless")
@@ -66,9 +66,6 @@ kotlin {
             dependsOn(commonMain)
             dependencies {
                 implementation(libs.kotlinxCoroutinesCore)
-                implementation(libs.kotlinInjectRuntime)
-                implementation(libs.kotlinInjectAnvilRuntime)
-                implementation(libs.kotlinInjectAnvilRuntimeOptional)
             }
         }
 
@@ -77,16 +74,5 @@ kotlin {
                 dependsOn(iosMain)
             }
         }
-    }
-}
-
-dependencies {
-    val kspConfigs = listOf(
-        "kspIosArm64",
-        "kspIosSimulatorArm64",
-    )
-    kspConfigs.forEach { config ->
-        add(config, libs.kotlinInjectCompiler)
-        add(config, libs.kotlinInjectAnvilCompiler)
     }
 }

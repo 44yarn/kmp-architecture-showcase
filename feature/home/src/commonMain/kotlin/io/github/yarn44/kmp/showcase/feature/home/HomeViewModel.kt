@@ -2,6 +2,9 @@ package io.github.yarn44.kmp.showcase.feature.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dev.zacsweers.metro.Assisted
+import dev.zacsweers.metro.AssistedFactory
+import dev.zacsweers.metro.AssistedInject
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceKey
 import io.github.yarn44.kmp.showcase.core.data.preference.PreferenceStorage
 import io.github.yarn44.kmp.showcase.core.ui.snackbar.SnackbarPresenter
@@ -14,10 +17,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.tatarka.inject.annotations.Assisted
-import me.tatarka.inject.annotations.Inject
 
-@Inject
+@AssistedInject
 class HomeViewModel(
     private val preferenceStorage: PreferenceStorage,
     @Assisted displayName: String,
@@ -78,7 +79,7 @@ class HomeViewModel(
         }
     }
 
-    @me.tatarka.inject.annotations.AssistedFactory
+    @AssistedFactory
     fun interface Factory {
         fun create(displayName: String, isGuest: Boolean): HomeViewModel
     }
