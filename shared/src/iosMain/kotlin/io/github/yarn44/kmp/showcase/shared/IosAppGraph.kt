@@ -15,27 +15,27 @@ import io.github.yarn44.kmp.showcase.feature.login.LoginViewModel
  */
 @DependencyGraph(AppScope::class)
 @SingleIn(AppScope::class)
-interface IosAppComponent {
+interface IosAppGraph {
 
     val loginViewModel: LoginViewModel
     val homeViewModelFactory: HomeViewModel.Factory
 }
 
-private var iosAppComponentInstance: IosAppComponent? = null
+private var iosAppGraphInstance: IosAppGraph? = null
 
-private fun requireComponent(): IosAppComponent =
-    requireNotNull(iosAppComponentInstance) {
-        "IosAppComponent not initialized. Call bootstrapIosAppComponent() first."
+private fun requireGraph(): IosAppGraph =
+    requireNotNull(iosAppGraphInstance) {
+        "IosAppGraph not initialized. Call bootstrapIosAppGraph() first."
     }
 
-fun bootstrapIosAppComponent() {
-    if (iosAppComponentInstance == null) {
-        iosAppComponentInstance = createGraph<IosAppComponent>()
+fun bootstrapIosAppGraph() {
+    if (iosAppGraphInstance == null) {
+        iosAppGraphInstance = createGraph<IosAppGraph>()
     }
 }
 
 fun getLoginViewModel(): LoginViewModel =
-    requireComponent().loginViewModel
+    requireGraph().loginViewModel
 
 fun getHomeViewModel(displayName: String, isGuest: Boolean): HomeViewModel =
-    requireComponent().homeViewModelFactory.create(displayName, isGuest)
+    requireGraph().homeViewModelFactory.create(displayName, isGuest)

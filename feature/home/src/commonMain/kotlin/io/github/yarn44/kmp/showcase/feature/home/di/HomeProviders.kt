@@ -7,7 +7,7 @@ import io.github.yarn44.kmp.showcase.core.ui.snackbar.SnackbarPresenter
 import io.github.yarn44.kmp.showcase.feature.home.HomeViewModel
 
 @ContributesTo(AppScope::class)
-interface HomeComponent {
+interface HomeProviders {
 
     val homeViewModelFactory: HomeViewModel.Factory
 

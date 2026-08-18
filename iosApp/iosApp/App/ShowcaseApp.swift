@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct ShowcaseApp: App {
     init() {
-        IosAppComponentKt.bootstrapIosAppComponent()
+        IosAppGraphKt.bootstrapIosAppGraph()
     }
 
     var body: some Scene {

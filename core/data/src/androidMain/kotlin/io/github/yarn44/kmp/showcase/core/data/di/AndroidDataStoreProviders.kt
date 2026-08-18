@@ -11,7 +11,7 @@ import dev.zacsweers.metro.SingleIn
 import okio.Path.Companion.toPath
 
 @ContributesTo(AppScope::class)
-interface AndroidDataStoreComponent {
+interface AndroidDataStoreProviders {
 
     @Provides
     @SingleIn(AppScope::class)

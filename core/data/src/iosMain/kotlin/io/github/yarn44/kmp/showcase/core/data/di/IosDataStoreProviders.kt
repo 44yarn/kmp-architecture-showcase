@@ -15,7 +15,7 @@ import platform.Foundation.NSURL
 import platform.Foundation.NSUserDomainMask
 
 @ContributesTo(AppScope::class)
-interface IosDataStoreComponent {
+interface IosDataStoreProviders {
 
     @Provides
     @SingleIn(AppScope::class)

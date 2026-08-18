@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 
 @ContributesTo(AppScope::class)
-interface DataComponent {
+interface DataProviders {
 
     @Provides
     @IoDispatcher

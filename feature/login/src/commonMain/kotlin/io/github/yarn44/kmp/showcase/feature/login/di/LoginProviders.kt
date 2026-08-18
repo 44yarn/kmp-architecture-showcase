@@ -8,7 +8,7 @@ import io.github.yarn44.kmp.showcase.core.ui.indicator.IndicatorState
 import io.github.yarn44.kmp.showcase.feature.login.LoginViewModel
 
 @ContributesTo(AppScope::class)
-interface LoginComponent {
+interface LoginProviders {
 
     val loginViewModel: LoginViewModel
 
