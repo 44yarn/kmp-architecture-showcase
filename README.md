@@ -229,10 +229,10 @@ The Kotlin shared module (`:shared`) is exposed to iOS as an
 - The `Compile Kotlin Framework` build phase in `iosApp` invokes the
   Gradle task automatically before Swift compile, so day-to-day
   Kotlin edits flow into the next Xcode build with no extra step.
-- The build phase passes `-Papp.ios.shared.arch=arm64` to skip the
-  iosX64 (Intel-Mac simulator) target for faster dev builds. CI /
-  release builds run the same task without the flag to produce all
-  three iOS targets.
+- The XCFramework covers `iosArm64` (device) and `iosSimulatorArm64`
+  (Apple Silicon simulator). `iosX64` (Intel-Mac simulator) is not
+  built: Compose Multiplatform 1.11.0+ no longer ships Apple x86_64
+  artifacts ([KT-81596](https://youtrack.jetbrains.com/issue/KT-81596)).
 - In CI (`$CI` or `$GITHUB_ACTIONS` set), the build phase skips the
   Gradle invocation — CI is expected to assemble the XCFramework
   separately and cache it.
@@ -274,11 +274,8 @@ After editing it, regenerate with `cd iosApp && xcodegen generate`.
 # Swift formatting
 ./script/format-swift.sh
 
-# iOS shared XCFramework (full: arm64 device + Apple Silicon + Intel simulator)
+# iOS shared XCFramework (arm64 device + Apple Silicon simulator)
 ./gradlew :shared:assembleShowcaseKitDebugXCFramework
-
-# iOS shared XCFramework (dev: arm64 only, faster)
-./gradlew :shared:assembleShowcaseKitDebugXCFramework -Papp.ios.shared.arch=arm64
 
 # Full preflight pipeline (runs all of the above + iOS build)
 ./script/preflight.sh
