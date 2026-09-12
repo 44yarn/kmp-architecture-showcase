@@ -1,6 +1,6 @@
 package io.github.yarn44.kmp.showcase.core.foundation.coroutines
 
-import me.tatarka.inject.annotations.Qualifier
+import dev.zacsweers.metro.Qualifier
 
 @Qualifier
 annotation class IoDispatcher

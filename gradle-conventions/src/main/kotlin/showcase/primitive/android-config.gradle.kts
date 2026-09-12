@@ -39,6 +39,5 @@ pluginManager.withPlugin("com.android.library") {
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
         jvmTarget.set(AndroidConfig.jvmTarget)
-        freeCompilerArgs.add("-Xannotation-default-target=param-property")
     }
 }

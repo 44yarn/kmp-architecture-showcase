@@ -8,7 +8,6 @@ plugins {
 dependencies {
     implementation(libs.androidGradlePlugin)
     implementation(libs.kotlinGradlePlugin)
-    implementation(libs.kspGradlePlugin)
     implementation(libs.composeMultiplatformPlugin)
     implementation(libs.detektGradlePlugin)
     implementation(libs.spotlessGradlePlugin)
@@ -27,9 +26,6 @@ dependencies {
     val agpVersion = libs.versions.agp.get()
     implementation("com.android.application:com.android.application.gradle.plugin:$agpVersion")
     implementation("com.android.library:com.android.library.gradle.plugin:$agpVersion")
-
-    val kspVersion = libs.versions.ksp.get()
-    implementation("com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:$kspVersion")
 
     val detektVersion = libs.versions.detekt.get()
     implementation("io.gitlab.arturbosch.detekt:io.gitlab.arturbosch.detekt.gradle.plugin:$detektVersion")

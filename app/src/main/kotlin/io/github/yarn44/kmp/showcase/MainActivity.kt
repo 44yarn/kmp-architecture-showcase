@@ -8,9 +8,9 @@ import io.github.yarn44.kmp.showcase.navigation.ShowcaseNavGraph
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val appComponent = applicationContext.appComponent
+        val appGraph = applicationContext.appGraph
         setContentWithTheme {
-            ShowcaseNavGraph(appComponent = appComponent)
+            ShowcaseNavGraph(appGraph = appGraph)
         }
     }
 }

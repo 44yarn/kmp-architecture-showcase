@@ -10,14 +10,18 @@ Based on [android-architecture-showcase](https://github.com/44yarn/android-archi
 
 ### DI Comparison
 
-This project is currently on **kotlin-inject + Anvil** as the unified DI for KMP.
-Three branches are kept as Draft PRs to compare KMP-unified DI approaches against the original Hilt + Koin baseline:
+This project is currently on **[Metro](https://github.com/ZacSweers/metro)** as the unified DI for KMP.
+Three branches are kept as Draft PRs recording the earlier comparison against the original Hilt + Koin baseline:
 
 | Branch | Setup | PR |
 |--------|-------|-----|
 | `feature/hilt-koin-di-poc` | Hilt (Android) + Koin (iOS) — original baseline | [#3](https://github.com/44yarn/kmp-architecture-showcase/pull/3) |
 | `feature/metro-di-poc` | [Metro](https://github.com/ZacSweers/metro) 0.10.4 | [#1](https://github.com/44yarn/kmp-architecture-showcase/pull/1) |
-| `feature/kotlin-inject-poc` | [kotlin-inject](https://github.com/evant/kotlin-inject) 0.9.0 + [kotlin-inject-anvil](https://github.com/amzn/kotlin-inject-anvil) 0.1.7 (current `develop` lineage) | [#2](https://github.com/44yarn/kmp-architecture-showcase/pull/2) |
+| `feature/kotlin-inject-poc` | [kotlin-inject](https://github.com/evant/kotlin-inject) 0.9.0 + [kotlin-inject-anvil](https://github.com/amzn/kotlin-inject-anvil) 0.1.7 | [#2](https://github.com/44yarn/kmp-architecture-showcase/pull/2) |
+
+`develop` followed the kotlin-inject lineage first, then moved to Metro in
+[#4](https://github.com/44yarn/kmp-architecture-showcase/issues/4) once kotlin-inject-anvil entered
+maintenance mode and Metro shipped 1.0.
 
 See [docs/kmp-di-comparison.md](docs/kmp-di-comparison.md) for the full comparison and findings.
 
@@ -61,17 +65,17 @@ Login --- Success ------------> Home ("Welcome, {name}!" Snackbar)
 
 ### Other Design Patterns
 
-- **KMP ViewModel** — Common ViewModel in `commonMain`, instantiated via kotlin-inject `@AssistedFactory` from the Compose layer
+- **KMP ViewModel** — Common ViewModel in `commonMain`, instantiated via Metro `@AssistedFactory` from the Compose layer
 - **SKIE** — Kotlin `StateFlow` / `Flow` automatically bridged to Swift `AsyncSequence`
 - **Actions class** — Callbacks aggregated into a data class
 - **Convention Plugin** — Shared build configuration via gradle-conventions
 - **PreferenceKey / PreferenceStorage** — Type-safe wrapper over Preferences DataStore (KMP), with the value type carried by the key
 - **AdaptiveString / AdaptiveImage** — Unify localized resources with literal strings / remote URLs behind a single consumer-facing type (see below)
-- **DI boundary** — Repositories and use-case classes live in `commonMain`. Platform-specific APIs (DataStore file paths, `Context`, `NSFileManager`, …) are referenced only inside DI components (kotlin-inject `@Provides`) and injected as dependencies. No thin platform-only wrapper class just to attach `@Inject` — common classes are instantiated directly from `@Provides`.
-- **DispatcherProvider** — Repositories receive a `DispatcherProvider` interface (in `core/foundation/commonMain`) instead of referencing `Dispatchers.IO` / `.Default` / `.Main` directly. Production binding is `DefaultDispatcherProvider`; tests substitute a `TestDispatcherProvider` backed by `StandardTestDispatcher`, which lets `runTest` virtualize production `delay()` calls (see `core/data/commonTest/.../AuthRepositoryTest.kt`). The interface approach avoids JVM-only `@Qualifier` indirection and works uniformly across all KMP targets.
+- **DI boundary** — Repositories and use-case classes live in `commonMain`. Platform-specific APIs (DataStore file paths, `Context`, `NSFileManager`, …) are referenced only inside `@ContributesTo` provider interfaces (`*Providers`) in the platform source set, and injected as dependencies. No thin platform-only wrapper class just to attach `@Inject` — common classes are instantiated directly from `@Provides`.
+- **`@IoDispatcher` qualifier** — Repositories receive a `CoroutineDispatcher` tagged with the `@IoDispatcher` qualifier (in `core/foundation/commonMain`) instead of referencing `Dispatchers.IO` directly. Tests pass a `StandardTestDispatcher` linked to `runTest`'s scheduler, which virtualizes production `delay()` calls (see `core/data/commonTest/.../AuthRepositoryTest.kt`). Metro's `@Qualifier` is multiplatform, so no `DispatcherProvider` indirection is needed to stay off JVM-only APIs.
 - **Stateless content split** — Each Android screen pairs a stateful `XxxScreen` (collects ViewModel state, wires effects) with a stateless `XxxContent` that only takes `uiState` + `actions`. The latter is what `@Preview` renders, so previews never touch DI or coroutines.
 - **Lifecycle-aware effect collection** — One-shot effect channels are collected via `Flow<T>.CollectAsEffect` (in `core/foundation`), which wraps `repeatOnLifecycle(STARTED)` so effects are not delivered while the screen is in the background.
-- **DI** — kotlin-inject + Anvil (KMP unified)
+- **DI** — Metro (KMP unified, Kotlin compiler plugin — no KSP)
 - **iOS string strategy** — Static UI chrome (screen titles, button labels) uses SwiftUI string literals. Dynamic or logic-driven text (error messages, dialog content) is resolved from `AdaptiveString` via SKIE's `async throws` bridge (`suspend resolve()` in `iosMain`). This two-layer approach avoids async overhead for static labels while keeping shared localization for content that originates in `commonMain` ViewModels.
 - **Effect collection lifecycle** — iOS uses SwiftUI `.task { for await ... }`, which SwiftUI automatically cancels on view disappear. Android wraps the same `Flow.collect` with `repeatOnLifecycle(STARTED)` via `CollectAsEffect`. Both platforms observe effects only while the screen is visible, preventing delivery of stale navigation events after the screen goes to the background.
 
@@ -153,10 +157,10 @@ themselves (in the `adaptive/` package) — no resource files.
 
 ```
 gradle-conventions       Convention Plugins (shared build configuration)
-app                      Android app entry point, NavGraph, kotlin-inject component setup
+app                      Android app entry point, NavGraph, ShowcaseAppGraph setup
 shared                   Umbrella framework (ShowcaseKit) for iOS
 +-- core
-|   +-- foundation       Result extensions, DispatcherProvider, ActivityLauncher
+|   +-- foundation       Result extensions, @IoDispatcher qualifier, CollectAsEffect
 |   +-- ui               DialogPresenter, SnackbarPresenter, IndicatorState, AppTheme, AdaptiveString, AdaptiveImage
 |   +-- data             AuthRepository, PreferenceStorage (DataStore KMP)
 +-- feature
@@ -176,7 +180,6 @@ Dependency direction: `app/iosApp -> feature -> core` (unidirectional).
 | showcase.convention.kmp-feature | KMP feature module (Compose + SKIE) |
 | showcase.convention.kmp-module | Base plugin for KMP core / library modules |
 | showcase.convention.kmp-sqldelight | Adds SQLDelight to a KMP module |
-| showcase.primitive.kotlin-inject | kotlin-inject + Anvil + KSP |
 | showcase.primitive.spotless | Code formatting |
 | showcase.primitive.detekt | Static analysis |
 
@@ -184,13 +187,13 @@ Dependency direction: `app/iosApp -> feature -> core` (unidirectional).
 
 | Category | Library |
 |----------|---------|
-| Language | Kotlin 2.3 / Swift 5.9 |
+| Language | Kotlin 2.4 / Swift 5.9 |
 | UI | Jetpack Compose (Android) / SwiftUI (iOS) |
-| DI | kotlin-inject 0.9.0 + Anvil 0.1.7 (KMP unified) |
+| DI | Metro 1.4.2 (KMP unified, compile-time graph) |
 | Navigation | Navigation Compose (Android) / NavigationStack (iOS) |
 | Async | Kotlin Coroutines + Flow / SKIE AsyncSequence |
 | Storage | Preferences DataStore (KMP) |
-| Build | AGP 8.13, KSP, Convention Plugins, XcodeGen |
+| Build | AGP 8.13, Convention Plugins, XcodeGen |
 | Code Quality | Spotless, detekt, SwiftFormat, SwiftLint |
 
 ## Requirements
@@ -229,10 +232,10 @@ The Kotlin shared module (`:shared`) is exposed to iOS as an
 - The `Compile Kotlin Framework` build phase in `iosApp` invokes the
   Gradle task automatically before Swift compile, so day-to-day
   Kotlin edits flow into the next Xcode build with no extra step.
-- The build phase passes `-Papp.ios.shared.arch=arm64` to skip the
-  iosX64 (Intel-Mac simulator) target for faster dev builds. CI /
-  release builds run the same task without the flag to produce all
-  three iOS targets.
+- The XCFramework covers `iosArm64` (device) and `iosSimulatorArm64`
+  (Apple Silicon simulator). `iosX64` (Intel-Mac simulator) is not
+  built: Compose Multiplatform 1.11.0+ no longer ships Apple x86_64
+  artifacts ([KT-81596](https://youtrack.jetbrains.com/issue/KT-81596)).
 - In CI (`$CI` or `$GITHUB_ACTIONS` set), the build phase skips the
   Gradle invocation — CI is expected to assemble the XCFramework
   separately and cache it.
@@ -274,11 +277,8 @@ After editing it, regenerate with `cd iosApp && xcodegen generate`.
 # Swift formatting
 ./script/format-swift.sh
 
-# iOS shared XCFramework (full: arm64 device + Apple Silicon + Intel simulator)
+# iOS shared XCFramework (arm64 device + Apple Silicon simulator)
 ./gradlew :shared:assembleShowcaseKitDebugXCFramework
-
-# iOS shared XCFramework (dev: arm64 only, faster)
-./gradlew :shared:assembleShowcaseKitDebugXCFramework -Papp.ios.shared.arch=arm64
 
 # Full preflight pipeline (runs all of the above + iOS build)
 ./script/preflight.sh
