@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @Environment(\.colorScheme) private var colorScheme
-    @State private var viewModel = IosAppComponentKt.getLoginViewModel()
+    @State private var viewModel = IosAppGraphKt.getLoginViewModel()
     @State private var uiState = LoginUiState(email: "", password: "", isPasswordVisible: false)
     @State private var isLoading = false
     // The dialog's AdaptiveString fields are resolved asynchronously via the

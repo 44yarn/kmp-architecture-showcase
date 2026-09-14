@@ -10,14 +10,18 @@ ViewModel、リポジトリ、デザイントークンを共通モジュール�
 
 ### DI 比較
 
-本プロジェクトは現在 **kotlin-inject + Anvil** を KMP 統一 DI として採用している。
+本プロジェクトは現在 **[Metro](https://github.com/ZacSweers/metro)** を KMP 統一 DI として採用している。
 DI 構成の比較対象として、以下 3 本のブランチを Draft PR として保持:
 
 | ブランチ | 構成 | PR |
 |---------|------|-----|
 | `feature/hilt-koin-di-poc` | Hilt (Android) + Koin (iOS) — 元のベースライン | [#3](https://github.com/44yarn/kmp-architecture-showcase/pull/3) |
 | `feature/metro-di-poc` | [Metro](https://github.com/ZacSweers/metro) 0.10.4 | [#1](https://github.com/44yarn/kmp-architecture-showcase/pull/1) |
-| `feature/kotlin-inject-poc` | [kotlin-inject](https://github.com/evant/kotlin-inject) 0.9.0 + [kotlin-inject-anvil](https://github.com/amzn/kotlin-inject-anvil) 0.1.7（現 `develop` の系統） | [#2](https://github.com/44yarn/kmp-architecture-showcase/pull/2) |
+| `feature/kotlin-inject-poc` | [kotlin-inject](https://github.com/evant/kotlin-inject) 0.9.0 + [kotlin-inject-anvil](https://github.com/amzn/kotlin-inject-anvil) 0.1.7 | [#2](https://github.com/44yarn/kmp-architecture-showcase/pull/2) |
+
+`develop` は当初 kotlin-inject 系統を採用していたが、kotlin-inject-anvil が maintenance mode に入り
+Metro が 1.0 に到達したことを受けて、[#4](https://github.com/44yarn/kmp-architecture-showcase/issues/4)
+で Metro に移行した。
 
 比較結果の詳細は [docs/kmp-di-comparison-ja.md](docs/kmp-di-comparison-ja.md) を参照。
 
@@ -61,17 +65,17 @@ Login --- Login 成功 -----------> Home（"Welcome, {name}!" Snackbar）
 
 ### その他の設計パターン
 
-- **KMP ViewModel** — `commonMain` に共通 ViewModel、Compose 層から kotlin-inject `@AssistedFactory` 経由で生成
+- **KMP ViewModel** — `commonMain` に共通 ViewModel、Compose 層から Metro `@AssistedFactory` 経由で生成
 - **SKIE** — Kotlin `StateFlow` / `Flow` を Swift `AsyncSequence` に自動変換
 - **Actions クラス** — コールバックを data class に集約
 - **Convention Plugin** — gradle-conventions でビルド設定を共通化
 - **PreferenceKey / PreferenceStorage** — Preferences DataStore (KMP) の型安全ラッパー。値の型をキー側に閉じ込める設計
 - **AdaptiveString / AdaptiveImage** — ローカライズリソースとリテラル文字列 / リモート URL を単一の型で扱う抽象化 (下記参照)
-- **DI 境界** — Repository / use-case 類は `commonMain` に置く。platform 固有 API (DataStore のファイルパス、`Context`、`NSFileManager` など) は DI コンポーネント (kotlin-inject `@Provides`) からのみ参照し、依存として注入する。`@Inject` を付けるためだけの薄い platform 専用 wrapper クラスは作らず、`@Provides` で commonMain クラスを直接インスタンス化する
-- **DispatcherProvider** — Repository は `Dispatchers.IO` / `.Default` / `.Main` を直接参照せず、`core/foundation/commonMain` の `DispatcherProvider` interface 経由で受け取る。本番 binding は `DefaultDispatcherProvider`、テストでは `StandardTestDispatcher` を持った `TestDispatcherProvider` に差し替えることで、`runTest` が production の `delay()` を virtualize できる (`core/data/commonTest/.../AuthRepositoryTest.kt` 参照)。interface パターンを採ることで JVM 専用の `@Qualifier` indirection を避け、全 KMP target で同一形で binding できる
+- **DI 境界** — Repository / use-case 類は `commonMain` に置く。platform 固有 API (DataStore のファイルパス、`Context`、`NSFileManager` など) は platform 側 source set の `@ContributesTo` provider interface (`*Providers`) からのみ参照し、依存として注入する。`@Inject` を付けるためだけの薄い platform 専用 wrapper クラスは作らず、`@Provides` で commonMain クラスを直接インスタンス化する
+- **`@IoDispatcher` qualifier** — Repository は `Dispatchers.IO` を直接参照せず、`core/foundation/commonMain` の `@IoDispatcher` qualifier を付けた `CoroutineDispatcher` として受け取る。テストでは `runTest` の scheduler に紐付けた `StandardTestDispatcher` を渡すことで、production の `delay()` を virtualize できる (`core/data/commonTest/.../AuthRepositoryTest.kt` 参照)。Metro の `@Qualifier` は multiplatform なので、JVM 専用 API を避けるための `DispatcherProvider` indirection は不要
 - **Stateless content split** — Android の各画面は、ViewModel state を collect して effect を配線する stateful な `XxxScreen` と、`uiState` + `actions` だけを受け取る stateless な `XxxContent` のペアで構成する。`@Preview` が描画するのは後者なので、プレビューは DI や coroutine に触れない
 - **Lifecycle-aware effect 収集** — 一過性 effect の channel は `Flow<T>.CollectAsEffect` (`core/foundation`) で collect する。中で `repeatOnLifecycle(STARTED)` をラップしているので、画面が background の間に effect が配信されない
-- **DI** — kotlin-inject + Anvil (KMP 統一)
+- **DI** — Metro (KMP 統一、Kotlin コンパイラプラグイン。KSP 不使用)
 - **iOS 文字列方針** — 静的な UI chrome (画面タイトル、ボタンラベル等) は SwiftUI の文字列リテラルを使用。動的テキスト (エラーメッセージ、ダイアログ内容等) は `AdaptiveString` を SKIE の `async throws` ブリッジ (`iosMain` の `suspend resolve()`) で解決する。この 2 層方式により、静的ラベルで不要な async オーバーヘッドを避けつつ、`commonMain` ViewModel 由来のコンテンツは共有ローカライゼーションを維持する
 - **Effect 収集のライフサイクル** — iOS は SwiftUI `.task { for await ... }` を使い、view disappear 時に SwiftUI が自動的にキャンセルする。Android は同じ `Flow.collect` を `repeatOnLifecycle(STARTED)` (`CollectAsEffect`) でラップする。どちらのプラットフォームも画面が表示されている間のみ effect を observe し、バックグラウンド遷移後のステール navigation event 配信を防止する
 
@@ -152,10 +156,10 @@ constructor** が有効な組み合わせだけを公開する。呼び出し側
 
 ```
 gradle-conventions       Convention Plugins（ビルド設定の共通化）
-app                      Android アプリ本体、NavGraph、kotlin-inject component セットアップ
+app                      Android アプリ本体、NavGraph、ShowcaseAppGraph セットアップ
 shared                   iOS 向け umbrella framework (ShowcaseKit)
 +-- core
-|   +-- foundation       Result 拡張、DispatcherProvider、ActivityLauncher
+|   +-- foundation       Result 拡張、@IoDispatcher qualifier、CollectAsEffect
 |   +-- ui               DialogPresenter、SnackbarPresenter、IndicatorState、AppTheme、AdaptiveString、AdaptiveImage
 |   +-- data             AuthRepository、PreferenceStorage（DataStore KMP）
 +-- feature
@@ -175,7 +179,6 @@ iosApp                   iOS アプリ（SwiftUI + XcodeGen）
 | showcase.convention.kmp-feature | KMP feature モジュール（Compose + SKIE） |
 | showcase.convention.kmp-module | KMP core / library モジュールのベースプラグイン |
 | showcase.convention.kmp-sqldelight | KMP モジュールに SQLDelight を追加 |
-| showcase.primitive.kotlin-inject | kotlin-inject + Anvil + KSP |
 | showcase.primitive.spotless | コードフォーマット |
 | showcase.primitive.detekt | 静的解析 |
 
@@ -183,13 +186,13 @@ iosApp                   iOS アプリ（SwiftUI + XcodeGen）
 
 | カテゴリ | ライブラリ |
 |----------|-----------|
-| 言語 | Kotlin 2.3 / Swift 5.9 |
+| 言語 | Kotlin 2.4 / Swift 5.9 |
 | UI | Jetpack Compose (Android) / SwiftUI (iOS) |
-| DI | kotlin-inject 0.9.0 + Anvil 0.1.7 (KMP 統一) |
+| DI | Metro 1.4.2 (KMP 統一、コンパイル時グラフ) |
 | Navigation | Navigation Compose (Android) / NavigationStack (iOS) |
 | 非同期 | Kotlin Coroutines + Flow / SKIE AsyncSequence |
 | データ保存 | Preferences DataStore (KMP) |
-| ビルド | AGP 8.13、KSP、Convention Plugins、XcodeGen |
+| ビルド | AGP 8.13、Convention Plugins、XcodeGen |
 | コード品質 | Spotless、detekt、SwiftFormat、SwiftLint |
 
 ## 動作要件
@@ -226,10 +229,10 @@ Kotlin の shared module（`:shared`）は **XCFramework** を生成し、
 - `iosApp` の `Compile Kotlin Framework` build phase が Swift コンパイル前に
   上記 Gradle タスクを自動実行するため、Kotlin 側の編集は次の Xcode
   build に自然に反映される
-- build phase は `-Papp.ios.shared.arch=arm64` を渡して iosX64
-  (Intel-Mac シミュレータ) ターゲットを除外し、dev ビルドを高速化する。
-  CI / リリースビルドは同タスクをフラグ無しで実行し、3 つの iOS ターゲット
-  全てを生成する
+- XCFramework は `iosArm64`（実機）と `iosSimulatorArm64`（Apple Silicon
+  シミュレータ）を対象とする。`iosX64`（Intel-Mac シミュレータ）は生成しない。
+  Compose Multiplatform 1.11.0 以降が Apple x86_64 の成果物を提供しなくなった
+  ため（[KT-81596](https://youtrack.jetbrains.com/issue/KT-81596)）
 - CI 環境（`$CI` か `$GITHUB_ACTIONS` がセット）では build phase は
   Gradle 実行をスキップ。CI 側で別途 XCFramework をビルド・キャッシュする
   運用を想定
@@ -271,11 +274,8 @@ Kotlin の shared module（`:shared`）は **XCFramework** を生成し、
 # Swift フォーマット
 ./script/format-swift.sh
 
-# iOS shared XCFramework（フル: arm64 device + Apple Silicon + Intel シミュレータ）
+# iOS shared XCFramework（arm64 device + Apple Silicon シミュレータ）
 ./gradlew :shared:assembleShowcaseKitDebugXCFramework
-
-# iOS shared XCFramework（dev: arm64 のみ、高速）
-./gradlew :shared:assembleShowcaseKitDebugXCFramework -Papp.ios.shared.arch=arm64
 
 # 全ステップ一括実行（上記に加えて iOS ビルドまで走る）
 ./script/preflight.sh

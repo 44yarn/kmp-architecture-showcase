@@ -1,12 +1,12 @@
 package io.github.yarn44.kmp.showcase.core.data.auth
 
+import dev.zacsweers.metro.Inject
 import io.github.yarn44.kmp.showcase.core.foundation.coroutines.IoDispatcher
 import io.github.yarn44.kmp.showcase.core.foundation.resultHandling.logOnFailure
 import io.github.yarn44.kmp.showcase.core.foundation.resultHandling.runCatchingCancellable
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
-import me.tatarka.inject.annotations.Inject
 
 @Inject
 class AuthRepository(

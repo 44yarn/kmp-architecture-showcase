@@ -2,13 +2,13 @@ package io.github.yarn44.kmp.showcase
 
 import android.app.Application
 import android.content.Context
-import io.github.yarn44.kmp.showcase.di.ShowcaseAppComponent
-import io.github.yarn44.kmp.showcase.di.create
+import dev.zacsweers.metro.createGraphFactory
+import io.github.yarn44.kmp.showcase.di.ShowcaseAppGraph
 import timber.log.Timber
 
 class ShowcaseApplication : Application() {
-    val appComponent: ShowcaseAppComponent by lazy {
-        ShowcaseAppComponent::class.create(this)
+    val appGraph: ShowcaseAppGraph by lazy {
+        createGraphFactory<ShowcaseAppGraph.Factory>().create(this)
     }
 
     override fun onCreate() {
@@ -17,5 +17,5 @@ class ShowcaseApplication : Application() {
     }
 }
 
-val Context.appComponent: ShowcaseAppComponent
-    get() = (applicationContext as ShowcaseApplication).appComponent
+val Context.appGraph: ShowcaseAppGraph
+    get() = (applicationContext as ShowcaseApplication).appGraph

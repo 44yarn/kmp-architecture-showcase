@@ -6,7 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import io.github.yarn44.kmp.showcase.core.foundation.navigation.screen
-import io.github.yarn44.kmp.showcase.di.ShowcaseAppComponent
+import io.github.yarn44.kmp.showcase.di.ShowcaseAppGraph
 import io.github.yarn44.kmp.showcase.feature.home.HomeRoute
 import io.github.yarn44.kmp.showcase.feature.home.HomeScreen
 import io.github.yarn44.kmp.showcase.feature.info.InfoRoute
@@ -16,7 +16,7 @@ import io.github.yarn44.kmp.showcase.feature.login.LoginScreen
 
 @Composable
 fun ShowcaseNavGraph(
-    appComponent: ShowcaseAppComponent,
+    appGraph: ShowcaseAppGraph,
 ) {
     val navController = rememberNavController()
 
@@ -34,7 +34,7 @@ fun ShowcaseNavGraph(
                 onNavigateToInfo = {
                     navController.navigate(InfoRoute)
                 },
-                viewModel = viewModel { appComponent.loginViewModel },
+                viewModel = viewModel { appGraph.loginViewModel },
             )
         }
         screen<HomeRoute> { backStackEntry ->
@@ -48,7 +48,7 @@ fun ShowcaseNavGraph(
                 viewModel = viewModel(
                     key = "home_${route.displayName}_${route.isGuest}",
                 ) {
-                    appComponent.homeViewModelFactory.create(
+                    appGraph.homeViewModelFactory.create(
                         displayName = route.displayName,
                         isGuest = route.isGuest,
                     )
